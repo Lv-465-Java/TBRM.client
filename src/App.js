@@ -1,9 +1,9 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Routers from './Routers';
-import Footer from './components/footer/Footer';
-import Header from './components/header/Header';
+import Routers from './routers';
+import Footer from './components/footer/footer';
+import Header from './components/header/header';
 
 
 function App() {

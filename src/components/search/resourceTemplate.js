@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import TextField from "../inputField/InputField";
+import TextField from "../inputField/inputField";
 
 
 class SearchResourceTemplate extends Component {

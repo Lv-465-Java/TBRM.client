@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { Route, Switch } from "react-router";
 import LoginForm from "./components/loginForm/loginForm";
-import SearchResourceTemplate from "./components/search/ResourceTemplate";
+import SearchResourceTemplate from "./components/search/resourceTemplate";
 
 
 class Routers extends Component {
