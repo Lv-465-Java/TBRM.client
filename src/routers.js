@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Route, Switch } from "react-router";
 import LoginForm from "./components/loginForm/loginForm";
 import SearchResourceTemplate from "./components/search/resourceTemplate";
+import ResourceTemplateList from "./components/resourceTemplateList/resourceTemplateList";
 
 
 class Routers extends Component {
@@ -13,7 +14,7 @@ class Routers extends Component {
                 <Switch>
                     <Route path="/" exact component={LoginForm}/>
                     <Route path="/search" component={SearchResourceTemplate}/>
-                    <Route path="/"/>
+                    <Route path="/resources" component={ResourceTemplateList}/>
                 </Switch>
             </BrowserRouter>
         );
