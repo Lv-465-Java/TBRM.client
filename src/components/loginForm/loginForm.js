@@ -25,8 +25,6 @@ class LoginForm extends Component {
     render() {
         return (
         <div>
-            <div>{this.state.email}</div>
-            <div>{this.state.password}</div>
             <TextField type="email" label="email" onChange={this.onChangeEmail}/>
             <TextField type="password" label="password" onChange={this.onChangePassword}/>
         </div>
