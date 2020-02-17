@@ -14,9 +14,17 @@ class LoginForm extends Component {
     }
 
     getData =() =>{
-        axios.post("/authentication", this.state).then(response => {
+        try{
+            axios.post("/authentication", this.state).then(response => {
+                if(response !== undefined){
             window.location.href = "/resources";
-    })
+                }
+    }
+    )
+    }catch(error){
+        console.log(error);
+    }
+        
     
     }
 

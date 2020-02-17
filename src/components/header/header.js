@@ -8,7 +8,7 @@ import { Grid } from "@material-ui/core";
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import { logout, isUserLoggedIn } from '../service/authService';
+import { logout, isUserLoggedIn } from '../../service/authService';
 import { Link } from 'react-router-dom';
 
 
