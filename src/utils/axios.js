@@ -1,13 +1,18 @@
 import Axios from 'axios';
+import {API_BASE_URL} from "../constants";
 
 const axios = Axios.create({
-    baseURL: 'http://localhost:8080/',
+    baseURL: API_BASE_URL,
     crossdomain: true,
 })
 
 axios.interceptors.request.use(
     config => {
         config.headers["Authorization"] = sessionStorage.getItem('authorization');
+        // const token = localStorageService.getAccessToken();
+        // if (token) {
+        //     config.headers['Authorization'] = 'Bearer ' + token;
+        // }
         return config;
     },
     error=>{
