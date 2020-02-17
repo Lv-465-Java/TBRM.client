@@ -20,8 +20,9 @@ axios.interceptors.response.use(
     response => {
         let authorization = response.headers['authorization'];
         let refreshToken = response.headers['refreshtoken'];
-        sessionStorage.setItem('authorization', authorization);
-        sessionStorage.setItem('refreshtoken', refreshToken);
+        
+        authorization && sessionStorage.setItem('authorization', authorization);
+        refreshToken && sessionStorage.setItem('refreshtoken', refreshToken);
         return response;
     },
     error=>{
