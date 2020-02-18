@@ -17,7 +17,7 @@ class LoginForm extends Component {
         try{
             axios.post("/authentication", this.state).then(response => {
                 if(response !== undefined){
-            window.location.href = "/resources";
+            window.location.href = "/home";
                 }
     }
     )
