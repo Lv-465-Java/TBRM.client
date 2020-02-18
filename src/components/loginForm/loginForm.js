@@ -14,9 +14,17 @@ class LoginForm extends Component {
     }
 
     getData =() =>{
-        axios.post("/authentication", this.state).then(response => {
-
-    })
+        try{
+            axios.post("/authentication", this.state).then(response => {
+                if(response !== undefined){
+            window.location.href = "/resources";
+                }
+    }
+    )
+    }catch(error){
+        console.log(error);
+    }
+        
     
     }
 
@@ -36,8 +44,6 @@ class LoginForm extends Component {
     render() {
         return (
         <div>
-            <div>{this.state.email}</div>
-            <div>{this.state.password}</div>
             <TextField type="email" label="email" onChange={this.onChangeEmail}/>
             <TextField type="password" label="password" onChange={this.onChangePassword}/>
             <Button onClick={this.getData}>Login</Button>
