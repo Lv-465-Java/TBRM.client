@@ -6,6 +6,7 @@ import {GOOGLE_AUTH_URL} from "../../constants";
 import GoogleLogin from 'react-google-login';
 import {PostData} from "../../services/PostData";
 import {Redirect} from "react-router";
+import { GoogleLogout } from 'react-google-login';
 
 
 class LoginForm extends Component {
@@ -60,9 +61,17 @@ class LoginForm extends Component {
     }
 
     getData =() =>{
-        axios.post("/authentication", this.state).then(response => {
-
-    })
+        try{
+            axios.post("/authentication", this.state).then(response => {
+                if(response !== undefined){
+            window.location.href = "/resources";
+                }
+    }
+    )
+    }catch(error){
+        console.log(error);
+    }
+        
     
     }
 
@@ -90,21 +99,11 @@ class LoginForm extends Component {
         }
         return (
         <div>
-            <div>{this.state.email}</div>
-            <div>{this.state.password}</div>
             <TextField type="email" label="email" onChange={this.onChangeEmail}/>
             <TextField type="password" label="password" onChange={this.onChangePassword}/>
             <Button onClick={this.getData}>Login</Button>
 
           <h6>Log in using your account on </h6>
-        {/*    <div className = "col-md-6">*/}
-        {/*    <div className = "row">*/}
-        {/*        <a className="btn btn-secondary btn-block" href={GOOGLE_AUTH_URL} title="Google">*/}
-        {/*    <img  src = "http://pngimg.com/uploads/google/google_PNG19635.png" alt="" height="24" width="24"/>*/}
-        {/*    Google*/}
-        {/*        </a>*/}
-        {/*</div>*/}
-        {/*    </div>*/}
 
             <GoogleLogin
                 clientId="733965756435-bsql7crsvtrd1s7a27ad6397836805n7.apps.googleusercontent.com"
@@ -113,6 +112,13 @@ class LoginForm extends Component {
                 onFailure={responseGoogle}
                 cookiePolicy={'single_host_origin'}
             />
+
+            <GoogleLogout
+                clientId="733965756435-bsql7crsvtrd1s7a27ad6397836805n7.apps.googleusercontent.com"
+                buttonText="Logout"
+                onLogoutSuccess={'/login'}
+            >
+            </GoogleLogout>
         </div>
         );
     }

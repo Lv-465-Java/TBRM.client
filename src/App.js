@@ -1,11 +1,10 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Routers from './routers';
+
 import Footer from './components/footer/footer';
 import Header from './components/header/header';
-import Home from "./components/home/Home";
-import {Route, Router} from "react-router";
+
 
 
 function App() {
@@ -13,7 +12,7 @@ function App() {
     <div className="App">
       <Header/>
       <Routers/>
-        <Footer/>
+      <Footer/>
     </div>
   );
 }

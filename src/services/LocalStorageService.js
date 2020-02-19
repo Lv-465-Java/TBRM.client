@@ -1,16 +1,22 @@
 import React, {Component} from "react";
 
-const LocalSessionStorageService = (function(){ var _service; function _getService() {
+const LocalSessionStorageService = (function(){
+    let _service;
+
+    function _getService() {
     if(!_service) {
         _service = this;
         return _service
     }   return _service
 }
 
-function _setToken(tokenObj) {
-    sessionStorage.setItem('Authorization', tokenObj.access_token);
-    localStorage.setItem('refreshToken', tokenObj.refresh_token);
+function _setAccessToken(accessToken) {
+    sessionStorage.setItem('Authorization', accessToken);
 }
+
+    function _setRefreshToken(refreshToken) {
+        localStorage.setItem('refreshToken', refreshToken);
+    }
 
 function _getAccessToken() {
     return sessionStorage.getItem('Authorization');
@@ -21,13 +27,14 @@ function _getRefreshToken() {
 }
 
 function _clearToken() {
-    localStorage.removeItem('Authorization');
+    sessionStorage.removeItem('Authorization');
     localStorage.removeItem('refreshToken');
 }
 
 return {
     getService : _getService,
-    setToken : _setToken,
+    setAccessToken : _setAccessToken,
+    setRefreshToken : _setRefreshToken,
     getAccessToken : _getAccessToken,
     getRefreshToken : _getRefreshToken,
     clearToken : _clearToken
