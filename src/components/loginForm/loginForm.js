@@ -13,19 +13,16 @@ class LoginForm extends Component {
         password: undefined
     }
 
-    getData =() =>{
+    getData = () => {
             axios.post("/authentication", this.state).then(response => {
                 if(response !== undefined){
                     window.location.href = "/home";
                 }
             }
-    
-    ).catch(error => {
-        console.log(error);
-    }
-    )
-
-    
+            ).catch(error => {
+                    console.log(error);
+                }
+            )
     }
         
 
