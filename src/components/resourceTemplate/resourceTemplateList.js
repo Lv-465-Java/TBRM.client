@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from '../../utils/axios';
 import ResourceTemplateItem from './resourceTemplateItem';
-import { Button } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
 
 const style = {
 
@@ -40,7 +40,12 @@ class ResourceTemplateList extends Component{
                     variant="contained"
                     color="primary"
                     onClick={this.goToCreateResource}>Create Resource</Button>
-                    <div style={style}>
+                    <Grid container spacing={3}>
+        <Grid item xs>
+          1
+        </Grid>
+        <Grid item xs={8}>
+        <div style={style}>
                         {this.state.resourceTemplates.map((item) => 
                         (<ResourceTemplateItem key={item.id} 
                                             id = {item.id} 
@@ -48,6 +53,12 @@ class ResourceTemplateList extends Component{
                                             description= {item.description} />)
                         )}
                     </div>
+        </Grid>
+        <Grid item xs>
+          3
+        </Grid>
+      </Grid>
+                    
             </div>
         );
     }
