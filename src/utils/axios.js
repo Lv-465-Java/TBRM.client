@@ -1,9 +1,9 @@
 import Axios from 'axios';
 import {API_BASE_URL} from "../constants";
-import LocalSessionStorageServiceStorageService from "../services/LocalStorageService";
+import LocalSessionStorageService from "../services/LocalStorageService";
 
 
-const localStorageService = LocalSessionStorageServiceStorageService.getService();
+const localStorageService = LocalSessionStorageService.getService();
 
 const axios = Axios.create({
     baseURL: API_BASE_URL,
@@ -16,7 +16,7 @@ axios.interceptors.request.use(
         config => {
             const token = localStorageService.getAccessToken();
             if (token) {
-                config.headers['Authorization'] = 'Bearer ' + token;
+                config.headers['authorization'] = token;
             }
             // config.headers['Content-Type'] = 'application/json';
             return config;
@@ -32,39 +32,57 @@ axios.interceptors.request.use(
 //)
 
 
-axios.interceptors.response.use(
-    response => {
-        let authorization = response.headers['authorization'];
-        let refreshToken = response.headers['refreshtoken'];
+// axios.interceptors.response.use(
+//     response => {
+//         let authorization = response.headers['authorization'];
+//         let refreshToken = response.headers['refreshtoken'];
+//         authorization && localStorageService.setAccessToken(authorization);
+//         //sessionStorage.setItem('authorization', authorization);
+//         refreshToken && localStorageService.setRefreshToken(refreshToken);
+//         //localStorage.setItem('refreshtoken', refreshToken);
+//
+//         return response;
+//     },
+//     error=>{
+//
+//     }
+// )
+
+axios.interceptors.response.use(response => {
+        //return response
+        let authorization = response.headers['Authorization'];
+        let refreshToken = response.headers['RefreshToken'];
         authorization && localStorageService.setAccessToken(authorization);
-        //sessionStorage.setItem('authorization', authorization);
         refreshToken && localStorageService.setRefreshToken(refreshToken);
-        //localStorage.setItem('refreshtoken', refreshToken);
 
         return response;
     },
-    error=>{
-
-    }
-)
-
-axios.interceptors.response.use((response) => {
-        return response
-    },
-    function (error) {
+     function (error) {
         const originalRequest = error.config;
+
+     //     if (error.response.status === 401 && originalRequest.url ===
+     //         'http://localhost:8080/v1/auth/token') {
+     //         //router.push('/login');
+     //         this.props.history.push("/login");
+     //     return Promise.reject(error);
+     // }
         if (error.response.status === 401 && !originalRequest._retry) {
 
             originalRequest._retry = true;
             return axios.post('/refresh',
-                {
-                    "refresh_token": localStorageService.getRefreshToken()
+                {},{
+                    headers: {
+                        refreshToken: localStorageService.getRefreshToken()
+                    }
                 })
                 .then(res => {
-                    if (res.status === 201) {
-                        localStorageService.setAccessToken(res.data.getAccessToken());
+                    if (res.status === 200) {
+                        //console.log(res.headers["Authorization"]);
+                       // console.log(res.headers["RefreshToken"]);
+                        localStorageService.setAccessToken(res.headers["Authorization"]);
+                        localStorageService.setRefreshToken(res.headers["RefreshToken"]);
 
-                        axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorageService.getAccessToken();
+                        axios.defaults.headers.common['Authorization'] = localStorageService.getAccessToken();
 
                         return axios(originalRequest);
                     }

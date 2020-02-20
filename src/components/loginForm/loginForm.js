@@ -7,6 +7,9 @@ import GoogleLogin from 'react-google-login';
 import {PostData} from "../../services/PostData";
 import {Redirect} from "react-router";
 import { GoogleLogout } from 'react-google-login';
+import LocalSessionStorageService from "../../services/LocalStorageService";
+
+const localStorageService = LocalSessionStorageService.getService();
 
 
 class LoginForm extends Component {
@@ -16,42 +19,42 @@ class LoginForm extends Component {
             loginError: false,
             redirect:false
         }
-        this.signup=this.signup.bind(this);
+       // this.signup=this.signup.bind(this);
     }
 
-    signup(res, type) {
-        let postData;
-        //     if (type === 'google' && res.w3.U3) {
-        //         postData = {
-        //             name: res.w3.ig,
-        //             provider: type,
-        //             email: res.w3.U3,
-        //             provider_id: res.El,
-        //             token: res.Zi.access_token,
-        //             provider_pic: res.w3.Paa
-        //         };
-        // }
-        if (type === 'google' && res.Qt) {
-            postData = {
-                name: res.Qt.Ad,
-                provider: type,
-                email: res.Qt.zu,
-                provider_id: res.El,
-                token: res.uc.access_token,
-                provider_pic: res.Qt.jL
-            };
-        }
-        if (PostData) {
-            PostData('signup', postData).then((result) => {
-                let responseJson = result;
-                if (responseJson.userData) {
-                    sessionStorage.setItem("userData", JSON.stringify(responseJson));
-                    this.setState({redirect: true});
-                }
-            });
-        } else {
-        }
-    }
+    // signup(res, type) {
+    //     let postData;
+    //     //     if (type === 'google' && res.w3.U3) {
+    //     //         postData = {
+    //     //             name: res.w3.ig,
+    //     //             provider: type,
+    //     //             email: res.w3.U3,
+    //     //             provider_id: res.El,
+    //     //             token: res.Zi.access_token,
+    //     //             provider_pic: res.w3.Paa
+    //     //         };
+    //     // }
+    //     if (type === 'google' && res.Qt) {
+    //         postData = {
+    //             name: res.Qt.Ad,
+    //             provider: type,
+    //             email: res.Qt.zu,
+    //             provider_id: res.El,
+    //             token: res.uc.access_token,
+    //             provider_pic: res.Qt.jL
+    //         };
+    //     }
+    //     if (PostData) {
+    //         PostData('signup', postData).then((result) => {
+    //             let responseJson = result;
+    //             if (responseJson.userData) {
+    //                 sessionStorage.setItem("userData", JSON.stringify(responseJson));
+    //                 this.setState({redirect: true});
+    //             }
+    //         });
+    //     } else {
+    //     }
+    // }
 
 
 
@@ -95,7 +98,10 @@ class LoginForm extends Component {
 
         const responseGoogle = (response) => {
             console.log(response);
-            this.signup(response,'google');
+            const jwt=response.tokenId;
+            //console.log(jwt);
+            localStorageService.setAccessToken('Bearer '+ jwt);
+           // this.signup(response,'google');
         }
         return (
         <div>
@@ -106,7 +112,7 @@ class LoginForm extends Component {
           <h6>Log in using your account on </h6>
 
             <GoogleLogin
-                clientId="733965756435-bsql7crsvtrd1s7a27ad6397836805n7.apps.googleusercontent.com"
+                clientId="395793978735-vp0r0da1tjvdtp9mjbvq6arjp5tk0eu0.apps.googleusercontent.com"
                 buttonText="Login"
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}
@@ -114,7 +120,7 @@ class LoginForm extends Component {
             />
 
             <GoogleLogout
-                clientId="733965756435-bsql7crsvtrd1s7a27ad6397836805n7.apps.googleusercontent.com"
+                clientId="395793978735-vp0r0da1tjvdtp9mjbvq6arjp5tk0eu0.apps.googleusercontent.com"
                 buttonText="Logout"
                 onLogoutSuccess={'/login'}
             >

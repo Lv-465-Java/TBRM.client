@@ -84,7 +84,7 @@ const Header = (props) => {
                 <Link to="/"><Button style={{ color: '#FFF' }}>Sign In</Button></Link>
                 <Link to="/"><Button style={{ color: '#FFF' }}>Sign Up</Button></Link>
             </Grid>
-        </BrowserRouter>
+         </BrowserRouter>
     );
 
     let headerLinks;
