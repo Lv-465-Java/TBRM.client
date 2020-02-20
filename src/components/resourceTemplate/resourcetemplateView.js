@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
@@ -70,7 +70,7 @@ class ResourceTemplateView extends Component{
             </Card>
         </Grid>
         <Grid item xs>
-          3
+        <Link to={`/resource-template/update/${this.state.resTempId}`}><Button>Update</Button></Link>
         </Grid>
       </Grid>
         );

@@ -22,10 +22,10 @@ class Routers extends Component {
                 <Switch>
                     <Route path="/home" component={HomePage} />
                     <Route path="/search" component={SearchResourceTemplate} />
-                    <Route path="/resource/create" component={ResourceTemplateCreate} />
-                    <Route path="/resource/update/:id" component={ResourceTemplateUpdate} />
-                    <Route path="/resource/view/:id" component={ResourceTemplateView} />
-                    <Route path="/resource" component={ResourceTemplateList} />
+                    <Route path="/resource-template/create" component={ResourceTemplateCreate} />
+                    <Route path="/resource-template/update/:id" component={ResourceTemplateUpdate} />
+                    <Route path="/resource-template/view/:id" component={ResourceTemplateView} />
+                    <Route path="/resource-template" component={ResourceTemplateList} />
                     <Route path="/" exact component={LoginForm} />
                 </Switch>
                 <Footer/>
