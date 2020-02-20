@@ -5,19 +5,21 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
+import { Grid } from '@material-ui/core';
+import axios from '../../utils/axios';
 
 const style = {
-    maxWidth: 300,
-    minWidth: 250,
-    margin: 10,
+    maxWidth: 750,
+    minWidth: 500,
+    marginTop: 40,
 
 }
 
-class ResourceTemplateItem extends Component{
+class ResourceTemplateView extends Component{
 
 
     state = {
-        id:	this.props.id,
+        resTempId: this.props.match.params.id,
         name: this.props.name,
         tableName:	this.props.tableName,
         description: this.props.description,
@@ -25,11 +27,36 @@ class ResourceTemplateItem extends Component{
         userId:	this.props.userId,
         resourceParameters: this.props.resourceParameters
     }
+
+    getData = () => {
+        axios.get(`/resource-template/${this.state.resTempId}`).then(
+            response => {
+                let data = response.data;
+                this.setState({
+                    name:  data.name,
+                    oldName: data.name,
+                    description: data.description,
+                    oldDescription: data.description
+                })
+            }).catch( error => {
+                console.dir(error.response.data);
+
+            })
+        
+    }
+
+    componentDidMount(){
+        this.getData();
+    }
     
     render(){
         return(
-            <Link to={`/resource/view/${this.state.id}`} >
-            <Card style={style}>
+            <Grid container spacing={3}>
+        <Grid item xs>
+          1
+        </Grid>
+        <Grid item xs={6}>
+        <Card style={style}>
                 <CardActionArea>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
@@ -41,9 +68,13 @@ class ResourceTemplateItem extends Component{
                     </CardContent>
                 </CardActionArea>
             </Card>
-        </Link>
+        </Grid>
+        <Grid item xs>
+          3
+        </Grid>
+      </Grid>
         );
     }
 }
 
-export default ResourceTemplateItem;
+export default ResourceTemplateView;
