@@ -28,7 +28,7 @@ class ResourceTemplateItem extends Component{
     
     render(){
         return(
-            <Link to={`/resource/view/${this.state.id}`} >
+            <Link to={`/resource-template/view/${this.state.id}`} >
             <Card style={style}>
                 <CardActionArea>
                     <CardContent>

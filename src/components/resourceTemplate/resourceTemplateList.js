@@ -30,7 +30,7 @@ class ResourceTemplateList extends Component {
     }
 
     goToCreateResource = () => {
-        this.props.history.push("/resource/create");
+        this.props.history.push("/resource-template/create");
     }
 
     render() {

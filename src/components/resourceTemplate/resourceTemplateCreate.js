@@ -14,7 +14,7 @@ class ResourceTemplateCreate extends Component{
 
     create = () => {
         axios.post("/resource-template", this.state).then(response => {
-                this.props.history.push("/resource");
+                this.props.history.push("/resource-template");
         }, error => {
 
         })

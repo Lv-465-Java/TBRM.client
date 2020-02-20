@@ -70,7 +70,7 @@ class ResourceTemplateView extends Component{
             </Card>
         </Grid>
         <Grid item xs>
-        <Link to={`/resource/update/${this.state.id}`}><Button>Update</Button></Link>
+        <Link to={`/resource-template/update/${this.state.resTempId}`}><Button>Update</Button></Link>
         </Grid>
       </Grid>
         );
