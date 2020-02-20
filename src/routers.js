@@ -9,6 +9,7 @@ import HomePage from "./components/home/home";
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
 import ResourceTemplateCreate from "./components/resourceTemplate/resourceTemplateCreate";
+import ResourceTemplateUpdate from "./components/resourceTemplate/resourceTemplateUpdate";
 
 
 class Routers extends Component {
@@ -17,11 +18,12 @@ class Routers extends Component {
             <BrowserRouter>
                 <Header/>
                 <Switch>
-                    <Route path="/" exact component={LoginForm} />
                     <Route path="/home" component={HomePage} />
                     <Route path="/search" component={SearchResourceTemplate} />
-                    <Route path="/resources" component={ResourceTemplateList} />
                     <Route path="/resource/create" component={ResourceTemplateCreate} />
+                    <Route path="/resource/update/:id" component={ResourceTemplateUpdate} />
+                    <Route path="/resource" component={ResourceTemplateList} />
+                    <Route path="/" exact component={LoginForm} />
                 </Switch>
                 <Footer/>
             </BrowserRouter>

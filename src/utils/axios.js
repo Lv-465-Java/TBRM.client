@@ -16,7 +16,7 @@ axios.interceptors.request.use(
         config => {
             const token = localStorageService.getAccessToken();
             if (token) {
-                config.headers['authorization'] = token;
+                config.headers['Authorization'] = token;
             }
             // config.headers['Content-Type'] = 'application/json';
             return config;
@@ -49,7 +49,6 @@ axios.interceptors.request.use(
 // )
 
 axios.interceptors.response.use(response => {
-        //return response
         let authorization = response.headers['Authorization'];
         let refreshToken = response.headers['RefreshToken'];
         authorization && localStorageService.setAccessToken(authorization);
@@ -57,15 +56,13 @@ axios.interceptors.response.use(response => {
 
         return response;
     },
+//     error=>{
+//         return Promise.reject(error);
+//     }
+// )
      function (error) {
         const originalRequest = error.config;
 
-     //     if (error.response.status === 401 && originalRequest.url ===
-     //         'http://localhost:8080/v1/auth/token') {
-     //         //router.push('/login');
-     //         this.props.history.push("/login");
-     //     return Promise.reject(error);
-     // }
         if (error.response.status === 401 && !originalRequest._retry) {
 
             originalRequest._retry = true;
