@@ -13,6 +13,7 @@ import ResourceTemplateUpdate from "./components/resourceTemplate/resourceTempla
 import ResourceTemplateView from "./components/resourceTemplate/resourcetemplateView";
 
 
+
 class Routers extends Component {
     render() {
         return (
