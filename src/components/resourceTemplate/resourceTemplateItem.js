@@ -6,11 +6,15 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 
-const style = {
+const cardStyle = {
     maxWidth: 300,
     minWidth: 250,
     margin: 10,
 
+}
+
+const linkStyle = {
+    textDecoration: 'none'
 }
 
 class ResourceTemplateItem extends Component{
@@ -28,8 +32,8 @@ class ResourceTemplateItem extends Component{
     
     render(){
         return(
-            <Link to={`/resource/view/${this.state.id}`} >
-            <Card style={style}>
+            <Link to={`/resource-template/view/${this.state.id}`} style={linkStyle} >
+            <Card style={cardStyle}>
                 <CardActionArea>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
