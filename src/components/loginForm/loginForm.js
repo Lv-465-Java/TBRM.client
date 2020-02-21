@@ -91,13 +91,13 @@ class LoginForm extends Component {
 
     render() {
         if (this.state.redirect){
-            return (<Redirect to='/home'/>)
+            return (<Redirect to='/'/>)
         }
 
         const responseGoogle = (response) => {
             console.log(response);
-            const jwt=response.tokenId;
-            //console.log(jwt);
+            const jwt=response.accessToken;
+            console.log(jwt);
             localStorageService.setAccessToken('Bearer '+ jwt);
            // this.signup(response,'google');
         }

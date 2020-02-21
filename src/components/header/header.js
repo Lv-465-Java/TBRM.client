@@ -79,16 +79,13 @@ const Header = (props) => {
     );
 
     const userNotLoggedIn = (
-        <BrowserRouter>
             <Grid>
                 <Link to="/"><Button style={{ color: '#FFF' }}>Sign In</Button></Link>
                 <Link to="/"><Button style={{ color: '#FFF' }}>Sign Up</Button></Link>
             </Grid>
-         </BrowserRouter>
-    );
+        );
 
     let headerLinks;
-
     if (isUserLoggedIn()) {
         headerLinks = userLoggedIn;
     } else {

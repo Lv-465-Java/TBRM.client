@@ -5,12 +5,11 @@ class HomePage extends Component{
     
     render(){
         return(
-            <BrowserRouter>
             <div>
                 <h1>Home Page</h1>
                 <Link to="/resource">Resource Templates</Link>
             </div>
-            </BrowserRouter>
+
         );
     }
 }

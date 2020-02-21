@@ -11,55 +11,27 @@ const axios = Axios.create({
 })
 
 axios.interceptors.request.use(
-    //config => {
-        //config.headers["Authorization"] = sessionStorage.getItem('authorization');
         config => {
             const token = localStorageService.getAccessToken();
             if (token) {
-                config.headers['Authorization'] = token;
+                config.headers['authorization'] = token;
             }
-            // config.headers['Content-Type'] = 'application/json';
             return config;
         },
             error => {
                 Promise.reject(error);
             });
-       // return config;
-   // },
-   // error=>{
 
-  //  }
-//)
-
-
-// axios.interceptors.response.use(
-//     response => {
-//         let authorization = response.headers['authorization'];
-//         let refreshToken = response.headers['refreshtoken'];
-//         authorization && localStorageService.setAccessToken(authorization);
-//         //sessionStorage.setItem('authorization', authorization);
-//         refreshToken && localStorageService.setRefreshToken(refreshToken);
-//         //localStorage.setItem('refreshtoken', refreshToken);
-//
-//         return response;
-//     },
-//     error=>{
-//
-//     }
-// )
 
 axios.interceptors.response.use(response => {
-        let authorization = response.headers['Authorization'];
-        let refreshToken = response.headers['RefreshToken'];
+        let authorization = response.headers['authorization'];
+        let refreshToken = response.headers['refreshtoken'];
         authorization && localStorageService.setAccessToken(authorization);
         refreshToken && localStorageService.setRefreshToken(refreshToken);
 
         return response;
     },
-//     error=>{
-//         return Promise.reject(error);
-//     }
-// )
+
      function (error) {
         const originalRequest = error.config;
 
@@ -74,12 +46,10 @@ axios.interceptors.response.use(response => {
                 })
                 .then(res => {
                     if (res.status === 200) {
-                        //console.log(res.headers["Authorization"]);
-                       // console.log(res.headers["RefreshToken"]);
-                        localStorageService.setAccessToken(res.headers["Authorization"]);
-                        localStorageService.setRefreshToken(res.headers["RefreshToken"]);
+                        localStorageService.setAccessToken(res.headers["authorization"]);
+                        localStorageService.setRefreshToken(res.headers["refreshtoken"]);
 
-                        axios.defaults.headers.common['Authorization'] = localStorageService.getAccessToken();
+                        axios.defaults.headers.common['authorization'] = localStorageService.getAccessToken();
 
                         return axios(originalRequest);
                     }
