@@ -4,6 +4,7 @@ import TextField from "../inputField/inputField";
 //import Axios from "axios";
 import axios from '../../utils/axios';
 import { Button } from "@material-ui/core";
+import {Link} from "react-router-dom";
 
 
 class LoginForm extends Component {
@@ -47,6 +48,10 @@ class LoginForm extends Component {
             <TextField type="email" label="email" onChange={this.onChangeEmail}/>
             <TextField type="password" label="password" onChange={this.onChangePassword}/>
             <Button onClick={this.getData}>Login</Button>
+            <div>
+                <Link to={"/forgot_password"}>Forgot password?</Link>
+            {/*<a href="/forgot_password"></a>*/}
+            </div>
         </div>
         );
     }

@@ -10,6 +10,8 @@ import HomePage from "./components/home/home";
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
 import ResourceTemplateCreate from "./components/resourceTemplate/resourceTemplateCreate";
+import ResetPassword from "./components/resetPassword/resetPassword";
+import ForgotPassword from "./components/resetPassword/forgotPassword";
 
 
 
@@ -25,6 +27,8 @@ class Routers extends Component {
                     <Route path="/resources" component={ResourceTemplateList} />
                      <Route path="/registration" component={RegistrationForm}/>
                     <Route path="/resource/create" component={ResourceTemplateCreate} />
+                    <Route path="/reset_password" component={ResetPassword} />
+                    <Route path="/forgot_password" component={ForgotPassword} />
                 </Switch>
                 <Footer/>
             </BrowserRouter>

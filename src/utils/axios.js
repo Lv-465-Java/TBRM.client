@@ -3,7 +3,7 @@ import Axios from 'axios';
 const axios = Axios.create({
     baseURL: 'http://localhost:8080/',
     crossdomain: true,
-})
+});
 
 axios.interceptors.request.use(
     config => {
@@ -11,7 +11,7 @@ axios.interceptors.request.use(
         return config;
     },
     error=>{
-
+        return Promise.reject(error);
     }
 )
 
@@ -26,7 +26,7 @@ axios.interceptors.response.use(
         return response;
     },
     error=>{
-
+        return Promise.reject(error)
     }
 )
 

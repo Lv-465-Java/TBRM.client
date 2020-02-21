@@ -13,24 +13,12 @@ class RegistrationForm extends Component{
         email: undefined,
         phone: undefined,
         password: undefined,
-        confirmationPassword: undefined,
-        formErrors: {email: '', password: ''},
-        emailValid: false,
-        passwordValid: false,
-        formValid: false
-
-       // validFirstName: this.validate(this.props.firstName)
-
+       confirmationPassword: undefined,
     }
 
-    validate(name){
-        return name.trim().length>0
-    }
     onChangeFirstName = (event) => {
-        //const valid = this.validate(event.target.value);
         this.setState({
-            firstName: event.target.value,
-           // validFirstName:valid
+            firstName: event.target.value
         })
     }
 
@@ -63,15 +51,13 @@ class RegistrationForm extends Component{
     }
     getData =() => {
         axios.post("/registration", this.state).then(response => {
+            this.props.history.push("/");
+        }, error => {
 
-        }).catch(error => {
-            console.log('Error', error.message);
-        });
-        this.props.history.push("/")
+        })
     }
 
     render(){
-        //var color = this.state.valid===true?"green":"red";
         return (
             <div>
                 <div>{this.state.firstName}</div>
@@ -80,17 +66,12 @@ class RegistrationForm extends Component{
                 <div>{this.state.phone}</div>
                 <div>{this.state.password}</div>
                 <div>{this.state.confirmationPassword}</div>
-                <TextField type="firstName" label="firstName" style={{borderColor:color}} onChange={this.onChangeFirstName}/>
-                <TextField error id="standard-error-helper-text" helperText="Incorrect entry."
-                           type="lastName" label="lastName" onChange={this.onChangeLastName}/>
-                <TextField error id="standard-error-helper-text" helperText="Incorrect entry."
-                           type="email" label="email"  onChange={this.onChangeEmail}/>
-                <TextField error id="standard-error-helper-text" helperText="Incorrect entry."
-                           type="phone" label="phone" onChange={this.onChangePhone}/>
-                <TextField error id="standard-error-helper-text" helperText="Incorrect entry."
-                           type="password" label="password" onChange={this.onChangePassword}/>
-                <TextField error id="standard-error-helper-text" helperText="Incorrect entry."
-                           type="password" label="confirmationPassword" onChange={this.onChangeConfirmationPassword}/>
+                <TextField type="firstName" label="firstName"  onChange={this.onChangeFirstName}/>
+                <TextField type="lastName" label="lastName" onChange={this.onChangeLastName}/>
+                <TextField type="email" label="email"  onChange={this.onChangeEmail}/>
+                <TextField type="phone" label="phone" onChange={this.onChangePhone}/>
+                <TextField type="password" label="password" onChange={this.onChangePassword}/>
+                <TextField type="password" label="confirmationPassword" onChange={this.onChangeConfirmationPassword}/>
                 <Button variant="contained" color="primary" onClick={this.getData}>Sign up
                 </Button>
             </div>
