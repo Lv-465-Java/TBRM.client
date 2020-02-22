@@ -7,7 +7,7 @@ class HomePage extends Component{
         return(
             <div>
                 <h1>Home Page</h1>
-                <Link to="/resources">Resource Templates</Link>
+                <Link to="/resource-template">Resource Templates</Link>
             </div>
         );
     }
