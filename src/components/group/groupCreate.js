@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import axios from "../../utils/axios";
 import {TextField, Button} from "@material-ui/core";
 import SaveIcon from '@material-ui/icons/Save';
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 class GroupCreate extends Component {
 
@@ -38,7 +39,7 @@ class GroupCreate extends Component {
     render() {
         return (<div>
             <TextField type="text" label="name" onChange={this.onChangeName}/>
-            <TextField type="text" label="description" onChange={this.onChangeDescription}/>
+            <TextareaAutosize type="text" rowsMin={3} placeholder="description" onChange={this.onChangeDescription}/>
             <Button variant="contained"
                     color="primary"
                     size="large"

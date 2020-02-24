@@ -13,6 +13,7 @@ import ResourceTemplateUpdate from "./components/resourceTemplate/resourceTempla
 import ResourceTemplateView from "./components/resourceTemplate/resourcetemplateView";
 import GroupCreate from "./components/group/groupCreate";
 import GroupList from "./components/group/groupList";
+import GroupItem from "./components/group/groupItem";
 
 
 
@@ -30,6 +31,7 @@ class Routers extends Component {
                     <Route path="/resource-template/view/:id" component={ResourceTemplateView} />
                     <Route path="/resource-template" component={ResourceTemplateList} />
                     <Route path="/group/create" component={GroupCreate} />
+                    <Route path="/group/view/:name" component={GroupItem} />
                     <Route path="/group" component={GroupList} />
                     <Route path="/" exact component={LoginForm} />
                 </Switch>

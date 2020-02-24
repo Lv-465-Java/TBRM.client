@@ -2,11 +2,6 @@ import React, {Component} from "react";
 import axios from '../../utils/axios';
 import {Button, Grid} from '@material-ui/core';
 
-const style = {
-    display: "flex",
-    flexWrap: "wrap",
-}
-
 class GroupList extends Component {
     state = {
         groups: []
