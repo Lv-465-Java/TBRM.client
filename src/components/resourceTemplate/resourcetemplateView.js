@@ -153,6 +153,9 @@ class ResourceTemplateView extends Component {
                                                 <Link to={`/resource-template/permission/add/${this.state.resTempId}`}>
                                                     <MenuItem onClick={popupState.close}>Add/Update Permission</MenuItem>
                                                 </Link>
+                                                <Link to={`/resource-template/permission/owner/${this.state.resTempId}`}>
+                                                    <MenuItem onClick={popupState.close}>Change Owner</MenuItem>
+                                                </Link>
                                                 <Link to={`/resource-template/permission/remove/${this.state.resTempId}`}>
                                                     <MenuItem onClick={popupState.close}>Delete Permission</MenuItem>
                                                 </Link>

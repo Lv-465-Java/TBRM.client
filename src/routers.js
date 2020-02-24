@@ -14,6 +14,7 @@ import ResourceTemplateView from "./components/resourceTemplate/resourcetemplate
 import PermissionResourceTemplateList from "./components/permissions/permissionResourceTemplateList";
 import PermissionResourceTemplateAdd from "./components/permissions/permissionResourceTemplateAdd";
 import PermissionResourceTemplateRemove from "./components/permissions/permissionResourcetemplateRemove";
+import PermissionResourceTemplateChangeOwner from "./components/permissions/permissionResourceTemplateChangeOwner";
 
 
 
@@ -30,6 +31,7 @@ class Routers extends Component {
                     <Route path="/resource-template/view/:id" component={ResourceTemplateView} />
                     <Route path="/resource-template/permission/add/:id" component={PermissionResourceTemplateAdd} />
                     <Route path="/resource-template/permission/remove/:id" component={PermissionResourceTemplateRemove} />
+                    <Route path="/resource-template/permission/owner/:id" component={PermissionResourceTemplateChangeOwner} />
                     <Route path="/resource-template/permission/:id" component={PermissionResourceTemplateList} />
                     <Route path="/resource-template" component={ResourceTemplateList} />
                     <Route path="/" exact component={LoginForm} />

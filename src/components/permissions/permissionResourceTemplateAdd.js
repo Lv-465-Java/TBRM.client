@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { TextField, Button, Grid, Box, FormControl } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Alert from '@material-ui/lab/Alert';
 import axios from '../../utils/axios';
 
@@ -71,9 +72,19 @@ class PermissionResourceTemplateAdd extends Component {
     render() {
         return (
             <Grid container spacing={3}>
-                <Grid item xs={3}></Grid>
+                <Grid item xs={3}>
+                <Box mx="auto">
+                        <Box mt={4}>
+                            <Button
+                                variant="contained"
+                                startIcon={<ArrowBackIosIcon />}
+                                onClick={this.goBack}
+                            >Go Back</Button>
+                        </Box>
+                    </Box>
+                </Grid>
                 <Grid item xs={6}>
-                    <h1>Add Permission to {this.state.name}</h1>
+                    <h1>Add/Update Permission to {this.state.name}</h1>
                     <Box mx="auto">
                         <Box mt={3}>
                         {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
