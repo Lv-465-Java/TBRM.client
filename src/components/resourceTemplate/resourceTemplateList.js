@@ -1,15 +1,21 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import axios from '../../utils/axios';
 import ResourceTemplateItem from './resourceTemplateItem';
-import {Button, Grid} from '@material-ui/core';
+import { Button, Grid, Box } from '@material-ui/core';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 const style = {
 
     display: "flex",
     flexWrap: "wrap",
-    // justifyContent: "space-around",
-    // alignItems: "flex-start",
+}
 
+const gridStyle = {
+    marginTop: 40
+}
+const buttonStyle = {
+    backgroundColor: '#4caf50',
+    color: '#fff'
 }
 
 class ResourceTemplateList extends Component {
@@ -21,7 +27,7 @@ class ResourceTemplateList extends Component {
     getData = () => {
         axios.get('resource-template').then(response => {
             let resourceTemplates = response.data;
-            this.setState({resourceTemplates});
+            this.setState({ resourceTemplates });
         })
     }
 
@@ -33,29 +39,45 @@ class ResourceTemplateList extends Component {
         this.props.history.push("/resource-template/create");
     }
 
+    goHome = () => {
+        this.props.history.push("/home");
+    }
+
     render() {
         return (
             <div>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={this.goToCreateResource}>Create Resource</Button>
-                <Grid container spacing={3}>
+                <Grid container spacing={3} style={gridStyle}>
                     <Grid item xs>
-                        1
+                        <Grid
+                            container
+                            direction="column"
+                            justify="center"
+                            alignItems="center"
+                        >
+                            <Box mx="auto">
+                                <Box>
+                                    <Button
+                                        variant="contained"
+                                        startIcon={<ArrowBackIosIcon />}
+                                        onClick={this.goHome}
+                                    >Go Back</Button>
+                                </Box>
+                            </Box>
+                        </Grid>
                     </Grid>
                     <Grid item xs={8}>
                         <div style={style}>
                             {this.state.resourceTemplates.map((item) =>
                                 (<ResourceTemplateItem key={item.id}
-                                                       id={item.id}
-                                                       name={item.name}
-                                                       description={item.description}/>)
+                                    item={item} />)
                             )}
                         </div>
                     </Grid>
                     <Grid item xs>
-                        3
+                        <Button
+                            variant="contained"
+                            style={buttonStyle}
+                            onClick={this.goToCreateResource}>Create Resource</Button>
                     </Grid>
                 </Grid>
 
