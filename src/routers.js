@@ -11,6 +11,7 @@ import Footer from './components/footer/footer';
 import ResourceTemplateCreate from "./components/resourceTemplate/resourceTemplateCreate";
 import ResourceTemplateUpdate from "./components/resourceTemplate/resourceTemplateUpdate";
 import ResourceTemplateView from "./components/resourceTemplate/resourcetemplateView";
+import OAuth2RedirectHandler from "./components/oauth2/OAuth2RedirectHandler";
 
 
 
@@ -27,6 +28,7 @@ class Routers extends Component {
                     <Route path="/resource-template/view/:id" component={ResourceTemplateView} />
                     <Route path="/resource-template" component={ResourceTemplateList} />
                     <Route path="/" exact component={LoginForm} />
+                    <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}/>
                 </Switch>
                 <Footer/>
             </BrowserRouter>
