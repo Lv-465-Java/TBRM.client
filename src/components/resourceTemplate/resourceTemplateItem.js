@@ -21,13 +21,13 @@ class ResourceTemplateItem extends Component{
 
 
     state = {
-        id:	this.props.id,
-        name: this.props.name,
-        tableName:	this.props.tableName,
-        description: this.props.description,
-        isPublished: this.props.isPublished,
-        userId:	this.props.userId,
-        resourceParameters: this.props.resourceParameters
+        id:	this.props.item.id,
+        name: this.props.item.name,
+        tableName:	this.props.item.tableName,
+        description: this.props.item.description,
+        isPublished: this.props.item.isPublished,
+        userId:	this.props.item.userId,
+        resourceParameters: this.props.item.resourceParameters
     }
     
     render(){
