@@ -13,7 +13,6 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { Grid, Box } from '@material-ui/core';
-import { useHistory } from "react-router-dom";
 import axios from '../../utils/axios';
 
 const style = {
@@ -84,7 +83,7 @@ class ResourceTemplateView extends Component {
     }
 
     isPublished = () => {
-        return this.state.isPublished ? isPublished = "Published" : "Not Published";
+        return this.state.isPublished ? "Published" : "Not Published";
     }
 
     componentDidMount() {
@@ -105,7 +104,6 @@ class ResourceTemplateView extends Component {
                             <Box>
                                 <Button
                                     variant="contained"
-                                    color="primary"
                                     startIcon={<ArrowBackIosIcon />}
                                     onClick={this.goBack}
                                 >Go Back</Button>
@@ -155,7 +153,9 @@ class ResourceTemplateView extends Component {
                                                 <Link to={`/resource-template/permission/add/${this.state.resTempId}`}>
                                                     <MenuItem onClick={popupState.close}>Add/Update Permission</MenuItem>
                                                 </Link>
-                                                <MenuItem onClick={popupState.close}>Delete Permission</MenuItem>
+                                                <Link to={`/resource-template/permission/remove/${this.state.resTempId}`}>
+                                                    <MenuItem onClick={popupState.close}>Delete Permission</MenuItem>
+                                                </Link>
                                             </Menu>
                                         </React.Fragment>
                                     )}

@@ -11,7 +11,7 @@ const formStyles = {
 };
 
 
-class PermissionResourceTemplateAdd extends Component {
+class PermissionResourceTemplateRemove extends Component {
 
     state = {
         id: this.props.match.params.id,
@@ -22,8 +22,8 @@ class PermissionResourceTemplateAdd extends Component {
         errorMessage: ''
     }
 
-    save = () => {
-        axios.post("/resource-template/permission", this.state).then(response => {
+    delete = () => {
+        axios.delete("/resource-template/permission",{ data: this.state}).then(response => {
             this.props.history.goBack();
         }, error => {
             this.setState({ errorMessage: error.response.data.message });
@@ -73,7 +73,7 @@ class PermissionResourceTemplateAdd extends Component {
             <Grid container spacing={3}>
                 <Grid item xs={3}></Grid>
                 <Grid item xs={6}>
-                    <h1>Add Permission to {this.state.name}</h1>
+                    <h1>Delete Permission to {this.state.name}</h1>
                     <Box mx="auto">
                         <Box mt={3}>
                         {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
@@ -111,10 +111,10 @@ class PermissionResourceTemplateAdd extends Component {
                                 </Select>
                             </FormControl>
                             <Button variant="contained"
-                                color="primary"
+                                color="secondary"
                                 size="large"
-                                onClick={this.save}
-                            >Add Permission</Button>
+                                onClick={this.delete}
+                            >Delete Permission</Button>
                         </Box>
                     </Box>
                 </Grid>
@@ -124,4 +124,4 @@ class PermissionResourceTemplateAdd extends Component {
     }
 }
 
-export default PermissionResourceTemplateAdd;
+export default PermissionResourceTemplateRemove;

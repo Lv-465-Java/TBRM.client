@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from '../../utils/axios';
 import { Button, Grid, Box } from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -29,24 +29,15 @@ const StyledTableRow = withStyles(theme => ({
     },
 }))(TableRow);
 
-const style = {
-
-    display: "flex",
-    flexWrap: "wrap",
-}
-
 const gridStyle = {
     marginTop: 40
-}
-const buttonStyle = {
-    backgroundColor: '#4caf50',
-    color: '#fff'
 }
 
 class PermissionResourceTemplateList extends Component {
 
     state = {
         id: this.props.match.params.id,
+        name: undefined,
         permissions: []
     }
 
@@ -57,8 +48,21 @@ class PermissionResourceTemplateList extends Component {
         })
     }
 
+    getResourceTemplate = () => {
+        axios.get(`/resource-template/${this.state.id}`).then(response => {
+            let data = response.data;
+                this.setState({
+                    name: data.name
+                })
+        }).catch(error => {
+            console.dir(error.response.data);
+
+        })
+    }
+
     componentDidMount() {
         this.getData();
+        this.getResourceTemplate();
     }
 
     goBack = () => {
@@ -88,6 +92,7 @@ class PermissionResourceTemplateList extends Component {
                         </Grid>
                     </Grid>
                     <Grid item xs={8}>
+                        <h2>Users/Groups with access to {this.state.name}</h2>
                         <TableContainer component={Paper}>
                             <Table>
                                 <TableHead>
@@ -98,7 +103,7 @@ class PermissionResourceTemplateList extends Component {
                                 </TableHead>
                                 <TableBody>
                                     {this.state.permissions.map(item => (
-                                        <StyledTableRow key={item.principal}>
+                                        <StyledTableRow key={item.principal+item.permission}>
                                             <StyledTableCell component="th" scope="row">
                                                 {item.principal}
                                             </StyledTableCell>

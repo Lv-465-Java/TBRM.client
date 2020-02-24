@@ -5,5 +5,5 @@ export const logout = () => {
 }
 
 export const isUserLoggedIn = () => {
-    return sessionStorage.getItem('authorization') !== null ? true: false;
+    return sessionStorage.getItem('authorization') !== null;
 }

@@ -25,7 +25,6 @@ class ResourceTemplateCreate extends Component {
             this.props.history.push("/resource-template");
         }, error => {
             this.setState({ errorMessage: error.response.data.message });
-            console.log(error.response.data.message);
         })
     }
 
