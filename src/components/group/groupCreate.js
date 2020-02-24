@@ -4,14 +4,15 @@ import {TextField, Button} from "@material-ui/core";
 import SaveIcon from '@material-ui/icons/Save';
 
 class GroupCreate extends Component {
+
     state = {
         name: undefined,
         description: undefined,
     }
 
     create = () => {
-        axios.post("/groups", this.state).then(response => {
-            this.props.history.push("/groups")
+        axios.post("/group", this.state).then(response => {
+            this.props.history.push("/group")
         }, error => {
 
         })
@@ -30,7 +31,7 @@ class GroupCreate extends Component {
     }
 
     onChangeDescription = (event) => {
-        let description = event.target.name;
+        let description = event.target.value;
         this.setState({description});
     }
 
