@@ -5,6 +5,7 @@ import Select from '@material-ui/core/Select';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Alert from '@material-ui/lab/Alert';
 import axios from '../../utils/axios';
+import Auth from '../../hoc/auth';
 
 const formStyles = {
     marginRight: 20,
@@ -64,6 +65,10 @@ class PermissionResourceTemplateAdd extends Component {
         });
     };
 
+    goBack = () => {
+        this.props.history.goBack();
+    }
+
     componentDidMount = () => {
         this.getData();
     }
@@ -71,6 +76,7 @@ class PermissionResourceTemplateAdd extends Component {
 
     render() {
         return (
+            <Auth>
             <Grid container spacing={3}>
                 <Grid item xs={3}>
                 <Box mx="auto">
@@ -131,6 +137,7 @@ class PermissionResourceTemplateAdd extends Component {
                 </Grid>
                 <Grid></Grid>
             </Grid>
+            </Auth>
         );
     }
 }

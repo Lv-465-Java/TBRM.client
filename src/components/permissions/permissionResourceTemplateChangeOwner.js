@@ -3,6 +3,7 @@ import { TextField, Button, Grid, Box, FormControl } from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Alert from '@material-ui/lab/Alert';
 import axios from '../../utils/axios';
+import Auth from '../../hoc/auth';
 
 const formStyles = {
     marginRight: 20,
@@ -59,36 +60,38 @@ class PermissionResourceTemplateChangeOwner extends Component {
 
     render() {
         return (
-            <Grid container spacing={3}>
-                <Grid item xs={4}>
-                    <Box mx="auto">
-                        <Box mt={4}>
-                            <Button
-                                variant="contained"
-                                startIcon={<ArrowBackIosIcon />}
-                                onClick={this.goBack}
-                            >Go Back</Button>
+            <Auth>
+                <Grid container spacing={3}>
+                    <Grid item xs={4}>
+                        <Box mx="auto">
+                            <Box mt={4}>
+                                <Button
+                                    variant="contained"
+                                    startIcon={<ArrowBackIosIcon />}
+                                    onClick={this.goBack}
+                                >Go Back</Button>
+                            </Box>
                         </Box>
-                    </Box>
-                </Grid>
-                <Grid item xs={4}>
-                    <h1>Change Owner to {this.state.name}</h1>
-                    <Box mx="auto">
-                        <Box mt={3}>
-                            {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
-                            <FormControl style={formStyles}>
-                                <TextField type="text" label="recipient" onChange={this.onChangeRecipient} />
-                            </FormControl>
-                            <Button variant="contained"
-                                color="primary"
-                                size="large"
-                                onClick={this.changeOwner}
-                            >Change Owner</Button>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <h1>Change Owner to {this.state.name}</h1>
+                        <Box mx="auto">
+                            <Box mt={3}>
+                                {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
+                                <FormControl style={formStyles}>
+                                    <TextField type="text" label="recipient" onChange={this.onChangeRecipient} />
+                                </FormControl>
+                                <Button variant="contained"
+                                    color="primary"
+                                    size="large"
+                                    onClick={this.changeOwner}
+                                >Change Owner</Button>
+                            </Box>
                         </Box>
-                    </Box>
+                    </Grid>
+                    <Grid item xs={4}></Grid>
                 </Grid>
-                <Grid item xs={4}></Grid>
-            </Grid>
+            </Auth>
         );
     }
 }

@@ -3,6 +3,7 @@ import axios from '../../utils/axios';
 import ResourceTemplateItem from './resourceTemplateItem';
 import { Button, Grid, Box } from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import Auth from '../../hoc/auth';
 
 const style = {
 
@@ -46,41 +47,42 @@ class ResourceTemplateList extends Component {
     render() {
         return (
             <div>
-                <Grid container spacing={3} style={gridStyle}>
-                    <Grid item xs>
-                        <Grid
-                            container
-                            direction="column"
-                            justify="center"
-                            alignItems="center"
-                        >
-                            <Box mx="auto">
-                                <Box>
-                                    <Button
-                                        variant="contained"
-                                        startIcon={<ArrowBackIosIcon />}
-                                        onClick={this.goHome}
-                                    >Go Back</Button>
+                <Auth>
+                    <Grid container spacing={3} style={gridStyle}>
+                        <Grid item xs>
+                            <Grid
+                                container
+                                direction="column"
+                                justify="center"
+                                alignItems="center"
+                            >
+                                <Box mx="auto">
+                                    <Box>
+                                        <Button
+                                            variant="contained"
+                                            startIcon={<ArrowBackIosIcon />}
+                                            onClick={this.goHome}
+                                        >Go Back</Button>
+                                    </Box>
                                 </Box>
-                            </Box>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={8}>
+                            <div style={style}>
+                                {this.state.resourceTemplates.map((item) =>
+                                    (<ResourceTemplateItem key={item.id}
+                                        item={item} />)
+                                )}
+                            </div>
+                        </Grid>
+                        <Grid item xs>
+                            <Button
+                                variant="contained"
+                                style={buttonStyle}
+                                onClick={this.goToCreateResource}>Create Resource</Button>
                         </Grid>
                     </Grid>
-                    <Grid item xs={8}>
-                        <div style={style}>
-                            {this.state.resourceTemplates.map((item) =>
-                                (<ResourceTemplateItem key={item.id}
-                                    item={item} />)
-                            )}
-                        </div>
-                    </Grid>
-                    <Grid item xs>
-                        <Button
-                            variant="contained"
-                            style={buttonStyle}
-                            onClick={this.goToCreateResource}>Create Resource</Button>
-                    </Grid>
-                </Grid>
-
+                </Auth>
             </div>
         );
     }

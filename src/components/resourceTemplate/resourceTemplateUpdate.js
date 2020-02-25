@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import axios from '../../utils/axios';
+import Auth from '../../hoc/auth';
 
 
-class ResourceTemplateUpdate extends Component{
+class ResourceTemplateUpdate extends Component {
 
     state = {
         resTempId: this.props.match.params.id,
@@ -20,24 +21,24 @@ class ResourceTemplateUpdate extends Component{
             response => {
                 let data = response.data;
                 this.setState({
-                    name:  data.name,
+                    name: data.name,
                     oldName: data.name,
                     description: data.description,
                     oldDescription: data.description
                 })
-            }).catch( error => {
+            }).catch(error => {
                 console.dir(error.response.data);
 
             })
-        
+
     }
 
     updateData = () => {
         let data = {};
-        if (this.state.name !== this.state.oldName){
+        if (this.state.name !== this.state.oldName) {
             data["name"] = this.state.name;
         }
-        if (this.state.description !== this.state.oldDescription){
+        if (this.state.description !== this.state.oldDescription) {
             data["description"] = this.state.name;
         }
         axios.patch(`/resource-template/${this.state.resTempId}`, data).then(
@@ -50,38 +51,40 @@ class ResourceTemplateUpdate extends Component{
     }
 
 
-    componentDidMount(){
+    componentDidMount() {
         this.getData();
     }
 
     isValid = () => {
         return this.state.name !== "" &&
-               (this.state.name !== this.state.oldName ||
-               this.state.description !== this.state.oldDescription);
+            (this.state.name !== this.state.oldName ||
+                this.state.description !== this.state.oldDescription);
     }
 
     onChangeName = (event) => {
         let name = event.target.value.trim();
-        this.setState({name});
+        this.setState({ name });
     }
 
     onChangeDescription = (event) => {
         let description = event.target.value;
-        this.setState({description});
+        this.setState({ description });
     }
-    
-    render(){
-        return(
+
+    render() {
+        return (
             <div>
-            <TextField type="text" label="name" onChange={this.onChangeName} value={this.state.name}/>
-            <TextField type="text" label="description" onChange={this.onChangeDescription} value={this.state.description}/>
-            <Button variant="contained"
-                    color="primary"
-                    size="large"
-                    startIcon={<EditIcon/>}
-                    disabled={!this.isValid()}
-                    onClick={this.updateData}
+                <Auth>
+                    <TextField type="text" label="name" onChange={this.onChangeName} value={this.state.name} />
+                    <TextField type="text" label="description" onChange={this.onChangeDescription} value={this.state.description} />
+                    <Button variant="contained"
+                        color="primary"
+                        size="large"
+                        startIcon={<EditIcon />}
+                        disabled={!this.isValid()}
+                        onClick={this.updateData}
                     >Update</Button>
+                </Auth>
             </div>
         );
     }

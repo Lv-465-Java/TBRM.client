@@ -64,6 +64,10 @@ class PermissionResourceTemplateRemove extends Component {
         });
     };
 
+    goBack = () => {
+        this.props.history.goBack();
+    }
+
     componentDidMount = () => {
         this.getData();
     }

@@ -4,6 +4,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import Alert from '@material-ui/lab/Alert';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import axios from '../../utils/axios';
+import Auth from '../../hoc/auth';
 
 const gridStyles = {
     marginTop: 30
@@ -51,46 +52,48 @@ class ResourceTemplateCreate extends Component {
 
     render() {
         return (
-            <Grid container spacing={3}
-                style={gridStyles}>
-                <Grid item xs={4}>
-                    <Box mx="auto">
-                        <Box mt={4}>
-                            <Button
-                                variant="contained"
-                                startIcon={<ArrowBackIosIcon />}
-                                onClick={this.goBack}
-                            >Go Back</Button>
+            <Auth>
+                <Grid container spacing={3}
+                    style={gridStyles}>
+                    <Grid item xs={4}>
+                        <Box mx="auto">
+                            <Box mt={4}>
+                                <Button
+                                    variant="contained"
+                                    startIcon={<ArrowBackIosIcon />}
+                                    onClick={this.goBack}
+                                >Go Back</Button>
+                            </Box>
                         </Box>
-                    </Box>
-                </Grid>
-                <Grid item xs={4}>
-                    <Box mx="auto">
-                        <Box
-                            display="flex"
-                            flexDirection="column">
-                            <h1>Create Resource Template</h1>
-                            {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
-                            <FormControl style={formControlStyles}>
-                                <TextField type="text" label="name" onChange={this.onChangeName} />
-                            </FormControl>
-                            <FormControl style={formControlStyles}>
-                                <TextField type="text" label="description" onChange={this.onChangeDescription} />
-                            </FormControl>
-                            <FormControl>
-                                <Button variant="contained"
-                                    color="primary"
-                                    size="large"
-                                    startIcon={<SaveIcon />}
-                                    disabled={this.isValid()}
-                                    onClick={this.create}
-                                >Create</Button>
-                            </FormControl>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Box mx="auto">
+                            <Box
+                                display="flex"
+                                flexDirection="column">
+                                <h1>Create Resource Template</h1>
+                                {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
+                                <FormControl style={formControlStyles}>
+                                    <TextField type="text" label="name" onChange={this.onChangeName} />
+                                </FormControl>
+                                <FormControl style={formControlStyles}>
+                                    <TextField type="text" label="description" onChange={this.onChangeDescription} />
+                                </FormControl>
+                                <FormControl>
+                                    <Button variant="contained"
+                                        color="primary"
+                                        size="large"
+                                        startIcon={<SaveIcon />}
+                                        disabled={this.isValid()}
+                                        onClick={this.create}
+                                    >Create</Button>
+                                </FormControl>
+                            </Box>
                         </Box>
-                    </Box>
+                    </Grid>
+                    <Grid item xs={4}></Grid>
                 </Grid>
-                <Grid item xs={4}></Grid>
-            </Grid>
+            </Auth>
         );
     }
 }

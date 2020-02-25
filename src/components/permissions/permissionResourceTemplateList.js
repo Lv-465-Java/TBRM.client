@@ -10,6 +10,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Auth from '../../hoc/auth';
 
 const StyledTableCell = withStyles(theme => ({
     head: {
@@ -51,9 +52,9 @@ class PermissionResourceTemplateList extends Component {
     getResourceTemplate = () => {
         axios.get(`/resource-template/${this.state.id}`).then(response => {
             let data = response.data;
-                this.setState({
-                    name: data.name
-                })
+            this.setState({
+                name: data.name
+            })
         }).catch(error => {
             console.dir(error.response.data);
 
@@ -72,53 +73,54 @@ class PermissionResourceTemplateList extends Component {
     render() {
         return (
             <div>
-                <Grid container spacing={3} style={gridStyle}>
-                    <Grid item xs>
-                        <Grid
-                            container
-                            direction="column"
-                            justify="center"
-                            alignItems="center"
-                        >
-                            <Box mx="auto">
-                                <Box>
-                                    <Button
-                                        variant="contained"
-                                        startIcon={<ArrowBackIosIcon />}
-                                        onClick={this.goBack}
-                                    >Go Back</Button>
+                <Auth>
+                    <Grid container spacing={3} style={gridStyle}>
+                        <Grid item xs>
+                            <Grid
+                                container
+                                direction="column"
+                                justify="center"
+                                alignItems="center"
+                            >
+                                <Box mx="auto">
+                                    <Box>
+                                        <Button
+                                            variant="contained"
+                                            startIcon={<ArrowBackIosIcon />}
+                                            onClick={this.goBack}
+                                        >Go Back</Button>
+                                    </Box>
                                 </Box>
-                            </Box>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={8}>
+                            <h2>Users/Groups with access to {this.state.name}</h2>
+                            <TableContainer component={Paper}>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            <StyledTableCell>User/Group</StyledTableCell>
+                                            <StyledTableCell>Permission</StyledTableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {this.state.permissions.map(item => (
+                                            <StyledTableRow key={item.principal + item.permission}>
+                                                <StyledTableCell component="th" scope="row">
+                                                    {item.principal}
+                                                </StyledTableCell>
+                                                <StyledTableCell>{item.permission}</StyledTableCell>
+                                            </StyledTableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </Grid>
+                        <Grid item xs>
+
                         </Grid>
                     </Grid>
-                    <Grid item xs={8}>
-                        <h2>Users/Groups with access to {this.state.name}</h2>
-                        <TableContainer component={Paper}>
-                            <Table>
-                                <TableHead>
-                                    <TableRow>
-                                        <StyledTableCell>User/Group</StyledTableCell>
-                                        <StyledTableCell>Permission</StyledTableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {this.state.permissions.map(item => (
-                                        <StyledTableRow key={item.principal+item.permission}>
-                                            <StyledTableCell component="th" scope="row">
-                                                {item.principal}
-                                            </StyledTableCell>
-                                            <StyledTableCell>{item.permission}</StyledTableCell>
-                                        </StyledTableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Grid>
-                    <Grid item xs>
-
-                    </Grid>
-                </Grid>
-
+                </Auth>
             </div>
         );
     }

@@ -12,8 +12,10 @@ import EditIcon from '@material-ui/icons/Edit';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import { Grid, Box } from '@material-ui/core';
+import { Grid, Box, Hidden } from '@material-ui/core';
+import { getUserRole } from '../../service/authService';
 import axios from '../../utils/axios';
+import Auth from '../../hoc/auth';
 
 const style = {
     maxWidth: 800,
@@ -86,108 +88,120 @@ class ResourceTemplateView extends Component {
         return this.state.isPublished ? "Published" : "Not Published";
     }
 
+    showLinks = () => {
+        if (getUserRole() === "ROLE_MANAGER") {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     componentDidMount() {
         this.getData();
     }
 
     render() {
         return (
-            <Grid container spacing={3}>
-                <Grid item xs={3}>
-                    <Grid
-                        container
-                        direction="column"
-                        justify="center"
-                        alignItems="center"
-                        style={gridStyle}>
-                        <Box mx="auto">
-                            <Box>
-                                <Button
-                                    variant="contained"
-                                    startIcon={<ArrowBackIosIcon />}
-                                    onClick={this.goBack}
-                                >Go Back</Button>
-                            </Box>
-                        </Box>
-                    </Grid>
-                </Grid>
-                <Grid item xs={6}>
-                    <Card style={style}>
-                        <CardActionArea>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="h2">
-                                    {this.state.name}
-                                </Typography>
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    {this.state.description}
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                        <CardContent>
-                            <Typography variant="body2" color="textSecondary" component="h2">
-                                {this.isPublished()}
-                                {isPublished}
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={3}>
-                    <Grid container
-                        direction="column"
-                        justify="center"
-                        alignItems="center"
-                        style={gridStyle}
-                    >
-                        <Box mx="auto">
-                            <Box>
-                                <PopupState variant="popover" popupId="demo-popup-menu">
-                                    {popupState => (
-                                        <React.Fragment>
-                                            <Button variant="contained" color="primary" {...bindTrigger(popupState)}>
-                                                Permissions
-                                            </Button>
-                                            <Menu {...bindMenu(popupState)}>
-                                                <Link to={`/resource-template/permission/${this.state.resTempId}`}>
-                                                    <MenuItem onClick={popupState.close}>View Permissions</MenuItem>
-                                                </Link>
-                                                <Link to={`/resource-template/permission/add/${this.state.resTempId}`}>
-                                                    <MenuItem onClick={popupState.close}>Add/Update Permission</MenuItem>
-                                                </Link>
-                                                <Link to={`/resource-template/permission/owner/${this.state.resTempId}`}>
-                                                    <MenuItem onClick={popupState.close}>Change Owner</MenuItem>
-                                                </Link>
-                                                <Link to={`/resource-template/permission/remove/${this.state.resTempId}`}>
-                                                    <MenuItem onClick={popupState.close}>Delete Permission</MenuItem>
-                                                </Link>
-                                            </Menu>
-                                        </React.Fragment>
-                                    )}
-                                </PopupState>
-                            </Box>
-                            <Box mt={5}>
-                                <Link to={`/resource-template/update/${this.state.resTempId}`}>
+            <Auth>
+                <Grid container spacing={3}>
+                    <Grid item xs={3}>
+                        <Grid
+                            container
+                            direction="column"
+                            justify="center"
+                            alignItems="center"
+                            style={gridStyle}>
+                            <Box mx="auto">
+                                <Box>
                                     <Button
                                         variant="contained"
-                                        color="primary"
-                                        startIcon={<EditIcon />}
-                                    >Update</Button>
-                                </Link>
+                                        startIcon={<ArrowBackIosIcon />}
+                                        onClick={this.goBack}
+                                    >Go Back</Button>
+                                </Box>
                             </Box>
-                            <Box mt={5}>
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    startIcon={<DeleteIcon />}
-                                    style={useStyles.button}
-                                    onClick={this.delete}
-                                >
-                                    Delete
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Card style={style}>
+                            <CardActionArea>
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                        {this.state.name}
+                                    </Typography>
+                                    <Typography variant="body2" color="textSecondary" component="p">
+                                        {this.state.description}
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                            <CardContent>
+                                <Typography variant="body2" color="textSecondary" component="h2">
+                                    {this.isPublished()}
+                                    {isPublished}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Grid container
+                            direction="column"
+                            justify="center"
+                            alignItems="center"
+                            style={gridStyle}
+                        >
+                            <Hidden mdUp={this.showLinks()}>
+                                <Box mx="auto">
+                                    <Box>
+                                        <PopupState variant="popover" popupId="demo-popup-menu">
+                                            {popupState => (
+                                                <React.Fragment>
+                                                    <Button variant="contained" color="primary" {...bindTrigger(popupState)}>
+                                                        Permissions
+                                            </Button>
+                                                    <Menu {...bindMenu(popupState)}>
+                                                        <Link to={`/resource-template/permission/${this.state.resTempId}`}>
+                                                            <MenuItem onClick={popupState.close}>View Permissions</MenuItem>
+                                                        </Link>
+                                                        <Link to={`/resource-template/permission/add/${this.state.resTempId}`}>
+                                                            <MenuItem onClick={popupState.close}>Add/Update Permission</MenuItem>
+                                                        </Link>
+                                                        <Link to={`/resource-template/permission/owner/${this.state.resTempId}`}>
+                                                            <MenuItem onClick={popupState.close}>Change Owner</MenuItem>
+                                                        </Link>
+                                                        <Link to={`/resource-template/permission/remove/${this.state.resTempId}`}>
+                                                            <MenuItem onClick={popupState.close}>Delete Permission</MenuItem>
+                                                        </Link>
+                                                    </Menu>
+                                                </React.Fragment>
+                                            )}
+                                        </PopupState>
+                                    </Box>
+                                    <Box mt={5}>
+                                        <Link to={`/resource-template/update/${this.state.resTempId}`}>
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                startIcon={<EditIcon />}
+                                            >Update</Button>
+                                        </Link>
+                                    </Box>
+                                    <Box mt={5}>
+                                        <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            startIcon={<DeleteIcon />}
+                                            style={useStyles.button}
+                                            onClick={this.delete}
+                                        >
+                                            Delete
                             </Button>
-                            </Box>
-                        </Box>
+                                    </Box>
+                                </Box>
+                            </Hidden>
+                        </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
+            </Auth>
         );
     }
 }
