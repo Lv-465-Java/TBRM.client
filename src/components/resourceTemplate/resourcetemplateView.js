@@ -76,7 +76,8 @@ class ResourceTemplateView extends Component {
 
         axios.put(`/resource-template/${this.state.resTempId}/publish`, body).then(
             response => {
-                this.props.history.push("/resource-template/");
+                this.setState({isPublished: true}); 
+                // this.props.history.push(`/resource-template/view/${this.state.resTempId}`);
             }).catch(error => {
                 console.dir(error.response.data);
             })
@@ -87,7 +88,7 @@ class ResourceTemplateView extends Component {
 
         axios.put(`/resource-template/${this.state.resTempId}/publish`, body).then(
             response => {
-                this.props.history.push("/resource-template/");
+                this.setState({isPublished: false});
             }).catch(error => {
                 console.dir(error.response.data);
             })
@@ -143,6 +144,30 @@ class ResourceTemplateView extends Component {
     }
 
     render() {
+        let publishButton =  (this.state.isPublished === false) ?  (
+                <Box mt={5}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<CheckCircleIcon />}
+                        style={useStyles.button}
+                        onClick={this.publish}
+                        disabled={this.state.resourceParameters.length === 0}
+                    >Publish</Button>
+                </Box>) : (
+                <Box mt={5}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<ReplayIcon />}
+                        style={useStyles.button}
+                        onClick={this.unpublish}
+                    >Cancel publish</Button>
+                </Box>)
+        
+
+
+
         return (
             <Grid container spacing={3}>
                 <Grid item xs={3}>
@@ -253,7 +278,8 @@ class ResourceTemplateView extends Component {
                                         onClick={this.unpublish}
                                     >Cancel publish</Button>
                             </Box>} */}
-                            {this.renderButton()}
+                            {publishButton}
+                            {/* {this.renderButton()} */}
 
                         </Box>
                     </Grid>
