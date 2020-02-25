@@ -78,7 +78,6 @@ class ResourceTemplateView extends Component {
         axios.put(`/resource-template/${this.state.resTempId}/publish`, body).then(
             response => {
                 this.setState({isPublished: true}); 
-                // this.props.history.push(`/resource-template/view/${this.state.resTempId}`);
             }).catch(error => {
                 console.dir(error.response.data);
             })
@@ -93,32 +92,6 @@ class ResourceTemplateView extends Component {
             }).catch(error => {
                 console.dir(error.response.data);
             })
-    };
-
-    renderButton() {
-        if (this.state.isPublished === false) {
-            return (
-                <Box mt={5}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<CheckCircleIcon />}
-                        style={useStyles.button}
-                        onClick={this.publish}
-                    >Publish</Button>
-                </Box>)
-        } else {
-            return (
-                <Box mt={5}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<ReplayIcon />}
-                        style={useStyles.button}
-                        onClick={this.unpublish}
-                    >Cancel publish</Button>
-                </Box>)
-        }
     };
 
     delete = () => {
@@ -165,9 +138,6 @@ class ResourceTemplateView extends Component {
                         onClick={this.unpublish}
                     >Cancel publish</Button>
                 </Box>)
-        
-
-
 
         return (
             <Grid container spacing={3}>
@@ -260,30 +230,7 @@ class ResourceTemplateView extends Component {
                                     Delete
                             </Button>
                             </Box>
-                            {/* if (this.state.isPublished === false) {
-                                return(
-                            <Box mt={5}>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        startIcon={<CheckCircleIcon />}
-                                        style={useStyles.button}
-                                        onClick={this.publish}
-                                    >Publish</Button>
-                            </Box>)
-                            }else {
-                            <Box mt={5}>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        startIcon={<ReplayIcon />}
-                                        style={useStyles.button}
-                                        onClick={this.unpublish}
-                                    >Cancel publish</Button>
-                            </Box>} */}
                             {publishButton}
-                            {/* {this.renderButton()} */}
-
                         </Box>
                     </Grid>
                 </Grid>
