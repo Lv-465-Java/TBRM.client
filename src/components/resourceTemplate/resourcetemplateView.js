@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 import { Grid, Box } from '@material-ui/core';
 import { useHistory } from "react-router-dom";
 import axios from '../../utils/axios';
+import CreateParameter from "../resourceParameters/CreateParameter";
 
 const style = {
     maxWidth: 800,
@@ -208,6 +209,8 @@ class ResourceTemplateView extends Component {
                             </Typography>
                         </CardContent>
                     </Card>
+                    <CreateParameter getData={this.getData}
+                                     resTempId={this.state.resTempId}/>
                 </Grid>
                 <Grid item xs={3}>
                     <Grid container
