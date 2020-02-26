@@ -4,6 +4,7 @@ import DropdownParameterType from "./DropdownParameterType";
 import Button from "@material-ui/core/Button";
 import EditIcon from "@material-ui/icons/Edit";
 import axios from "../../utils/axios";
+import ResourceParametersList from "./ResourceParametersList";
 
 const PARAMETER_TYPE = {
     point: ["int", "double", "string", "ref"],
@@ -14,6 +15,7 @@ const PARAMETER_TYPE = {
 class CreateParameter extends Component {
 
     state = {
+        columnName: "",
         name: "",
         parameter: "",
         parameterType: "",
@@ -43,12 +45,31 @@ class CreateParameter extends Component {
             response => {
                 this.props.getData()
             }).catch(error => {
-            console.dir(error.response.data);
+                console.dir(error.response.data);
         })
     };
     isNotValid = () => {
         return this.state.name.length === 0;
-    }
+    };
+
+    // getData = () => {
+    //     axios.get(`/resource-template/${this.state.resTempId}/resource-parameter`).then(
+    //         response => {
+    //             let data = response.data;
+    //             this.setState({
+    //                 columnName: data.name,
+    //                 name: data.name,
+    //                 parameterType: data.parameterType,
+    //                 pattern: data.pattern
+    //             })
+    //         }).catch(error => {
+    //         console.dir(error.response.data);
+    //     })
+    // };
+
+    // componentDidMount() {
+    //     this.getData();
+    // }
 
 
     render() {
@@ -77,6 +98,13 @@ class CreateParameter extends Component {
                                                                           onChangeParameterType={this.onChangeParameterType}
                                                                           list={PARAMETER_TYPE[this.state.parameter]}/>}
                     </Grid>
+
+                    {/*<Grid item xs={2}>*/}
+                    {/*    <ResourceParametersList getData={this.getData}*/}
+                    {/*                            resTempId={this.state.resTempId}/>*/}
+                    {/*    <CreateParameter getData={this.getData}*/}
+                    {/*                     resTempId={this.state.resTempId}/>*/}
+                    {/*</Grid>*/}
 
                 </Grid>
             </div>
