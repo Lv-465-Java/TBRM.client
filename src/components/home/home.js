@@ -14,8 +14,8 @@ class HomePage extends Component {
 
     getRole() {
         axios.get("/user/role").then(response => {
-            sessionStorage.setItem('userrole', response.data.role)
-            this.setState({ 'userrole': response.data.role });
+            sessionStorage.setItem('userrole', response.data.role.name)
+            this.setState({ 'userrole': response.data.role.name });
             console.log(response.data);
 
         }, error => {

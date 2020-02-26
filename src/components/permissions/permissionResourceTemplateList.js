@@ -93,7 +93,7 @@ class PermissionResourceTemplateList extends Component {
                                 </Box>
                             </Grid>
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={6}>
                             <h2>Users/Groups with access to {this.state.name}</h2>
                             <TableContainer component={Paper}>
                                 <Table>
