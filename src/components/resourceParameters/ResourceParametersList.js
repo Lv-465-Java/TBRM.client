@@ -13,6 +13,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 class ResourceParametersList extends Component {
 
     render() {
+        console.log("ResourceParametersList")
         return (
             <div>
                 <TableContainer>
@@ -24,7 +25,7 @@ class ResourceParametersList extends Component {
                                 <TableCell align="right">Name</TableCell>
                                 <TableCell align="right">ParameterType</TableCell>
                                 <TableCell align="right">Pattern</TableCell>
-                                <TableCell align="right">Template</TableCell>
+                                <TableCell align="right">Related Template</TableCell>
                                 {/*<TableCell align="right">1</TableCell>*/}
                                 {/*<TableCell align="right">2</TableCell>*/}
                             </TableRow>

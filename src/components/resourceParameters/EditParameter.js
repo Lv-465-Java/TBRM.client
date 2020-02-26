@@ -22,6 +22,8 @@ const PARAMETER_TYPE = {
 class EditParameter extends Component {
 
     state = {
+        resTempId: this.props.resTempId,
+        id: this.props.id,
         columnName: "",
         name: this.props.name,
         parameter: this.props.parameterType.split('_')[0].toLowerCase(),
@@ -51,23 +53,16 @@ class EditParameter extends Component {
         let data = {
             "name": this.state.name,
             "parameterType": `${this.state.parameter.toUpperCase()}_${this.state.parameterType.toUpperCase()}`
-        }
+        };
         if (this.state.parameterType === "reference") {
             data["relatedResourceTemplateId"] = this.state.relatedResourceTemplateId
         }
-        axios.post(`/resource-template/${this.props.resTempId}/resource-parameter`, data).then(
+        axios.put(`/resource-template/${this.state.resTempId}/resource-parameter/${this.state.id}`, data).then(
             response => {
-                this.setState({
-                    columnName: "",
-                    name: "",
-                    parameter: "",
-                    parameterType: "",
-                    pattern: "",
-                    relatedResourceTemplateId: ""
-                })
+                console.log(this.props.getData)
                 this.props.getData()
             }).catch(error => {
-            console.dir(error.response.data);
+            // console.dir(error.response.data);
         })
     };
     isNotValid = () => {
@@ -100,7 +95,7 @@ class EditParameter extends Component {
                     <DropdownTemplate setRelatedResourceTemplateId={this.setRelatedResourceTemplateId}/>}
                 </TableCell>
                 <Tooltip title="Save">
-                    <IconButton aria-label="save" color="primary" onClick={this.save}>
+                    <IconButton aria-label="save" color="primary" onClick={this.create}>
                         <AddCircleOutlineOutlinedIcon/>
                     </IconButton>
                 </Tooltip>

@@ -25,6 +25,22 @@ class ResourceParameterItem extends Component {
         resourceRelation: this.props.item.relatedResourceTemplateName,
         isNotEdit: true
     };
+    UNSAFE_componentWillReceiveProps(nextProps){
+        let newData = {}
+        if(this.props.item.name !== nextProps.item.name){
+            newData.name = nextProps.item.name
+        }
+        if(this.props.item.parameterType !== nextProps.item.parameterType){
+            newData.parameterType = nextProps.item.parameterType
+        }
+        if(this.props.item.pattern !== nextProps.item.pattern){
+            newData.pattern = nextProps.item.pattern
+        }
+        if(this.props.item.resourceRelation !== nextProps.item.relatedResourceTemplateName){
+            newData.resourceRelation = nextProps.item.relatedResourceTemplateName
+        }
+        this.setState({...newData})
+    }
 
     delete = () => {
         axios.delete(`/resource-template/${this.props.resTempId}/resource-parameter/${this.state.id}`).then(
@@ -59,12 +75,14 @@ class ResourceParameterItem extends Component {
                 <IconButton aria-label="edit" color="secondary" onClick={this.onChangeEdit}>
                     <EditIcon/>
                 </IconButton>
-            </Tooltip></>) : (<EditParameter getData={this.getData}
-                                             resTempId={this.state.resTempId}
+            </Tooltip></>) : (<EditParameter getData={this.props.getData}
+                                             resTempId={this.props.resTempId}
                                              cancelClick={this.onChangeEdit}
+                                             id={this.state.id}
                                              name={this.state.name}
                                              parameterType={this.state.parameterType}
         />);
+        console.log(this.state)
         return (
             <>
                 <TableRow>
