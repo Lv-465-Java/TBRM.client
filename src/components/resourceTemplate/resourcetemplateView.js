@@ -16,6 +16,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { Grid, Box } from '@material-ui/core';
 import { useHistory } from "react-router-dom";
+import Alert from '@material-ui/lab/Alert';
 import axios from '../../utils/axios';
 import CreateParameter from "../resourceParameters/CreateParameter";
 
@@ -77,8 +78,9 @@ class ResourceTemplateView extends Component {
 
         axios.put(`/resource-template/${this.state.resTempId}/publish`, body).then(
             response => {
-                this.setState({isPublished: true}); 
+                this.setState({ isPublished: true });
             }).catch(error => {
+                this.setState({ errorMessage: error.response.data.message });
                 console.dir(error.response.data);
             })
     };
@@ -88,9 +90,10 @@ class ResourceTemplateView extends Component {
 
         axios.put(`/resource-template/${this.state.resTempId}/publish`, body).then(
             response => {
-                this.setState({isPublished: false});
+                this.setState({ isPublished: false });
             }).catch(error => {
-                console.dir(error.response.data);
+                this.setState({ errorMessage: error.response.data.message });
+                console.log(error.response.data.message);
             })
     };
 
@@ -99,8 +102,8 @@ class ResourceTemplateView extends Component {
             response => {
                 this.props.history.push("/resource-template");
             }).catch(error => {
-                console.dir(error.response.data);
-
+                this.setState({ errorMessage: error.response.data.message });
+                console.log(error.response.data.message);
             })
 
     }
@@ -118,17 +121,17 @@ class ResourceTemplateView extends Component {
     }
 
     render() {
-        let publishButton =  (this.state.isPublished === false) ?  (
-                <Box mt={5}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<CheckCircleIcon />}
-                        style={useStyles.button}
-                        onClick={this.publish}
-                        disabled={this.state.resourceParameters.length === 0}
-                    >Publish</Button>
-                </Box>) : (
+        let publishButton = (this.state.isPublished === false) ? (
+            <Box mt={5}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<CheckCircleIcon />}
+                    style={useStyles.button}
+                    onClick={this.publish}
+                    disabled={this.state.resourceParameters.length === 0}
+                >Publish</Button>
+            </Box>) : (
                 <Box mt={5}>
                     <Button
                         variant="contained"
@@ -176,11 +179,12 @@ class ResourceTemplateView extends Component {
                             <Typography variant="body2" color="textSecondary" component="h2">
                                 {this.isPublished()}
                                 {isPublished}
+                                {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
                             </Typography>
                         </CardContent>
                     </Card>
                     <CreateParameter getData={this.getData}
-                                     resTempId={this.state.resTempId}/>
+                        resTempId={this.state.resTempId} />
                 </Grid>
                 <Grid item xs={3}>
                     <Grid container
