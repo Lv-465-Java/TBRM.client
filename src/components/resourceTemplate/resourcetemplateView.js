@@ -15,10 +15,10 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { Grid, Box } from '@material-ui/core';
-import { useHistory } from "react-router-dom";
 import Alert from '@material-ui/lab/Alert';
 import axios from '../../utils/axios';
 import CreateParameter from "../resourceParameters/CreateParameter";
+import MyDialog from "./popUp"
 
 const style = {
     maxWidth: 800,
@@ -39,7 +39,6 @@ const useStyles = makeStyles(theme => ({
 
 const isPublished = '';
 
-
 class ResourceTemplateView extends Component {
 
     state = {
@@ -49,7 +48,8 @@ class ResourceTemplateView extends Component {
         description: this.props.description,
         isPublished: this.props.isPublished,
         userId: this.props.userId,
-        resourceParameters: this.props.resourceParameters
+        resourceParameters: this.props.resourceParameters,
+        open: false
     }
 
     classes = () => {
@@ -102,7 +102,10 @@ class ResourceTemplateView extends Component {
             response => {
                 this.props.history.push("/resource-template");
             }).catch(error => {
-                this.setState({ errorMessage: error.response.data.message });
+                this.setState({
+                    errorMessage: error.response.data.message,
+                    open: false
+                });
                 console.log(error.response.data.message);
             })
 
@@ -119,6 +122,14 @@ class ResourceTemplateView extends Component {
     componentDidMount() {
         this.getData();
     }
+    handleClickOpen = () => {
+        console.log("open")
+        this.setState({ open: true }, () => console.log(this.state));
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
 
     render() {
         let publishButton = (this.state.isPublished === false) ? (
@@ -229,7 +240,7 @@ class ResourceTemplateView extends Component {
                                     color="secondary"
                                     startIcon={<DeleteIcon />}
                                     style={useStyles.button}
-                                    onClick={this.delete}
+                                    onClick={this.handleClickOpen}
                                 >
                                     Delete
                             </Button>
@@ -238,6 +249,13 @@ class ResourceTemplateView extends Component {
                         </Box>
                     </Grid>
                 </Grid>
+                <MyDialog
+                    delete={this.delete}
+                    open={this.state.open}
+                    handleClickOpen={this.handleClickOpen}
+                    handleClose={this.handleClose}
+                    title="Delete resource template"
+                    msg="Are you sure you want to delete this resource template?" />
             </Grid>
         );
     }
