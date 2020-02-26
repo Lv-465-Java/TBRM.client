@@ -5,11 +5,12 @@ import Button from "@material-ui/core/Button";
 import EditIcon from "@material-ui/icons/Edit";
 import axios from "../../utils/axios";
 import ResourceParametersList from "./ResourceParametersList";
+import DropdownTemplate from "../resourceTemplate/DropdownTemplate";
 
 const PARAMETER_TYPE = {
-    point: ["int", "double", "string", "ref"],
-    range: ["int", "double", "string"],
-    coordinates: []
+    point: ["int", "double", "string", "reference"],
+    range: ["int", "double"],
+    coordinates: ["string"]
 };
 
 class CreateParameter extends Component {
@@ -19,8 +20,8 @@ class CreateParameter extends Component {
         name: "",
         parameter: "",
         parameterType: "",
-        pattern: undefined,
-        relatedResourceTemplateId: undefined
+        pattern: "",
+        relatedResourceTemplateId: ""
     };
 
     onChangeName = (e) => {
@@ -33,16 +34,31 @@ class CreateParameter extends Component {
     onChangeParameterType = (e) => {
         this.setState({parameterType: e.target.value})
     };
+
+    setRelatedResourceTemplateId = (id) => {
+        this.setState({relatedResourceTemplateId: id})
+    };
+
     create = () => {
         // let body = { 'isPublished': false };
 
         let data = {
             "name": this.state.name,
             "parameterType": `${this.state.parameter.toUpperCase()}_${this.state.parameterType.toUpperCase()}`
-
+            }
+        if (this.state.parameterType === "reference") {
+            data["relatedResourceTemplateId"] = this.state.relatedResourceTemplateId
         }
         axios.post(`/resource-template/${this.props.resTempId}/resource-parameter`, data).then(
             response => {
+                this.setState({
+                    columnName: "",
+                    name: "",
+                    parameter: "",
+                    parameterType: "",
+                    pattern: "",
+                    relatedResourceTemplateId: ""
+                })
                 this.props.getData()
             }).catch(error => {
                 console.dir(error.response.data);
@@ -52,24 +68,6 @@ class CreateParameter extends Component {
         return this.state.name.length === 0;
     };
 
-    // getData = () => {
-    //     axios.get(`/resource-template/${this.state.resTempId}/resource-parameter`).then(
-    //         response => {
-    //             let data = response.data;
-    //             this.setState({
-    //                 columnName: data.name,
-    //                 name: data.name,
-    //                 parameterType: data.parameterType,
-    //                 pattern: data.pattern
-    //             })
-    //         }).catch(error => {
-    //         console.dir(error.response.data);
-    //     })
-    // };
-
-    // componentDidMount() {
-    //     this.getData();
-    // }
 
 
     render() {
@@ -86,25 +84,25 @@ class CreateParameter extends Component {
                         </Button>
                     </Grid>
                     <Grid item xs={2}>
+                        <TextField type="text" name="name" onChange={this.onChangeName} value={this.state.name}/>
+                    </Grid>
+                    <Grid item xs={2}>
                         <DropdownParameterType parameterType={this.state.parameter}
                                                onChangeParameterType={this.onChangeParameter}
                                                list={Object.keys(PARAMETER_TYPE)}/>
                     </Grid>
-                    <Grid item xs={2}>
-                        <TextField type="text" name="name" onChange={this.onChangeName}/>
-                    </Grid>
+
                     <Grid item xs={2}>
                         {!!this.state.parameter && <DropdownParameterType parameterType={this.state.parameterType}
                                                                           onChangeParameterType={this.onChangeParameterType}
                                                                           list={PARAMETER_TYPE[this.state.parameter]}/>}
                     </Grid>
+                    <Grid item xs={2}>
+                        {this.state.parameterType === "reference"&&
+                        <DropdownTemplate setRelatedResourceTemplateId={this.setRelatedResourceTemplateId}/>}
+                    </Grid>
 
-                    {/*<Grid item xs={2}>*/}
-                    {/*    <ResourceParametersList getData={this.getData}*/}
-                    {/*                            resTempId={this.state.resTempId}/>*/}
-                    {/*    <CreateParameter getData={this.getData}*/}
-                    {/*                     resTempId={this.state.resTempId}/>*/}
-                    {/*</Grid>*/}
+
 
                 </Grid>
             </div>

@@ -12,22 +12,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 
 class ResourceParametersList extends Component {
 
-    // state = {
-    //     resourceParameters: []
-    // };
-
-    // getData = () => {
-    //     // axios.get(`resource-template/${this.props.resTempId}/resource-parameter`).then(response => {
-    //     //     let resourceParameters = response.data;
-    //     //     this.setState({resourceParameters});
-    //     // })
-    // };
-    //
-    // componentDidMount() {
-    //     this.getData();
-    // }
-
-
     render() {
         return (
             <div>
@@ -35,8 +19,8 @@ class ResourceParametersList extends Component {
                     <Table aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>Id</TableCell>
-                                <TableCell align="right">ColumnName</TableCell>
+                                {/*<TableCell>Id</TableCell>*/}
+                                {/*<TableCell align="right">ColumnName</TableCell>*/}
                                 <TableCell align="right">Name</TableCell>
                                 <TableCell align="right">ParameterType</TableCell>
                                 <TableCell align="right">Pattern</TableCell>
@@ -49,7 +33,8 @@ class ResourceParametersList extends Component {
                             {this.props.resourceParameters.map((item) =>
                                 (<ResourceParameterItem key={item.id}
                                                         item={item}
-                                                        resTempId={this.props.resTempId}/>)
+                                                        resTempId={this.props.resTempId}
+                                                        getData={this.props.getData}/>)
                             )}
                         </TableBody>
                     </Table>

@@ -73,6 +73,22 @@ class ResourceTemplateView extends Component {
 
     }
 
+    // getAllTemplatesIsPublished = () => {
+    //     axios.get(`/resource-template/${this.state.resTempId}`).then(
+    //         response => {
+    //             let data = response.data;
+    //             this.setState({
+    //                 name: data.name,
+    //                 description: data.description,
+    //                 isPublished: data.isPublished,
+    //                 resourceParameters: data.resourceParameters
+    //             })
+    //         }).catch(error => {
+    //         console.dir(error.response.data);
+    //
+    //     })
+    // }
+
     // getDataParameters = () => {
     //     axios.get(`/resource-template/${this.state.resTempId}/resource-parameter`).then(
     //         response => {
@@ -229,7 +245,8 @@ class ResourceTemplateView extends Component {
                     <CreateParameter getData={this.getData}
                                      resTempId={this.state.resTempId}/>
                     <ResourceParametersList resourceParameters={this.state.resourceParameters}
-                                            resTempId={this.state.resTempId}/>
+                                            resTempId={this.state.resTempId}
+                                            getData={this.getData}/>
 
 
                 </Grid>

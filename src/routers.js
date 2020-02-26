@@ -10,7 +10,7 @@ import Header from './components/header/header';
 import Footer from './components/footer/footer';
 import ResourceTemplateCreate from "./components/resourceTemplate/resourceTemplateCreate";
 import ResourceTemplateUpdate from "./components/resourceTemplate/resourceTemplateUpdate";
-import ResourceTemplateView from "./components/resourceTemplate/resourcetemplateView";
+import ResourceTemplateView from "./components/resourceTemplate/resourceTemplateView";
 import PermissionResourceTemplateList from "./components/permissions/permissionResourceTemplateList";
 import PermissionResourceTemplateAdd from "./components/permissions/permissionResourceTemplateAdd";
 
