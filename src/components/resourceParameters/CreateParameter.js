@@ -45,7 +45,7 @@ class CreateParameter extends Component {
         let data = {
             "name": this.state.name,
             "parameterType": `${this.state.parameter.toUpperCase()}_${this.state.parameterType.toUpperCase()}`
-            }
+        }
         if (this.state.parameterType === "reference") {
             data["relatedResourceTemplateId"] = this.state.relatedResourceTemplateId
         }
@@ -61,13 +61,12 @@ class CreateParameter extends Component {
                 })
                 this.props.getData()
             }).catch(error => {
-                console.dir(error.response.data);
+            console.dir(error.response.data);
         })
     };
     isNotValid = () => {
-        return this.state.name.length === 0;
+        return (this.state.name.length === 0 || this.state.parameter.length === 0 || this.state.parameterType.length === 0 );
     };
-
 
 
     render() {
@@ -98,10 +97,9 @@ class CreateParameter extends Component {
                                                                           list={PARAMETER_TYPE[this.state.parameter]}/>}
                     </Grid>
                     <Grid item xs={2}>
-                        {this.state.parameterType === "reference"&&
+                        {this.state.parameterType === "reference" &&
                         <DropdownTemplate setRelatedResourceTemplateId={this.setRelatedResourceTemplateId}/>}
                     </Grid>
-
 
 
                 </Grid>
