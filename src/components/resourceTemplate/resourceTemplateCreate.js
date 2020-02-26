@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { TextField, Button, FormControl, Grid, Box } from '@material-ui/core';
+import React, {Component} from 'react';
+import {TextField, Button, FormControl, Grid, Box} from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import Alert from '@material-ui/lab/Alert';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -13,6 +13,7 @@ const gridStyles = {
 const formControlStyles = {
     marginBottom: 20
 }
+
 class ResourceTemplateCreate extends Component {
 
     state = {
@@ -25,7 +26,8 @@ class ResourceTemplateCreate extends Component {
         axios.post("/resource-template", this.state).then(response => {
             this.props.history.push("/resource-template");
         }, error => {
-            this.setState({ errorMessage: error.response.data.message });
+            this.setState({errorMessage: error.response.data.message});
+
         })
     }
 
@@ -38,12 +40,12 @@ class ResourceTemplateCreate extends Component {
         if (name.trim().length === 0) {
             name = undefined;
         }
-        this.setState({ name });
+        this.setState({name});
     }
 
     onChangeDescription = (event) => {
         let description = event.target.value;
-        this.setState({ description });
+        this.setState({description});
     }
 
     goBack = () => {
@@ -54,13 +56,13 @@ class ResourceTemplateCreate extends Component {
         return (
             <Auth>
                 <Grid container spacing={3}
-                    style={gridStyles}>
+                      style={gridStyles}>
                     <Grid item xs={4}>
                         <Box mx="auto">
                             <Box mt={4}>
                                 <Button
                                     variant="contained"
-                                    startIcon={<ArrowBackIosIcon />}
+                                    startIcon={<ArrowBackIosIcon/>}
                                     onClick={this.goBack}
                                 >Go Back</Button>
                             </Box>
@@ -72,20 +74,21 @@ class ResourceTemplateCreate extends Component {
                                 display="flex"
                                 flexDirection="column">
                                 <h1>Create Resource Template</h1>
-                                {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
+                                {/* {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>} */}
                                 <FormControl style={formControlStyles}>
-                                    <TextField type="text" label="name" onChange={this.onChangeName} />
+                                    <TextField type="text" label="name" onChange={this.onChangeName}
+                                               helperText={this.state.errorMessage} error={!!this.state.errorMessage}/>
                                 </FormControl>
                                 <FormControl style={formControlStyles}>
-                                    <TextField type="text" label="description" onChange={this.onChangeDescription} />
+                                    <TextField type="text" label="description" onChange={this.onChangeDescription}/>
                                 </FormControl>
                                 <FormControl>
                                     <Button variant="contained"
-                                        color="primary"
-                                        size="large"
-                                        startIcon={<SaveIcon />}
-                                        disabled={this.isValid()}
-                                        onClick={this.create}
+                                            color="primary"
+                                            size="large"
+                                            startIcon={<SaveIcon/>}
+                                            disabled={this.isValid()}
+                                            onClick={this.create}
                                     >Create</Button>
                                 </FormControl>
                             </Box>
