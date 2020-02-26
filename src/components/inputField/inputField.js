@@ -15,7 +15,11 @@ class InputField extends Component {
         return (
         <div>
             {/*id="standard-basic"*/}
-            <TextField type={this.props.type}  label={this.props.label} onChange={this.props.onChange}/>
+            <TextField type={this.props.type}
+                       label={this.props.label}
+                       onChange={this.props.onChange}
+                       helperText={this.props.helperText}
+                       error={this.props.error}/>
         </div>
         );
     }

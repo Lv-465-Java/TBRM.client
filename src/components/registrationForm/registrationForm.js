@@ -1,11 +1,33 @@
-import React, { Component } from "react";
-import TextField from "../inputField/inputField";
-import Button from '@material-ui/core/Button';
+import React, {Component} from "react";
+import {TextField, Button, FormControl, Grid, Box} from '@material-ui/core';
 import axios from "../../utils/axios";
-import { makeStyles } from '@material-ui/core/styles';
+import SaveIcon from '@material-ui/icons/Save';
+import {makeStyles} from '@material-ui/core/styles';
 
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import Container from "@material-ui/core/Container";
+import {Link} from "react-router-dom";
+import Typography from "@material-ui/core/Typography";
+import {width} from "@material-ui/system";
 
-class RegistrationForm extends Component{
+// const formControlStyles = {
+//     marginBottom: 20
+// }
+const gridStyles = {
+    marginTop: 30
+}
+const textFieldStyles = {
+    width: 300,
+    minWidth: 100,
+    maxWidth: 300
+}
+
+const buttomStyles = {
+    marginTop: 20,
+    marginBottom: 20
+}
+
+class RegistrationForm extends Component {
 
     state = {
         firstName: undefined,
@@ -13,70 +35,181 @@ class RegistrationForm extends Component{
         email: undefined,
         phone: undefined,
         password: undefined,
-       confirmationPassword: undefined,
+        confirmationPassword: undefined,
+        errorMessages: {}
+    }
+
+    isNotValid = () => {
+        return (this.state.lastName === undefined ||
+            this.state.password === undefined || this.state.firstName === undefined
+            || this.state.email === undefined || this.state.confirmationPassword === undefined);
+    }
+    validateEmail = () => {
+        let re = /^\s*[a-zA-Z0-9]+(([._\-])?[a-zA-Z0-9])+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}\s*$/;
+        return re.test(String(this.state.email).toLowerCase());
+    }
+
+    validateFirstName = () => {
+        let re = /^\s*(([A-Za-z]){2,})+(((-')[A-Za-z]+)*){2,}\s*$/;
+        return re.test(String(this.state.firstName));
+    }
+
+    validateLastName = () => {
+        let re = /^\s*([A-Za-z]+((-')[A-Za-z]+)*){2,}\s*$/;
+        return re.test(String(this.state.lastName));
+    }
+
+    validatePhone = () => {
+        let re = /^\s*\+[0-9]{11}\s*$/;
+        return re.test(String(this.state.phone));
+    }
+
+    validatePassword = () => {
+        let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!@#$*%^&(-_)/><?"|+=:])[A-Za-z\d~`!@#*$%^&(-_)/><?"|+=:]{8,}$/;
+        return re.test(String(this.state.password));
     }
 
     onChangeFirstName = (event) => {
-        this.setState({
-            firstName: event.target.value
-        })
+        let firstName = event.target.value;
+        this.setState({firstName});
+        if (!this.validateFirstName()) {
+            let errors = {...this.state.errorMessages, ["firstName"]: "First name is not valid"};
+            this.setState({errorMessages: errors}, () => console.log(this.state));
+        } else {
+            let errors = {...this.state.errorMessages, ["firstName"]: undefined};
+            this.setState({errorMessages: errors}, () => console.log(this.state));
+        }
     }
 
     onChangeLastName = (event) => {
-        this.setState({
-            lastName: event.target.value
-        })
+        let lastName = event.target.value;
+        this.setState({lastName});
+        if (!this.validateLastName()) {
+            let errors = {...this.state.errorMessages, ["lastName"]: "Last name is not valid"};
+            this.setState({errorMessages: errors}, () => console.log(this.state));
+        } else {
+            let errors = {...this.state.errorMessages, ["lastName"]: undefined};
+            this.setState({errorMessages: errors}, () => console.log(this.state));
+
+        }
     }
     onChangeEmail = (event) => {
-        this.setState({
-            email: event.target.value
-        })
+        let email = event.target.value;
+        this.setState({email});
+        if (!this.validateEmail()) {
+            let errors = {...this.state.errorMessages, ["email"]: "Email is not valid"};
+            this.setState({errorMessages: errors}, () => console.log(this.state));
+        } else {
+            let errors = {...this.state.errorMessages, ["email"]: undefined};
+            this.setState({errorMessages: errors}, () => console.log(this.state));
+
+        }
     }
     onChangePhone = (event) => {
-        this.setState({
-            phone: event.target.value
-        })
+        let phone = event.target.value;
+        this.setState({phone});
+        if (!this.validatePhone()) {
+            let errors = {...this.state.errorMessages, ["phone"]: "Phone number is not valid"};
+            this.setState({errorMessages: errors}, () => console.log(this.state));
+        } else {
+            let errors = {...this.state.errorMessages, ["phone"]: undefined};
+            this.setState({errorMessages: errors}, () => console.log(this.state));
+
+        }
     }
 
     onChangePassword = (event) => {
-        this.setState({
-            password: event.target.value
-        })
+        let password = event.target.value;
+        this.setState({password});
+        if (!this.validatePassword()) {
+            let errors = {
+                ...this.state.errorMessages,
+                ["password"]: "Password must contain at least eight characters and at least one character of "
+                + " uppercase letter, lowercase letter, digit, special character"
+            };
+            this.setState({errorMessages: errors}, () => console.log(this.state));
+        } else {
+            let errors = {...this.state.errorMessages, ["password"]: undefined};
+            this.setState({errorMessages: errors}, () => console.log(this.state));
+        }
     }
 
     onChangeConfirmationPassword = (event) => {
-        this.setState({
-            confirmationPassword: event.target.value
-        })
+        let confirmationPassword = event.target.value;
+        this.setState({confirmationPassword});
+        if (confirmationPassword !== this.state.password) {
+            let errors = {...this.state.errorMessages, ["confirmationPassword"]: "Passwords do not match"};
+            this.setState({errorMessages: errors}, () => console.log(this.state));
+        } else {
+            let errors = {...this.state.errorMessages, ["confirmationPassword"]: undefined};
+            this.setState({errorMessages: errors}, () => console.log(this.state));
+
+        }
     }
-    getData =() => {
+
+    getData = () => {
+        console.log('response.data.status');
         axios.post("/registration", this.state).then(response => {
             this.props.history.push("/");
         }, error => {
-
-        })
+            // for(var json in error)
+            // this.setState({errorMessage: error.response});
+            let errors = {}
+            error.response.data.forEach(err => {
+                errors[[err.name]] = err.message;
+            })
+            this.setState({errorMessages: errors}, () => console.log(this.state));
+            // this.setState({ errorMessages: {...this.state.errorMessages, [err.name]: err.message}})
+            // console.log(error.response)
+        });
     }
 
-    render(){
+    render() {
         return (
-            <div>
-                <div>{this.state.firstName}</div>
-                <div>{this.state.lastName}</div>
-                <div>{this.state.email}</div>
-                <div>{this.state.phone}</div>
-                <div>{this.state.password}</div>
-                <div>{this.state.confirmationPassword}</div>
-                <TextField type="firstName" label="firstName"  onChange={this.onChangeFirstName}/>
-                <TextField type="lastName" label="lastName" onChange={this.onChangeLastName}/>
-                <TextField type="email" label="email"  onChange={this.onChangeEmail}/>
-                <TextField type="phone" label="phone" onChange={this.onChangePhone}/>
-                <TextField type="password" label="password" onChange={this.onChangePassword}/>
-                <TextField type="password" label="confirmationPassword" onChange={this.onChangeConfirmationPassword}/>
-                <Button variant="contained" color="primary" onClick={this.getData}>Sign up
-                </Button>
-            </div>
+            // <Container component="main" maxWidth="xl">
+            <Grid container spacing={1} direction='column' alignItems='center' justify='space-between'
+                  style={gridStyles}
+            >
+                <Typography variant='h4' color='primary' paragraph='true'>Create Account</Typography>
+                <Typography variant='subtitle1' color='textPrimary'>Please fill in all fields to create an
+                    account</Typography>
+                <TextField type="firstName" style={textFieldStyles} label="firstName" onChange={this.onChangeFirstName}
+                           helperText={this.state.errorMessages["firstName"]}
+                           error={this.state.errorMessages["firstName"] !== undefined}
+                />
+                <TextField type="lastName" label="lastName" style={textFieldStyles} onChange={this.onChangeLastName}
+                           helperText={this.state.errorMessages["lastName"]}
+                           error={this.state.errorMessages["lastName"] !== undefined}
+                />
+                <TextField type="email" label="email" style={textFieldStyles} onChange={this.onChangeEmail}
+                           helperText={this.state.errorMessages["email"]}
+                           error={this.state.errorMessages["email"] !== undefined}
+                />
+                <TextField type="phone" label="phone" style={textFieldStyles} onChange={this.onChangePhone}
+                           helperText={this.state.errorMessages["phone"]}
+                           error={this.state.errorMessages["phone"] !== undefined}
+                />
+                <TextField type="password" label="password" style={textFieldStyles} onChange={this.onChangePassword}
+                           helperText={this.state.errorMessages["password"]}
+                           error={this.state.errorMessages["password"] !== undefined}
+                />
+                <TextField type="password" label="confirmationPassword" style={textFieldStyles}
+                           onChange={this.onChangeConfirmationPassword}
+                           helperText={this.state.errorMessages["confirmationPassword"]}
+                           error={this.state.errorMessages["confirmationPassword"] !== undefined}/>
+                <Button style={buttomStyles} variant="contained" color="primary" onClick={this.getData}
+                        size="large"
+                        disabled={this.isNotValid()}>Sign
+                    up </Button>
+                <div>
+                    <Typography variant='subtitle1'>Already have an account? <Link to={"/"}>Login</Link></Typography>
+                    {/*<a href="/forgot_password"></a>*/}
+                </div>
+                {/*</Container>*/}
+            </Grid>
         );
     }
 
 }
+
 export default RegistrationForm;
