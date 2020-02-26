@@ -71,9 +71,9 @@ class ResourceTemplateCreate extends Component {
                             display="flex"
                             flexDirection="column">
                             <h1>Create Resource Template</h1>
-                            {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
+                            {/* {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>} */}
                             <FormControl style={formControlStyles}>
-                                <TextField type="text" label="name" onChange={this.onChangeName} />
+                                <TextField type="text" label="name" onChange={this.onChangeName} helperText={this.state.errorMessage} error={!!this.state.errorMessage}/>
                             </FormControl>
                             <FormControl style={formControlStyles}>
                                 <TextField type="text" label="description" onChange={this.onChangeDescription} />

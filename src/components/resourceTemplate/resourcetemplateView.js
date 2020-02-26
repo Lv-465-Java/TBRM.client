@@ -9,12 +9,15 @@ import MenuItem from '@material-ui/core/MenuItem';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ReplayIcon from '@material-ui/icons/Replay';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { Grid, Box } from '@material-ui/core';
 import { useHistory } from "react-router-dom";
 import axios from '../../utils/axios';
+import CreateParameter from "../resourceParameters/CreateParameter";
 
 const style = {
     maxWidth: 800,
@@ -34,6 +37,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const isPublished = '';
+
 
 class ResourceTemplateView extends Component {
 
@@ -68,6 +72,55 @@ class ResourceTemplateView extends Component {
 
     }
 
+    publish = () => {
+        let body = { 'isPublished': true };
+
+        axios.put(`/resource-template/${this.state.resTempId}/publish`, body).then(
+            response => {
+                this.setState({isPublished: true}); 
+                // this.props.history.push(`/resource-template/view/${this.state.resTempId}`);
+            }).catch(error => {
+                console.dir(error.response.data);
+            })
+    };
+
+    unpublish = () => {
+        let body = { 'isPublished': false };
+
+        axios.put(`/resource-template/${this.state.resTempId}/publish`, body).then(
+            response => {
+                this.setState({isPublished: false});
+            }).catch(error => {
+                console.dir(error.response.data);
+            })
+    };
+
+    renderButton() {
+        if (this.state.isPublished === false) {
+            return (
+                <Box mt={5}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<CheckCircleIcon />}
+                        style={useStyles.button}
+                        onClick={this.publish}
+                    >Publish</Button>
+                </Box>)
+        } else {
+            return (
+                <Box mt={5}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<ReplayIcon />}
+                        style={useStyles.button}
+                        onClick={this.unpublish}
+                    >Cancel publish</Button>
+                </Box>)
+        }
+    };
+
     delete = () => {
         axios.delete(`/resource-template/${this.state.resTempId}`).then(
             response => {
@@ -84,7 +137,7 @@ class ResourceTemplateView extends Component {
     }
 
     isPublished = () => {
-        return this.state.isPublished ? isPublished = "Published" : "Not Published";
+        return this.state.isPublished ? "Published" : "Not Published";
     }
 
     componentDidMount() {
@@ -92,6 +145,30 @@ class ResourceTemplateView extends Component {
     }
 
     render() {
+        let publishButton =  (this.state.isPublished === false) ?  (
+                <Box mt={5}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<CheckCircleIcon />}
+                        style={useStyles.button}
+                        onClick={this.publish}
+                        disabled={this.state.resourceParameters.length === 0}
+                    >Publish</Button>
+                </Box>) : (
+                <Box mt={5}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<ReplayIcon />}
+                        style={useStyles.button}
+                        onClick={this.unpublish}
+                    >Cancel publish</Button>
+                </Box>)
+        
+
+
+
         return (
             <Grid container spacing={3}>
                 <Grid item xs={3}>
@@ -132,6 +209,8 @@ class ResourceTemplateView extends Component {
                             </Typography>
                         </CardContent>
                     </Card>
+                    <CreateParameter getData={this.getData}
+                                     resTempId={this.state.resTempId}/>
                 </Grid>
                 <Grid item xs={3}>
                     <Grid container
@@ -181,6 +260,30 @@ class ResourceTemplateView extends Component {
                                     Delete
                             </Button>
                             </Box>
+                            {/* if (this.state.isPublished === false) {
+                                return(
+                            <Box mt={5}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        startIcon={<CheckCircleIcon />}
+                                        style={useStyles.button}
+                                        onClick={this.publish}
+                                    >Publish</Button>
+                            </Box>)
+                            }else {
+                            <Box mt={5}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        startIcon={<ReplayIcon />}
+                                        style={useStyles.button}
+                                        onClick={this.unpublish}
+                                    >Cancel publish</Button>
+                            </Box>} */}
+                            {publishButton}
+                            {/* {this.renderButton()} */}
+
                         </Box>
                     </Grid>
                 </Grid>
