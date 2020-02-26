@@ -109,7 +109,7 @@ class ResourceTemplateView extends Component {
     }
 
     goBack = () => {
-        this.props.history.goBack();
+        this.props.history.push("/resource-template");
     }
 
     isPublished = () => {
