@@ -10,6 +10,8 @@ import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { logout, isUserLoggedIn } from '../../service/authService';
 import {BrowserRouter, Link} from 'react-router-dom';
+import Alert from "@material-ui/lab/Alert";
+import Container from "@material-ui/core/Container";
 
 
 const Header = (props) => {
@@ -71,7 +73,6 @@ const Header = (props) => {
                     open={open}
                     onClose={handleClose}
                 >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
                     <MenuItem onClick={logoutUser}>Logout</MenuItem>
                 </Menu>
             </div>
@@ -88,6 +89,7 @@ const Header = (props) => {
     let headerLinks;
     if (isUserLoggedIn()) {
         headerLinks = userLoggedIn;
+        console.log(isUserLoggedIn())
     } else {
         headerLinks = userNotLoggedIn;
     }
