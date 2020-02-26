@@ -44,6 +44,14 @@ class HomePage extends Component {
                                         >Resources</Button>
                                     </Link>
                                 </Box>
+                                <Box mt={5}>
+                                    <Link to="/group">
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                        >Groups</Button>
+                                    </Link>
+                                </Box>
                             </Box>
                         </Grid>
                     </Grid>
