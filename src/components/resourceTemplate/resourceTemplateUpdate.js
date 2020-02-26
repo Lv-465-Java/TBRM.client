@@ -50,7 +50,7 @@ class ResourceTemplateUpdate extends Component {
         }
         axios.patch(`/resource-template/${this.state.resTempId}`, data).then(
             response => {
-                this.getData()
+                this.props.history.push(`/resource-template/view/${this.state.resTempId}`);
             }, error => {
                 this.setState({ errorMessage: error.response.data.message });
                 console.log(error.response.data.message);
