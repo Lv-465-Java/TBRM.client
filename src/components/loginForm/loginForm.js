@@ -25,6 +25,7 @@ class LoginForm extends Component {
         email: undefined,
         password: undefined
     }
+
     getData = () => {
         axios.post("/authentication", this.state).then(response => {
                 if (response !== undefined) {
@@ -35,6 +36,7 @@ class LoginForm extends Component {
             console.log(error.response.data.message);
         })
     }
+        
 
     onChangeEmail = (event) => {
         this.setState({
@@ -47,6 +49,7 @@ class LoginForm extends Component {
             password: event.target.value
         })
     }
+    
 
     render() {
 
@@ -98,13 +101,13 @@ class LoginForm extends Component {
                     <Box mt={3}>
                     <Grid container>
                         <Grid item xs>
-                            <Link href="#" variant="body2">
+                            <Link href={"/forgot_password"}>
                                 Forgot password?
                             </Link>
                         </Grid>
-                        <Grid item>
-                            <Link href="#" variant="body2">
-                                {"Don't have an account? Sign Up"}
+                        <Grid item>Don't have an account?
+                            <Link href={"/registration"}>
+                                 Sign Up
                             </Link>
                         </Grid>
                     </Grid>
