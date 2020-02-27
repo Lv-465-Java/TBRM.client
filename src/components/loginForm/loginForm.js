@@ -13,6 +13,7 @@ import Container from "@material-ui/core/Container";
 import googleLogo from "../../img/google-logo.png";
 import Alert from "@material-ui/lab/Alert";
 
+
 const localStorageService = LocalSessionStorageService.getService();
 
 const style={
@@ -98,13 +99,13 @@ class LoginForm extends Component {
                     <Box mt={3}>
                     <Grid container>
                         <Grid item xs>
-                            <Link href="#" variant="body2">
+                            <Link href={"/forgot_password"}>
                                 Forgot password?
                             </Link>
                         </Grid>
-                        <Grid item>
-                            <Link href="#" variant="body2">
-                                {"Don't have an account? Sign Up"}
+                        <Grid item>Don't have an account?
+                            <Link href={"/registration"}>
+                                 Sign Up
                             </Link>
                         </Grid>
                     </Grid>
