@@ -37,6 +37,12 @@ class EditGroup extends Component {
                 errorMessage: "",
                 successMessage: "",
             })
+            if(this.state.description === null) {
+                this.setState({
+                    description: "",
+                    oldDescription: ""
+                })
+            }
         })
     };
 
@@ -50,7 +56,10 @@ class EditGroup extends Component {
         }
         axios.put(`/group/${this.state.oldName}`, data).then(
             response => {
-                this.setState({successMessage: messageOk})
+                this.setState({
+                    successMessage: messageOk,
+                    oldName: this.state.name
+                })
             }, error => {
                 this.setState({errorMessage: error.response.data.message});
                 this.setState({name: this.state.oldName})
@@ -63,7 +72,7 @@ class EditGroup extends Component {
     }
 
     goBack = () => {
-        this.props.history.push(`/group/view/${this.state.name}`);
+        this.props.history.push(`/group/view/${this.state.oldName}`);
     };
 
     isValid = () => {
