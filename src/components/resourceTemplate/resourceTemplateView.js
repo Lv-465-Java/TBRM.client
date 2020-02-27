@@ -31,6 +31,12 @@ const gridStyle = {
     marginTop: 40
 }
 
+const cardStyle = {
+    maxWidth: 100,
+    minWidth: 1000,
+    marginLeft: 100
+}
+
 const useStyles = makeStyles(theme => ({
     button: {
         margin: theme.spacing(1),
@@ -67,9 +73,9 @@ class ResourceTemplateView extends Component {
                     resourceParameters: data.resourceParameters
                 })
             }).catch(error => {
-                console.dir(error.response.data);
+            console.dir(error.response.data);
 
-            })
+        })
 
     }
 
@@ -199,8 +205,6 @@ class ResourceTemplateView extends Component {
                     onClick={this.unpublish}
                 >Cancel publish</Button>
             </Box>)
-
-
         return (
             <Grid container spacing={3}>
                 <Grid item xs={1}>
@@ -242,12 +246,6 @@ class ResourceTemplateView extends Component {
                             </Typography>
                         </CardContent>
                     </Card>
-                    <CreateParameter getData={this.getData}
-                                     resTempId={this.state.resTempId}/>
-                    <ResourceParametersList resourceParameters={this.state.resourceParameters}
-                                            resTempId={this.state.resTempId}
-                                            getData={this.getData}/>
-
 
                 </Grid>
                 <Grid item xs={3}>
@@ -325,6 +323,21 @@ class ResourceTemplateView extends Component {
 
                         </Box>
                     </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    <h3>Resource Parameters</h3>
+                    <Card style={cardStyle}>
+                        <CardContent>
+                            <CreateParameter getData={this.getData}
+                                             resTempId={this.state.resTempId}/>
+                        </CardContent>
+                        <CardContent>
+                            <ResourceParametersList resourceParameters={this.state.resourceParameters}
+                                                    resTempId={this.state.resTempId}
+                                                    getData={this.getData}/>
+                        </CardContent>
+                    </Card>
+
                 </Grid>
             </Grid>
         );

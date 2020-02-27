@@ -65,14 +65,14 @@ class CreateParameter extends Component {
         })
     };
     isNotValid = () => {
-        return (this.state.name.length === 0 || this.state.parameter.length === 0 || this.state.parameterType.length === 0 );
+        return (this.state.name.length === 0 || this.state.parameter.length === 0 || this.state.parameterType.length === 0);
     };
 
 
     render() {
         return (
-            <div>
-                <Grid container spacing={3}>
+            <>
+                <Grid container spacing={1}>
                     <Grid item xs={2}>
                         <Button variant="contained"
                                 color="primary"
@@ -83,18 +83,20 @@ class CreateParameter extends Component {
                         </Button>
                     </Grid>
                     <Grid item xs={2}>
-                        <TextField type="text" name="name" onChange={this.onChangeName} value={this.state.name}/>
+                        <TextField label="Name" type="text" name="name" onChange={this.onChangeName}
+                                   value={this.state.name}/>
                     </Grid>
                     <Grid item xs={2}>
                         <DropdownParameterType parameterType={this.state.parameter}
                                                onChangeParameterType={this.onChangeParameter}
-                                               list={Object.keys(PARAMETER_TYPE)}/>
+                                               list={Object.keys(PARAMETER_TYPE)}
+                                               label="Parameter"/>
                     </Grid>
-
                     <Grid item xs={2}>
                         {!!this.state.parameter && <DropdownParameterType parameterType={this.state.parameterType}
                                                                           onChangeParameterType={this.onChangeParameterType}
-                                                                          list={PARAMETER_TYPE[this.state.parameter]}/>}
+                                                                          list={PARAMETER_TYPE[this.state.parameter]}
+                                                                          label="ParameterType"/>}
                     </Grid>
                     <Grid item xs={2}>
                         {this.state.parameterType === "reference" &&
@@ -103,7 +105,7 @@ class CreateParameter extends Component {
 
 
                 </Grid>
-            </div>
+            </>
         );
     }
 }

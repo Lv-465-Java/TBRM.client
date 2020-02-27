@@ -56,14 +56,14 @@ class ResourceParameterItem extends Component {
     }
     onChangeEdit = () => {
         this.setState({isNotEdit: !this.state.isNotEdit})
-    }
+    };
 
 
     render() {
 
         let element = this.state.isNotEdit ? (<><TableCell align="right">{this.state.name}</TableCell>
             <TableCell align="right">{this.state.parameterType}</TableCell>
-            <TableCell align="right">{this.state.pattern}</TableCell>
+            {/*<TableCell align="right">{this.state.pattern}</TableCell>*/}
             <TableCell align="right">{this.state.resourceRelation}</TableCell>
 
             <Tooltip title="Delete">

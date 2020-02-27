@@ -7,22 +7,24 @@ class DropdownTemplate extends Component {
 
     state = {
         publishedResourceTemplates: []
-    }
+    };
 
     getData = () => {
         axios.get('resource-template/published').then(response => {
             let publishedResourceTemplates = response.data;
             this.setState({ publishedResourceTemplates });
         })
-    }
+    };
 
     componentDidMount() {
         this.getData();
     }
 
     onChange = (ob, value) => {
-        this.props.setRelatedResourceTemplateId(value.id)
-    }
+        if (value != null) {
+            this.props.setRelatedResourceTemplateId(value.id)
+        }
+    };
 
     render() {
 
