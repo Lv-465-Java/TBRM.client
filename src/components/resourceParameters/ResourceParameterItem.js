@@ -12,7 +12,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import axios from "../../utils/axios";
 import CreateParameter from "./CreateParameter";
-import EditParameter from "./EditParameter";
+import UpdateParameter from "./UpdateParameter";
 
 class ResourceParameterItem extends Component {
 
@@ -75,12 +75,12 @@ class ResourceParameterItem extends Component {
                 <IconButton aria-label="edit" color="secondary" onClick={this.onChangeEdit}>
                     <EditIcon/>
                 </IconButton>
-            </Tooltip></>) : (<EditParameter getData={this.props.getData}
-                                             resTempId={this.props.resTempId}
-                                             cancelClick={this.onChangeEdit}
-                                             id={this.state.id}
-                                             name={this.state.name}
-                                             parameterType={this.state.parameterType}
+            </Tooltip></>) : (<UpdateParameter getData={this.props.getData}
+                                               resTempId={this.props.resTempId}
+                                               cancelClick={this.onChangeEdit}
+                                               id={this.state.id}
+                                               name={this.state.name}
+                                               parameterType={this.state.parameterType}
         />);
         console.log(this.state)
         return (

@@ -19,7 +19,7 @@ const PARAMETER_TYPE = {
     coordinates: ["string"]
 };
 
-class EditParameter extends Component {
+class UpdateParameter extends Component {
 
     state = {
         resTempId: this.props.resTempId,
@@ -109,4 +109,4 @@ class EditParameter extends Component {
     }
 }
 
-export default EditParameter;
+export default UpdateParameter;
