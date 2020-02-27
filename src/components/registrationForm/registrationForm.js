@@ -3,12 +3,15 @@ import {TextField, Button, FormControl, Grid, Box} from '@material-ui/core';
 import axios from "../../utils/axios";
 import SaveIcon from '@material-ui/icons/Save';
 import {makeStyles} from '@material-ui/core/styles';
-
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Container from "@material-ui/core/Container";
 import {Link} from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import {width} from "@material-ui/system";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from "@material-ui/core/IconButton";
 
 // const formControlStyles = {
 //     marginBottom: 20
@@ -36,6 +39,7 @@ class RegistrationForm extends Component {
         phone: undefined,
         password: undefined,
         confirmationPassword: undefined,
+        showPassword: false,
         errorMessages: {}
     }
 
@@ -164,6 +168,13 @@ class RegistrationForm extends Component {
         });
     }
 
+     handleClickShowPassword = () => {
+        this.setState({ showPassword: !this.state.showPassword });
+    };
+    handleMouseDownPassword = event => {
+    event.preventDefault();
+};
+
     render() {
         return (
             // <Container component="main" maxWidth="xl">
@@ -173,36 +184,47 @@ class RegistrationForm extends Component {
                 <Typography variant='h4' color='primary' paragraph='true'>Create Account</Typography>
                 <Typography variant='subtitle1' color='textPrimary'>Please fill in all fields to create an
                     account</Typography>
-                <TextField type="firstName" style={textFieldStyles} label="firstName" onChange={this.onChangeFirstName}
+                <TextField type="firstName" style={textFieldStyles} label="First name" onChange={this.onChangeFirstName}
                            helperText={this.state.errorMessages["firstName"]}
                            error={this.state.errorMessages["firstName"] !== undefined}
                 />
-                <TextField type="lastName" label="lastName" style={textFieldStyles} onChange={this.onChangeLastName}
+                <TextField type="lastName" label="Last name" style={textFieldStyles} onChange={this.onChangeLastName}
                            helperText={this.state.errorMessages["lastName"]}
                            error={this.state.errorMessages["lastName"] !== undefined}
                 />
-                <TextField type="email" label="email" style={textFieldStyles} onChange={this.onChangeEmail}
+                <TextField type="email" label="Email" style={textFieldStyles} onChange={this.onChangeEmail}
                            helperText={this.state.errorMessages["email"]}
                            error={this.state.errorMessages["email"] !== undefined}
                 />
-                <TextField type="phone" label="phone" style={textFieldStyles} onChange={this.onChangePhone}
+                <TextField type="phone" label="Phone" style={textFieldStyles} onChange={this.onChangePhone}
                            helperText={this.state.errorMessages["phone"]}
                            error={this.state.errorMessages["phone"] !== undefined}
                 />
-                <TextField type="password" label="password" style={textFieldStyles} onChange={this.onChangePassword}
+                <TextField type={this.state.showPassword ? 'text' : 'password'} label="Password" style={textFieldStyles} onChange={this.onChangePassword}
                            helperText={this.state.errorMessages["password"]}
                            error={this.state.errorMessages["password"] !== undefined}
+                           endAdornment={
+                               <InputAdornment position="end">
+                                   <IconButton
+                                       aria-label="toggle password visibility"
+                                       onClick={this.setState({ showPassword: !this.state.showPassword })}
+                                       // onMouseDown={this.props.event.preventDefault()}
+                                   >
+                                       {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                   </IconButton>
+                               </InputAdornment>}
                 />
-                <TextField type="password" label="confirmationPassword" style={textFieldStyles}
+                <TextField type="password" label="Repeat Password" style={textFieldStyles}
                            onChange={this.onChangeConfirmationPassword}
                            helperText={this.state.errorMessages["confirmationPassword"]}
-                           error={this.state.errorMessages["confirmationPassword"] !== undefined}/>
+                           error={this.state.errorMessages["confirmationPassword"] !== undefined}
+                />
                 <Button style={buttomStyles} variant="contained" color="primary" onClick={this.getData}
                         size="large"
                         disabled={this.isNotValid()}>Sign
                     up </Button>
                 <div>
-                    <Typography variant='subtitle1'>Already have an account? <Link to={"/"}>Login</Link></Typography>
+                    <Typography variant='subtitle1'>Already have an account? <Link to={"/"}>Sign in</Link></Typography>
                     {/*<a href="/forgot_password"></a>*/}
                 </div>
                 {/*</Container>*/}

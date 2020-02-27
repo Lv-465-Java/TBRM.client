@@ -17,6 +17,7 @@ import ResourceTemplateView from "./components/resourceTemplate/resourcetemplate
 import PermissionResourceTemplateList from "./components/permissions/permissionResourceTemplateList";
 import PermissionResourceTemplateAdd from "./components/permissions/permissionResourceTemplateAdd";
 import {Message} from "@material-ui/icons";
+import ForgotPasswordMessage from "./components/resetPassword/ForgotPasswordMessage";
 
 
 
@@ -31,14 +32,14 @@ class Routers extends Component {
                     <Route path="/search" component={SearchResourceTemplate} />
                     <Route path="/registration" component={RegistrationForm}/>
                     <Route path="/reset_password" component={ResetPassword} />
-                    <Route path="/forgot_password" component={ForgotPassword} />
+                    <Route path="/forgot_password" exact component={ForgotPassword} />
                     <Route path="/resource-template/create" component={ResourceTemplateCreate} />
                     <Route path="/resource-template/update/:id" component={ResourceTemplateUpdate} />
                     <Route path="/resource-template/view/:id" component={ResourceTemplateView} />
                     <Route path="/resource-template/permission/add/:id" component={PermissionResourceTemplateAdd} />
                     <Route path="/resource-template/permission/:id" component={PermissionResourceTemplateList} />
                     <Route path="/resource-template" component={ResourceTemplateList} />
-                    <Route path="/forgot_password/message" component={Message} />
+                    <Route path="/forgot_password/:email" component={ForgotPasswordMessage} />
                     <Route path="/" exact component={LoginForm} />
                 </Switch>
                 <Footer/>

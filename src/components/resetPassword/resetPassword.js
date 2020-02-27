@@ -1,21 +1,35 @@
 import React, { Component } from "react";
-import TextField from "../inputField/inputField";
+// import TextField from "../inputField/inputField";
 import Axios from "axios";
 //import Axios from "axios";
 import axios from '../../utils/axios';
-import {Button, Grid} from "@material-ui/core";
+import {TextField, Button, FormControl, Grid, Box, CssBaseline} from '@material-ui/core';
+import Typography from "@material-ui/core/Typography";
+import Alert from "@material-ui/lab/Alert";
 
-const textFieldStyles={
+const textFieldStyles = {
     width: 300,
     minWidth: 100,
     maxWidth: 300
+}
+const buttomStyles = {
+    marginTop: 20,
+    marginBottom: 20
+}
+const BoxStyle = {
+    paddingLeft: 16,
+    paddingRight: 16
+}
+const gridStyles = {
+    marginTop: 30
 }
 class ResetPassword extends Component {
 
     state = {
         password: undefined,
         confirmationPassword:undefined,
-        errorMessages: {}
+        errorMessages: {},
+        errorMassage: ''
     }
 
     isNotValid = () => {
@@ -23,7 +37,7 @@ class ResetPassword extends Component {
     }
 
     validatePassword = () => {
-        let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!@#$*%^&(-_)/><?"|+=:])[A-Za-z\d~`!@#*$%^&(-_)/><?"|+=:]{8,}$/;
+        let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!@#$*%^&(-_)/><?"|+=:])[A-Za-z\d~`!@#*$%^&(-_)/><?"|+=:]{7,}$/;
         return re.test(String(this.state.password));
     }
 
@@ -67,31 +81,35 @@ class ResetPassword extends Component {
                 'Content-Type': 'application/json',
             }
         }).then(response => {
-            //TODO redirect to massage "check your email smth like this"
+            //TODO redirect to main page
             this.props.history.push("/");
         }, error => {
-            let errors = {}
-            error.response.data.forEach(err => {
-                errors[[err.name]] = err.message;
-            })
-            this.setState({errorMessages: errors}, () => console.log(this.state))
+            this.setState({errorMessage: error.response.data.message});
+            console.log(this.state.errorMessage);
 
         })
     }
 
     render() {
         return (
-            <div>
-                <TextField type="password" label="password" style={textFieldStyles} onChange={this.onChangePassword}
+            <Grid container direction='column' alignItems='center' justify='space-between'
+            style={gridStyles}>
+                <CssBaseline/>
+                {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
+                <Typography variant='h5' color='primary'>Change password</Typography>
+                <TextField type="password" label="Password" style={textFieldStyles} onChange={this.onChangePassword}
                            helperText={this.state.errorMessages["password"]}
                            error={this.state.errorMessages["password"] !== undefined}
                 />
-                <TextField type="password" label="confirmationPassword" style={textFieldStyles}
+                <TextField type="password" label="Repeat Password" style={textFieldStyles}
                            onChange={this.onChangeConfirmationPassword}
                            helperText={this.state.errorMessages["confirmationPassword"]}
                            error={this.state.errorMessages["confirmationPassword"] !== undefined}/>
-                <Button onClick={this.getData} disabled={this.isNotValid()}> Save</Button>
-            </div>
+                <Button onClick={this.getData}
+                        variant="contained" color="primary" onClick={this.getData}
+                        size="large"
+                        style={buttomStyles} disabled={this.isNotValid()}> Submit</Button>
+            </Grid>
         );
     }
 
