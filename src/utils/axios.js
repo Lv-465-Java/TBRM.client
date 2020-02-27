@@ -8,7 +8,7 @@ const localStorageService = LocalSessionStorageService.getService();
 const axios = Axios.create({
     baseURL: API_BASE_URL,
     crossdomain: true,
-})
+});
 
 axios.interceptors.request.use(
         config => {

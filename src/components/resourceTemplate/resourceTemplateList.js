@@ -3,6 +3,8 @@ import axios from '../../utils/axios';
 import ResourceTemplateItem from './resourceTemplateItem';
 import { Button, Grid, Box } from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import { getUserRole } from '../../service/authService';
+import Auth from '../../hoc/auth';
 
 const style = {
 
@@ -44,8 +46,19 @@ class ResourceTemplateList extends Component {
     }
 
     render() {
+
+        let userLinks = (getUserRole() === "ROLE_MANAGER") ?
+            (
+                <Button
+                    variant="contained"
+                    style={buttonStyle}
+                    onClick={this.goToCreateResource}>Create Resource</Button>
+            ) : (
+                <div></div>
+            )
+
         return (
-            <div>
+            <Auth>
                 <Grid container spacing={3} style={gridStyle}>
                     <Grid item xs>
                         <Grid
@@ -74,14 +87,10 @@ class ResourceTemplateList extends Component {
                         </div>
                     </Grid>
                     <Grid item xs>
-                        <Button
-                            variant="contained"
-                            style={buttonStyle}
-                            onClick={this.goToCreateResource}>Create Resource</Button>
+                        {userLinks}
                     </Grid>
                 </Grid>
-
-            </div>
+            </Auth>
         );
     }
 }
