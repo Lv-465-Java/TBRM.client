@@ -11,16 +11,16 @@ import Footer from './components/footer/footer';
 import ResourceTemplateCreate from "./components/resourceTemplate/resourceTemplateCreate";
 import ResourceTemplateUpdate from "./components/resourceTemplate/resourceTemplateUpdate";
 import ResourceTemplateView from "./components/resourceTemplate/resourcetemplateView";
+import OAuth2RedirectHandler from "./components/oauth2/OAuth2RedirectHandler";
 import PermissionResourceTemplateList from "./components/permissions/permissionResourceTemplateList";
 import PermissionResourceTemplateAdd from "./components/permissions/permissionResourceTemplateAdd";
-
-
+import FullOAuthRegister from "./components/oauth2/FullOAuthRegister";
 
 class Routers extends Component {
     render() {
         return (
             <BrowserRouter>
-                <Header/>
+                <Header />
                 <Switch>
                     <Route path="/home" component={HomePage} />
                     <Route path="/search" component={SearchResourceTemplate} />
@@ -31,8 +31,10 @@ class Routers extends Component {
                     <Route path="/resource-template/permission/:id" component={PermissionResourceTemplateList} />
                     <Route path="/resource-template" component={ResourceTemplateList} />
                     <Route path="/" exact component={LoginForm} />
+                    <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}/>
+                    <Route path="/oauth2/fullRegister" component={FullOAuthRegister}/>
                 </Switch>
-                <Footer/>
+                <Footer />
             </BrowserRouter>
         );
     }
