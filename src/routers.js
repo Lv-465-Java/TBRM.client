@@ -16,13 +16,11 @@ import PermissionResourceTemplateList from "./components/permissions/permissionR
 import PermissionResourceTemplateAdd from "./components/permissions/permissionResourceTemplateAdd";
 import FullOAuthRegister from "./components/oauth2/FullOAuthRegister";
 
-
-
 class Routers extends Component {
     render() {
         return (
             <BrowserRouter>
-                <Header/>
+                <Header />
                 <Switch>
                     <Route path="/home" component={HomePage} />
                     <Route path="/search" component={SearchResourceTemplate} />
@@ -36,7 +34,7 @@ class Routers extends Component {
                     <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}/>
                     <Route path="/oauth2/fullRegister" component={FullOAuthRegister}/>
                 </Switch>
-                <Footer/>
+                <Footer />
             </BrowserRouter>
         );
     }

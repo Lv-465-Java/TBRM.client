@@ -15,9 +15,10 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { Grid, Box } from '@material-ui/core';
-import { useHistory } from "react-router-dom";
+import Alert from '@material-ui/lab/Alert';
 import axios from '../../utils/axios';
 import CreateParameter from "../resourceParameters/CreateParameter";
+import MyDialog from "./popUp"
 
 const style = {
     maxWidth: 800,
@@ -38,7 +39,6 @@ const useStyles = makeStyles(theme => ({
 
 const isPublished = '';
 
-
 class ResourceTemplateView extends Component {
 
     state = {
@@ -48,7 +48,8 @@ class ResourceTemplateView extends Component {
         description: this.props.description,
         isPublished: this.props.isPublished,
         userId: this.props.userId,
-        resourceParameters: this.props.resourceParameters
+        resourceParameters: this.props.resourceParameters,
+        open: false
     }
 
     classes = () => {
@@ -77,9 +78,9 @@ class ResourceTemplateView extends Component {
 
         axios.put(`/resource-template/${this.state.resTempId}/publish`, body).then(
             response => {
-                this.setState({isPublished: true}); 
-                // this.props.history.push(`/resource-template/view/${this.state.resTempId}`);
+                this.setState({ isPublished: true });
             }).catch(error => {
+                this.setState({ errorMessage: error.response.data.message });
                 console.dir(error.response.data);
             })
     };
@@ -89,36 +90,11 @@ class ResourceTemplateView extends Component {
 
         axios.put(`/resource-template/${this.state.resTempId}/publish`, body).then(
             response => {
-                this.setState({isPublished: false});
+                this.setState({ isPublished: false });
             }).catch(error => {
-                console.dir(error.response.data);
+                this.setState({ errorMessage: error.response.data.message });
+                console.log(error.response.data.message);
             })
-    };
-
-    renderButton() {
-        if (this.state.isPublished === false) {
-            return (
-                <Box mt={5}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<CheckCircleIcon />}
-                        style={useStyles.button}
-                        onClick={this.publish}
-                    >Publish</Button>
-                </Box>)
-        } else {
-            return (
-                <Box mt={5}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<ReplayIcon />}
-                        style={useStyles.button}
-                        onClick={this.unpublish}
-                    >Cancel publish</Button>
-                </Box>)
-        }
     };
 
     delete = () => {
@@ -126,14 +102,17 @@ class ResourceTemplateView extends Component {
             response => {
                 this.props.history.push("/resource-template");
             }).catch(error => {
-                console.dir(error.response.data);
-
+                this.setState({
+                    errorMessage: error.response.data.message,
+                    open: false
+                });
+                console.log(error.response.data.message);
             })
 
     }
 
     goBack = () => {
-        this.props.history.goBack();
+        this.props.history.push("/resource-template");
     }
 
     isPublished = () => {
@@ -143,19 +122,27 @@ class ResourceTemplateView extends Component {
     componentDidMount() {
         this.getData();
     }
+    handleClickOpen = () => {
+        console.log("open")
+        this.setState({ open: true }, () => console.log(this.state));
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
 
     render() {
-        let publishButton =  (this.state.isPublished === false) ?  (
-                <Box mt={5}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<CheckCircleIcon />}
-                        style={useStyles.button}
-                        onClick={this.publish}
-                        disabled={this.state.resourceParameters.length === 0}
-                    >Publish</Button>
-                </Box>) : (
+        let publishButton = (this.state.isPublished === false) ? (
+            <Box mt={5}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<CheckCircleIcon />}
+                    style={useStyles.button}
+                    onClick={this.publish}
+                    disabled={this.state.resourceParameters.length === 0}
+                >Publish</Button>
+            </Box>) : (
                 <Box mt={5}>
                     <Button
                         variant="contained"
@@ -165,9 +152,6 @@ class ResourceTemplateView extends Component {
                         onClick={this.unpublish}
                     >Cancel publish</Button>
                 </Box>)
-        
-
-
 
         return (
             <Grid container spacing={3}>
@@ -206,11 +190,12 @@ class ResourceTemplateView extends Component {
                             <Typography variant="body2" color="textSecondary" component="h2">
                                 {this.isPublished()}
                                 {isPublished}
+                                {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
                             </Typography>
                         </CardContent>
                     </Card>
                     <CreateParameter getData={this.getData}
-                                     resTempId={this.state.resTempId}/>
+                        resTempId={this.state.resTempId} />
                 </Grid>
                 <Grid item xs={3}>
                     <Grid container
@@ -255,38 +240,22 @@ class ResourceTemplateView extends Component {
                                     color="secondary"
                                     startIcon={<DeleteIcon />}
                                     style={useStyles.button}
-                                    onClick={this.delete}
+                                    onClick={this.handleClickOpen}
                                 >
                                     Delete
                             </Button>
                             </Box>
-                            {/* if (this.state.isPublished === false) {
-                                return(
-                            <Box mt={5}>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        startIcon={<CheckCircleIcon />}
-                                        style={useStyles.button}
-                                        onClick={this.publish}
-                                    >Publish</Button>
-                            </Box>)
-                            }else {
-                            <Box mt={5}>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        startIcon={<ReplayIcon />}
-                                        style={useStyles.button}
-                                        onClick={this.unpublish}
-                                    >Cancel publish</Button>
-                            </Box>} */}
                             {publishButton}
-                            {/* {this.renderButton()} */}
-
                         </Box>
                     </Grid>
                 </Grid>
+                <MyDialog
+                    delete={this.delete}
+                    open={this.state.open}
+                    handleClickOpen={this.handleClickOpen}
+                    handleClose={this.handleClose}
+                    title="Delete resource template"
+                    msg="Are you sure you want to delete this resource template?" />
             </Grid>
         );
     }
