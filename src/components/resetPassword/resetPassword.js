@@ -3,9 +3,15 @@ import React, { Component } from "react";
 import Axios from "axios";
 //import Axios from "axios";
 import axios from '../../utils/axios';
-import {TextField, Button, FormControl, Grid, Box, CssBaseline} from '@material-ui/core';
+import {TextField, Button, FormControl, Grid, Box, CssBaseline, FormHelperText} from '@material-ui/core';
 import Typography from "@material-ui/core/Typography";
 import Alert from "@material-ui/lab/Alert";
+import InputLabel from "@material-ui/core/InputLabel";
+import Input from "@material-ui/core/Input";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from "@material-ui/core/IconButton";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 const textFieldStyles = {
     width: 300,
@@ -29,6 +35,8 @@ class ResetPassword extends Component {
         password: undefined,
         confirmationPassword:undefined,
         errorMessages: {},
+        showPassword: false,
+        showConfPassword: false,
         errorMassage: ''
     }
 
@@ -36,16 +44,22 @@ class ResetPassword extends Component {
         return this.state.password === undefined || this.state.confirmationPassword === undefined;
     }
 
-    validatePassword = () => {
-        let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!@#$*%^&(-_)/><?"|+=:])[A-Za-z\d~`!@#*$%^&(-_)/><?"|+=:]{7,}$/;
-        return re.test(String(this.state.password));
+    validatePassword = (password) => {
+        let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!@#$*%^&(_)/><?"|+=:])[A-Za-z\d~`!@#*$%^&(_)/><?"|+=:]{8,}$/;
+        return re.test(password);
     }
 
+    handleClickShowPassword = () => {
+        this.setState({showPassword: !this.state.showPassword});
+    };
+    handleClickShowConfPassword = () => {
+        this.setState({showConfPassword: !this.state.showConfPassword});
+    };
 
     onChangePassword = (event) => {
         let password = event.target.value;
         this.setState({password});
-        if (!this.validatePassword()) {
+        if (!this.validatePassword(password)) {
             let errors = {
                 ...this.state.errorMessages,
                 ["password"]: "Password must contain at least eight characters and at least one character of "
@@ -97,14 +111,54 @@ class ResetPassword extends Component {
                 <CssBaseline/>
                 {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
                 <Typography variant='h5' color='primary'>Change password</Typography>
-                <TextField type="password" label="Password" style={textFieldStyles} onChange={this.onChangePassword}
-                           helperText={this.state.errorMessages["password"]}
-                           error={this.state.errorMessages["password"] !== undefined}
-                />
-                <TextField type="password" label="Repeat Password" style={textFieldStyles}
+                <FormControl>
+                    <InputLabel htmlFor="Password">Password</InputLabel>
+                    <Input id="Password" type={this.state.showPassword ? 'text' : 'password'}
+                           placeholder="Password"
+                           style={textFieldStyles}
+                           onChange={this.onChangePassword}
+                           endAdornment={
+                               <InputAdornment position="end">
+                                   <IconButton
+                                       onClick={this.handleClickShowPassword}>
+                                       {this.state.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                   </IconButton>
+                               </InputAdornment>
+                           }
+                    />
+                    {this.state.errorMessages["password"] !== undefined &&
+                    <FormHelperText style={textFieldStyles}
+                                    htmlFor="Password"
+                                    error={true}>
+                        {this.state.errorMessages["password"]}
+                    </FormHelperText>}
+                </FormControl>
+
+                <FormControl>
+                    <InputLabel htmlFor="Repeat Password">Repeat Password</InputLabel>
+                    <Input type={this.state.showConfPassword ? 'text' : 'password'}
+                           placeholder="Repeat Password"
+                           id={"Repeat Password"}
+                           style={textFieldStyles}
                            onChange={this.onChangeConfirmationPassword}
                            helperText={this.state.errorMessages["confirmationPassword"]}
-                           error={this.state.errorMessages["confirmationPassword"] !== undefined}/>
+                           error={this.state.errorMessages["confirmationPassword"] !== undefined}
+                           endAdornment={
+                               <InputAdornment position="end">
+                                   <IconButton
+                                       onClick={this.handleClickShowConfPassword}>
+                                       {this.state.showConfPassword ? <Visibility/> : <VisibilityOff/>}
+                                   </IconButton>
+                               </InputAdornment>
+                           }
+                    />
+                    {this.state.errorMessages["confirmationPassword"] !== undefined &&
+                    <FormHelperText style={textFieldStyles}
+                                    htmlFor="Repeat Password"
+                                    error={true}>
+                        {this.state.errorMessages["confirmationPassword"]}
+                    </FormHelperText>}
+                </FormControl>
                 <Button onClick={this.getData}
                         variant="contained" color="primary" onClick={this.getData}
                         size="large"

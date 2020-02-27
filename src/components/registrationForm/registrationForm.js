@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {TextField, Button, FormControl, Grid, Box} from '@material-ui/core';
+import {TextField, Button, FormControl, Grid, Box, CssBaseline, FormHelperText} from '@material-ui/core';
 import axios from "../../utils/axios";
 import SaveIcon from '@material-ui/icons/Save';
 import {makeStyles} from '@material-ui/core/styles';
@@ -12,14 +12,23 @@ import Typography from "@material-ui/core/Typography";
 import {width} from "@material-ui/system";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
+import EmailIcon from "@material-ui/icons/Email";
+import Input from "@material-ui/core/Input";
+import Alert from "@material-ui/lab/Alert";
+import InputLabel from "@material-ui/core/InputLabel";
 
 // const formControlStyles = {
 //     marginBottom: 20
 // }
 const gridStyles = {
     marginTop: 30
+    // width: 300
+    // minWidth: 100,
+    // maxWidth: 300,
+    // padding: 10
 }
 const textFieldStyles = {
+    // height: 50,
     width: 300,
     minWidth: 100,
     maxWidth: 300
@@ -29,6 +38,9 @@ const buttomStyles = {
     marginTop: 20,
     marginBottom: 20
 }
+// const handleClickShowPassword = () => {
+//     this.setState({showPassword: !this.state.showPassword});
+// };
 
 class RegistrationForm extends Component {
 
@@ -40,6 +52,7 @@ class RegistrationForm extends Component {
         password: undefined,
         confirmationPassword: undefined,
         showPassword: false,
+        showConfPassword: false,
         errorMessages: {}
     }
 
@@ -48,35 +61,35 @@ class RegistrationForm extends Component {
             this.state.password === undefined || this.state.firstName === undefined
             || this.state.email === undefined || this.state.confirmationPassword === undefined);
     }
-    validateEmail = () => {
+    validateEmail = (email) => {
         let re = /^\s*[a-zA-Z0-9]+(([._\-])?[a-zA-Z0-9])+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}\s*$/;
-        return re.test(String(this.state.email).toLowerCase());
+        return re.test((email).toLowerCase());
     }
 
-    validateFirstName = () => {
+    validateFirstName = (firstName) => {
         let re = /^\s*(([A-Za-z]){2,})+(((-')[A-Za-z]+)*){2,}\s*$/;
-        return re.test(String(this.state.firstName));
+        return re.test(firstName);
     }
 
-    validateLastName = () => {
+    validateLastName = (lastName) => {
         let re = /^\s*([A-Za-z]+((-')[A-Za-z]+)*){2,}\s*$/;
-        return re.test(String(this.state.lastName));
+        return re.test(lastName);
     }
 
-    validatePhone = () => {
-        let re = /^\s*\+[0-9]{11}\s*$/;
-        return re.test(String(this.state.phone));
+    validatePhone = (phone) => {
+        let re = /^\s*\+[0-9]{12}\s*$/;
+        return re.test(phone);
     }
 
-    validatePassword = () => {
-        let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!@#$*%^&(-_)/><?"|+=:])[A-Za-z\d~`!@#*$%^&(-_)/><?"|+=:]{8,}$/;
-        return re.test(String(this.state.password));
+    validatePassword = (password) => {
+        let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!@#$*%^&(_)/><?"|+=:])[A-Za-z\d~`!@#*$%^&(_)/><?"|+=:]{8,}$/;
+        return re.test(password);
     }
 
     onChangeFirstName = (event) => {
         let firstName = event.target.value;
         this.setState({firstName});
-        if (!this.validateFirstName()) {
+        if (!this.validateFirstName(firstName)) {
             let errors = {...this.state.errorMessages, ["firstName"]: "First name is not valid"};
             this.setState({errorMessages: errors}, () => console.log(this.state));
         } else {
@@ -88,7 +101,7 @@ class RegistrationForm extends Component {
     onChangeLastName = (event) => {
         let lastName = event.target.value;
         this.setState({lastName});
-        if (!this.validateLastName()) {
+        if (!this.validateLastName(lastName)) {
             let errors = {...this.state.errorMessages, ["lastName"]: "Last name is not valid"};
             this.setState({errorMessages: errors}, () => console.log(this.state));
         } else {
@@ -100,7 +113,8 @@ class RegistrationForm extends Component {
     onChangeEmail = (event) => {
         let email = event.target.value;
         this.setState({email});
-        if (!this.validateEmail()) {
+
+        if (!this.validateEmail(email)) {
             let errors = {...this.state.errorMessages, ["email"]: "Email is not valid"};
             this.setState({errorMessages: errors}, () => console.log(this.state));
         } else {
@@ -112,7 +126,7 @@ class RegistrationForm extends Component {
     onChangePhone = (event) => {
         let phone = event.target.value;
         this.setState({phone});
-        if (!this.validatePhone()) {
+        if (!this.validatePhone(phone)) {
             let errors = {...this.state.errorMessages, ["phone"]: "Phone number is not valid"};
             this.setState({errorMessages: errors}, () => console.log(this.state));
         } else {
@@ -125,7 +139,7 @@ class RegistrationForm extends Component {
     onChangePassword = (event) => {
         let password = event.target.value;
         this.setState({password});
-        if (!this.validatePassword()) {
+        if (!this.validatePassword(password)) {
             let errors = {
                 ...this.state.errorMessages,
                 ["password"]: "Password must contain at least eight characters and at least one character of "
@@ -156,29 +170,24 @@ class RegistrationForm extends Component {
         axios.post("/registration", this.state).then(response => {
             this.props.history.push("/");
         }, error => {
-            // for(var json in error)
-            // this.setState({errorMessage: error.response});
             let errors = {}
             error.response.data.forEach(err => {
                 errors[[err.name]] = err.message;
             })
             this.setState({errorMessages: errors}, () => console.log(this.state));
-            // this.setState({ errorMessages: {...this.state.errorMessages, [err.name]: err.message}})
-            // console.log(error.response)
         });
     }
 
-     handleClickShowPassword = () => {
-        this.setState({ showPassword: !this.state.showPassword });
+    handleClickShowPassword = () => {
+        this.setState({showPassword: !this.state.showPassword});
     };
-    handleMouseDownPassword = event => {
-    event.preventDefault();
-};
+    handleClickShowConfPassword = () => {
+        this.setState({showConfPassword: !this.state.showConfPassword});
+    };
 
     render() {
         return (
-            // <Container component="main" maxWidth="xl">
-            <Grid container spacing={1} direction='column' alignItems='center' justify='space-between'
+            <Grid container spacing={-2} direction='column' alignItems='center' alignContent='center'
                   style={gridStyles}
             >
                 <Typography variant='h4' color='primary' paragraph='true'>Create Account</Typography>
@@ -196,38 +205,67 @@ class RegistrationForm extends Component {
                            helperText={this.state.errorMessages["email"]}
                            error={this.state.errorMessages["email"] !== undefined}
                 />
-                <TextField type="phone" label="Phone" style={textFieldStyles} onChange={this.onChangePhone}
+                <TextField type="phone"
+                           label="Phone"
+                           style={textFieldStyles}
+                           onChange={this.onChangePhone}
                            helperText={this.state.errorMessages["phone"]}
                            error={this.state.errorMessages["phone"] !== undefined}
                 />
-                <TextField type={this.state.showPassword ? 'text' : 'password'} label="Password" style={textFieldStyles} onChange={this.onChangePassword}
-                           helperText={this.state.errorMessages["password"]}
-                           error={this.state.errorMessages["password"] !== undefined}
+                <FormControl>
+                    <InputLabel htmlFor="Password">Password</InputLabel>
+                    <Input id="Password" type={this.state.showPassword ? 'text' : 'password'}
+                           placeholder="Password"
+                           style={textFieldStyles}
+                           onChange={this.onChangePassword}
                            endAdornment={
                                <InputAdornment position="end">
                                    <IconButton
-                                       aria-label="toggle password visibility"
-                                       onClick={this.setState({ showPassword: !this.state.showPassword })}
-                                       // onMouseDown={this.props.event.preventDefault()}
-                                   >
-                                       {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                       onClick={this.handleClickShowPassword}>
+                                       {this.state.showPassword ? <Visibility/> : <VisibilityOff/>}
                                    </IconButton>
-                               </InputAdornment>}
-                />
-                <TextField type="password" label="Repeat Password" style={textFieldStyles}
+                               </InputAdornment>
+                           }
+                    />
+                    {this.state.errorMessages["password"] !== undefined &&
+                    <FormHelperText style={textFieldStyles}
+                                    htmlFor="Password"
+                                    error={true}>
+                        {this.state.errorMessages["password"]}
+                    </FormHelperText>}
+                </FormControl>
+                <FormControl>
+                    <InputLabel htmlFor="Repeat Password">Repeat Password</InputLabel>
+                    <Input type={this.state.showConfPassword ? 'text' : 'password'}
+                           placeholder="Repeat Password"
+                           id={"Repeat Password"}
+                           style={textFieldStyles}
                            onChange={this.onChangeConfirmationPassword}
                            helperText={this.state.errorMessages["confirmationPassword"]}
                            error={this.state.errorMessages["confirmationPassword"] !== undefined}
-                />
+                           endAdornment={
+                               <InputAdornment position="end">
+                                   <IconButton
+                                       onClick={this.handleClickShowConfPassword}>
+                                       {this.state.showConfPassword ? <Visibility/> : <VisibilityOff/>}
+                                   </IconButton>
+                               </InputAdornment>
+                           }
+                    />
+                    {this.state.errorMessages["confirmationPassword"] !== undefined &&
+                    <FormHelperText style={textFieldStyles}
+                                    htmlFor="Repeat Password"
+                                    error={true}>
+                        {this.state.errorMessages["confirmationPassword"]}
+                    </FormHelperText>}
+                </FormControl>
                 <Button style={buttomStyles} variant="contained" color="primary" onClick={this.getData}
                         size="large"
                         disabled={this.isNotValid()}>Sign
                     up </Button>
                 <div>
                     <Typography variant='subtitle1'>Already have an account? <Link to={"/"}>Sign in</Link></Typography>
-                    {/*<a href="/forgot_password"></a>*/}
                 </div>
-                {/*</Container>*/}
             </Grid>
         );
     }
