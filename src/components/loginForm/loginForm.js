@@ -12,7 +12,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import googleLogo from "../../img/google-logo.png";
 import Alert from "@material-ui/lab/Alert";
-import {logout} from "../../service/authService";
 
 const localStorageService = LocalSessionStorageService.getService();
 
@@ -50,14 +49,6 @@ class LoginForm extends Component {
     }
 
     render() {
-
-        // const responseGoogle = (response) => {
-        //     console.log(response);
-        //     const jwt=response.accessToken;
-        //     console.log(jwt);
-        //     localStorageService.setAccessToken('Bearer '+ jwt);
-        //    // this.signup(response,'google');
-        // }
 
         return (
             <Container component="main" maxWidth="xs" style={style}>
@@ -127,22 +118,6 @@ class LoginForm extends Component {
                             endIcon={<img src={googleLogo} alt="" width={30} height={30}/>}
                         ><Link href={GOOGLE_AUTH_URL}>Log in with Google</Link></Button>
                     </Grid>
-
-
-                    {/*<GoogleLogin*/}
-                    {/*   //     clientId="395793978735-vp0r0da1tjvdtp9mjbvq6arjp5tk0eu0.apps.googleusercontent.com"*!/*/}
-                    {/*   //     buttonText="Login"*!/*/}
-                    {/*   //     onSuccess={responseGoogle}*!/*/}
-                    {/*   //     onFailure={responseGoogle}*!/*/}
-                    {/*   //     cookiePolicy={'single_host_origin'}*!/*/}
-                    {/*   // />*/}
-
-                    {/*  <GoogleLogout*/}
-                    {/*      clientId="395793978735-vp0r0da1tjvdtp9mjbvq6arjp5tk0eu0.apps.googleusercontent.com"*/}
-                    {/*      buttonText="Logout"*/}
-                    {/*      onLogoutSuccess={'/login'}*/}
-                    {/*  >*/}
-                    {/*  </GoogleLogout>*/}
                 </div>
             </Container>
         );

@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import axios from '../../utils/axios';
 import { Button } from "@material-ui/core";
-import LocalSessionStorageService from "../../services/LocalStorageService";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
-import Alert from "@material-ui/lab/Alert";
 
+
+const style={
+    marginTop:40
+}
 
 class FullOAuthRegister extends Component {
 
@@ -15,7 +17,7 @@ class FullOAuthRegister extends Component {
         password: undefined
     }
     getData = () => {
-        axios.post("http://localhost:8080/oauth2/callback/google", this.state).then(response => {
+        axios.post("/oauth2/fullRegister", this.state).then(response => {
             if (response !== undefined) {
                 window.location.href = "/home";
             }
@@ -40,7 +42,8 @@ class FullOAuthRegister extends Component {
     render() {
 
         return (
-            <Container component="main" maxWidth="xs">
+            <Container component="main" maxWidth="xs" style={style}>
+                <h2>To finish registration with Google please enter such fields:</h2>
                 <CssBaseline/>
                 <div>
                     <TextField

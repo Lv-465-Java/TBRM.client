@@ -10,8 +10,6 @@ import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { logout, isUserLoggedIn } from '../../service/authService';
 import {BrowserRouter, Link} from 'react-router-dom';
-import Alert from "@material-ui/lab/Alert";
-import Container from "@material-ui/core/Container";
 
 
 const Header = (props) => {
