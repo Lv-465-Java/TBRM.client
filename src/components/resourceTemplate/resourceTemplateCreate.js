@@ -3,7 +3,7 @@ import {TextField, Button, FormControl, Grid, Box} from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import axios from '../../utils/axios';
-import { getUserRole } from '../../service/authService';
+import {getUserRole} from '../../service/authService';
 import Auth from '../../hoc/auth';
 
 const gridStyles = {
@@ -27,7 +27,7 @@ class ResourceTemplateCreate extends Component {
             this.props.history.push("/resource-template");
         }, error => {
             this.setState({errorMessage: error.response.data.message});
-
+            console.log(error.response.data.message);
         })
     }
 
@@ -49,7 +49,7 @@ class ResourceTemplateCreate extends Component {
     }
 
     verifyUser = () => {
-        if(getUserRole() !== "ROLE_MANAGER"){
+        if (getUserRole() !== "ROLE_MANAGER") {
             this.props.history.push("/home");
         }
     }
@@ -58,7 +58,7 @@ class ResourceTemplateCreate extends Component {
         this.props.history.goBack();
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.verifyUser();
     }
 
@@ -84,7 +84,6 @@ class ResourceTemplateCreate extends Component {
                                 display="flex"
                                 flexDirection="column">
                                 <h1>Create Resource Template</h1>
-                                {/* {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>} */}
                                 <FormControl style={formControlStyles}>
                                     <TextField type="text" label="name" onChange={this.onChangeName}
                                                helperText={this.state.errorMessage} error={!!this.state.errorMessage}/>
@@ -104,7 +103,7 @@ class ResourceTemplateCreate extends Component {
                             </Box>
                         </Box>
                     </Grid>
-                    <Grid item xs={4}></Grid>
+                    <Grid item xs={4}/>
                 </Grid>
             </Auth>
         );

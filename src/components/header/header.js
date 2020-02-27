@@ -1,15 +1,15 @@
 import React from "react";
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import { Grid } from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import { logout, isUserLoggedIn } from '../../service/authService';
-import { Link } from 'react-router-dom';
+import {isUserLoggedIn, logout} from '../../service/authService';
+import {Link} from 'react-router-dom';
 
 
 const Header = (props) => {
@@ -39,10 +39,10 @@ const Header = (props) => {
         setAnchorEl(null);
     };
 
-     const logoutUser = () => {
+    const logoutUser = () => {
         logout();
         window.location.href = "/";
-      }
+    }
 
     const userLoggedIn = (
         <Grid>
@@ -54,7 +54,7 @@ const Header = (props) => {
                     onClick={handleMenu}
                     color="inherit"
                 >
-                    <AccountCircle />
+                    <AccountCircle/>
                 </IconButton>
                 <Menu
                     id="menu-appbar"
@@ -78,14 +78,13 @@ const Header = (props) => {
     );
 
     const userNotLoggedIn = (
-            <Grid>
-                <Link to="/"><Button style={{ color: '#FFF' }}>Sign In</Button></Link>
-                <Link to="/"><Button style={{ color: '#FFF' }}>Sign Up</Button></Link>
-            </Grid>
+        <Grid>
+            <Link to="/"><Button style={{color: '#FFF'}}>Sign In</Button></Link>
+            <Link to="/"><Button style={{color: '#FFF'}}>Sign Up</Button></Link>
+        </Grid>
     );
 
     let headerLinks;
-
     if (isUserLoggedIn()) {
         headerLinks = userLoggedIn;
     } else {
@@ -94,13 +93,13 @@ const Header = (props) => {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static" style={{ background: '#64b5f6' }}>
+            <AppBar position="static" style={{background: '#64b5f6'}}>
                 <Toolbar>
                     <Grid
                         justify="space-between"
                         container>
                         <Grid>
-                            <Link to="/home"><Button style={{ color: '#FFF' }}>TBRM</Button></Link>
+                            <Link to="/home"><Button style={{color: '#FFF'}}>TBRM</Button></Link>
                         </Grid>
                         {headerLinks}
                     </Grid>

@@ -4,8 +4,6 @@ import { Button, Grid, Box } from '@material-ui/core';
 import axios from '../../utils/axios';
 import Auth from '../../hoc/auth';
 
-
-
 class HomePage extends Component {
 
     state = {
@@ -77,6 +75,14 @@ class HomePage extends Component {
                                 variant="contained"
                                 color="primary"
                             >Resources</Button>
+                        </Link>
+                    </Box>
+                    <Box mt={5}>
+                        <Link to="/group">
+                            <Button
+                                variant="contained"
+                                color="primary"
+                            >Groups</Button>
                         </Link>
                     </Box>
                 </Box>
