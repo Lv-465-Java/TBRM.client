@@ -16,6 +16,8 @@ import ResourceTemplateView from "./components/resourceTemplate/resourceTemplate
 import OAuth2RedirectHandler from "./components/oauth2/OAuth2RedirectHandler";
 import PermissionResourceTemplateList from "./components/permissions/permissionResourceTemplateList";
 import PermissionResourceTemplateAdd from "./components/permissions/permissionResourceTemplateAdd";
+import PermissionResourceTemplateRemove from "./components/permissions/permissionResourcetemplateRemove";
+import PermissionResourceTemplateChangeOwner from "./components/permissions/permissionResourceTemplateChangeOwner";
 import ForgotPasswordMessage from "./components/resetPassword/ForgotPasswordMessage";
 import ProfileForm from "./components/profile/ProfileForm";
 import GroupList from "./components/group/groupList";
@@ -42,6 +44,8 @@ class Routers extends Component {
                     <Route path="/resource-template/update/:id" component={ResourceTemplateUpdate} />
                     <Route path="/resource-template/view/:id" component={ResourceTemplateView} />
                     <Route path="/resource-template/permission/add/:id" component={PermissionResourceTemplateAdd} />
+                    <Route path="/resource-template/permission/remove/:id" component={PermissionResourceTemplateRemove} />
+                    <Route path="/resource-template/permission/owner/:id" component={PermissionResourceTemplateChangeOwner} />
                     <Route path="/resource-template/permission/:id" component={PermissionResourceTemplateList} />
                     <Route path="/resource-template" component={ResourceTemplateList} />
                     <Route path="/forgot_password/:email" component={ForgotPasswordMessage} />
