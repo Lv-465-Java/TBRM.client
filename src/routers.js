@@ -14,13 +14,11 @@ import ResourceTemplateView from "./components/resourceTemplate/resourcetemplate
 import PermissionResourceTemplateList from "./components/permissions/permissionResourceTemplateList";
 import PermissionResourceTemplateAdd from "./components/permissions/permissionResourceTemplateAdd";
 
-
-
 class Routers extends Component {
     render() {
         return (
             <BrowserRouter>
-                <Header/>
+                <Header />
                 <Switch>
                     <Route path="/home" component={HomePage} />
                     <Route path="/search" component={SearchResourceTemplate} />
@@ -32,7 +30,7 @@ class Routers extends Component {
                     <Route path="/resource-template" component={ResourceTemplateList} />
                     <Route path="/" exact component={LoginForm} />
                 </Switch>
-                <Footer/>
+                <Footer />
             </BrowserRouter>
         );
     }
