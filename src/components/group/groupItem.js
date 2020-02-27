@@ -107,7 +107,10 @@ class GroupItem extends Component {
                     data={this.state.users}
                     editable={{
                         onRowAdd: newData => {
-                            axios.post("group/member", {email: newData.email, groupName: this.state.name});
+                            axios.post("group/member", {email: newData.email, groupName: this.state.name}).then( response => {
+                            }, error => {
+                                this.setState({errorMessage: error.response.data.message})
+                            });
                             return new Promise(resolve => {
                                 setTimeout(() => {
                                     this.getData();
