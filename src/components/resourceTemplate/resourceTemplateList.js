@@ -3,6 +3,7 @@ import axios from '../../utils/axios';
 import ResourceTemplateItem from './resourceTemplateItem';
 import { Button, Grid, Box } from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import { getUserRole } from '../../service/authService';
 import Auth from '../../hoc/auth';
 
 const style = {
@@ -45,45 +46,51 @@ class ResourceTemplateList extends Component {
     }
 
     render() {
+
+        let userLinks = (getUserRole() === "ROLE_MANAGER") ?
+            (
+                <Button
+                    variant="contained"
+                    style={buttonStyle}
+                    onClick={this.goToCreateResource}>Create Resource</Button>
+            ) : (
+                <div></div>
+            )
+
         return (
-            <div>
-                <Auth>
-                    <Grid container spacing={3} style={gridStyle}>
-                        <Grid item xs>
-                            <Grid
-                                container
-                                direction="column"
-                                justify="center"
-                                alignItems="center"
-                            >
-                                <Box mx="auto">
-                                    <Box>
-                                        <Button
-                                            variant="contained"
-                                            startIcon={<ArrowBackIosIcon />}
-                                            onClick={this.goHome}
-                                        >Go Back</Button>
-                                    </Box>
+            <Auth>
+                <Grid container spacing={3} style={gridStyle}>
+                    <Grid item xs>
+                        <Grid
+                            container
+                            direction="column"
+                            justify="center"
+                            alignItems="center"
+                        >
+                            <Box mx="auto">
+                                <Box>
+                                    <Button
+                                        variant="contained"
+                                        startIcon={<ArrowBackIosIcon />}
+                                        onClick={this.goHome}
+                                    >Go Back</Button>
                                 </Box>
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={8}>
-                            <div style={style}>
-                                {this.state.resourceTemplates.map((item) =>
-                                    (<ResourceTemplateItem key={item.id}
-                                        item={item} />)
-                                )}
-                            </div>
-                        </Grid>
-                        <Grid item xs>
-                            <Button
-                                variant="contained"
-                                style={buttonStyle}
-                                onClick={this.goToCreateResource}>Create Resource</Button>
+                            </Box>
                         </Grid>
                     </Grid>
-                </Auth>
-            </div>
+                    <Grid item xs={8}>
+                        <div style={style}>
+                            {this.state.resourceTemplates.map((item) =>
+                                (<ResourceTemplateItem key={item.id}
+                                    item={item} />)
+                            )}
+                        </div>
+                    </Grid>
+                    <Grid item xs>
+                        {userLinks}
+                    </Grid>
+                </Grid>
+            </Auth>
         );
     }
 }

@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import TextField from "../inputField/inputField";
-// import Axios from "axios";
-//import Axios from "axios";
 import axios from '../../utils/axios';
 import { Button } from "@material-ui/core";
 

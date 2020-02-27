@@ -3,6 +3,7 @@ import { TextField, Button, Grid, Box, FormControl, Container } from '@material-
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import MaterialTable from 'material-table';
 import Alert from '@material-ui/lab/Alert';
+import { getUserRole } from '../../service/authService';
 import axios from '../../utils/axios';
 import Auth from '../../hoc/auth';
 
@@ -80,17 +81,24 @@ class PermissionResourceTemplateChangeOwner extends Component {
         this.setState({ recipient });
     }
 
-    componentDidMount = () => {
-        this.getData();
-        this.getUsers();
-    }
-
     isValid = () => {
         return this.state.recipient !== "";
     }
 
+    verifyUser = () => {
+        if(getUserRole() !== "ROLE_MANAGER"){
+            this.props.history.push("/home");
+        }
+    }
+
     goBack = () => {
         this.props.history.goBack();
+    }
+
+    componentDidMount = () => {
+        this.verifyUser();
+        this.getData();
+        this.getUsers();
     }
 
 

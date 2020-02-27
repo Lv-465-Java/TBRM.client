@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import axios from '../../utils/axios';
+import { getUserRole } from '../../service/authService';
 import Auth from '../../hoc/auth';
 
 
@@ -50,8 +51,15 @@ class ResourceTemplateUpdate extends Component {
         )
     }
 
+    verifyUser = () => {
+        if(getUserRole() !== "ROLE_MANAGER"){
+            this.props.history.push("/home");
+        }
+    }
+
 
     componentDidMount() {
+        this.verifyUser();
         this.getData();
     }
 

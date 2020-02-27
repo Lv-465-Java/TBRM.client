@@ -10,6 +10,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { getUserRole } from '../../service/authService';
 import Auth from '../../hoc/auth';
 
 const StyledTableCell = withStyles(theme => ({
@@ -61,13 +62,20 @@ class PermissionResourceTemplateList extends Component {
         })
     }
 
-    componentDidMount() {
-        this.getData();
-        this.getResourceTemplate();
+    verifyUser = () => {
+        if(getUserRole() !== "ROLE_MANAGER"){
+            this.props.history.push("/home");
+        }
     }
 
     goBack = () => {
         this.props.history.goBack();
+    }
+
+    componentDidMount() {
+        this.verifyUser();
+        this.getData();
+        this.getResourceTemplate();
     }
 
     render() {

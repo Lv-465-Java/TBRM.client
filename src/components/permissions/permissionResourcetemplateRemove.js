@@ -13,7 +13,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import AddIcon from '@material-ui/icons/Add';
 import Alert from '@material-ui/lab/Alert';
+import { getUserRole } from '../../service/authService';
 import axios from '../../utils/axios';
+import Auth from '../../hoc/auth';
 
 const formStyles = {
     marginBottom: 20,
@@ -55,13 +57,13 @@ class PermissionResourceTemplateRemove extends Component {
 
     delete = () => {
         axios.delete("/resource-template/permission", { data: this.state }).then(response => {
-            this.setState({ 
+            this.setState({
                 successMessage: successMessage,
                 errorMessage: ""
             });
             this.getPermissions();
         }, error => {
-            this.setState({ 
+            this.setState({
                 errorMessage: error.response.data.message,
                 successMessage: ""
             });
@@ -117,7 +119,13 @@ class PermissionResourceTemplateRemove extends Component {
 
     isValid = () => {
         return this.state.recipient !== ""
-            && this.state.permission !=="" && this.state.principal !== "";
+            && this.state.permission !== "" && this.state.principal !== "";
+    }
+
+    verifyUser = () => {
+        if (getUserRole() !== "ROLE_MANAGER") {
+            this.props.history.push("/home");
+        }
     }
 
     goBack = () => {
@@ -125,6 +133,7 @@ class PermissionResourceTemplateRemove extends Component {
     }
 
     componentDidMount = () => {
+        this.verifyUser();
         this.getData();
         this.getPermissions();
     }
@@ -132,95 +141,97 @@ class PermissionResourceTemplateRemove extends Component {
 
     render() {
         return (
-            <Grid container spacing={3}>
-                <Grid item xs={2}>
-                    <Box mx="auto">
-                        <Box mt={4}>
-                            <Button
-                                variant="contained"
-                                startIcon={<ArrowBackIosIcon />}
-                                onClick={this.goBack}
-                            >Go Back</Button>
+            <Auth>
+                <Grid container spacing={3}>
+                    <Grid item xs={2}>
+                        <Box mx="auto">
+                            <Box mt={4}>
+                                <Button
+                                    variant="contained"
+                                    startIcon={<ArrowBackIosIcon />}
+                                    onClick={this.goBack}
+                                >Go Back</Button>
+                            </Box>
                         </Box>
-                    </Box>
-                </Grid>
-                <Grid item xs={4}>
-                    <h2>Delete Permission to {this.state.name}</h2>
-                    <Box mx="auto">
-                        <Box mt={3}
-                            display="flex"
-                            flexDirection="column">
-                            {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
-                            {this.state.successMessage && <Alert severity="success">{this.state.successMessage}</Alert>}
-                            <FormControl style={formStyles}>
-                                <TextField type="text" label="recipient" value={this.state.recipient} onChange={this.onChangeRecipient} />
-                            </FormControl>
-                            <FormControl style={formStyles}>
-                                <InputLabel htmlFor="permission">Permission</InputLabel>
-                                <Select
-                                value={this.state.permission}
-                                    native
-                                    onChange={this.handleChangePermission('permission')}
-                                    inputProps={{
-                                        name: 'permission',
-                                        id: 'permission',
-                                    }}
-                                >
-                                    <option value="" />
-                                    <option value="read">READ</option>
-                                    <option value="write">WRITE</option>
-                                </Select>
-                            </FormControl>
-                            <FormControl style={formStyles}>
-                                <InputLabel htmlFor="principal">Principal</InputLabel>
-                                <Select
-                                    native
-                                    onChange={this.handleChangePrincipal('principal')}
-                                    inputProps={{
-                                        name: 'principal',
-                                        id: 'principal',
-                                    }}
-                                >
-                                    <option value="" />
-                                    <option value="true">User</option>
-                                    <option value="false">Group</option>
-                                </Select>
-                            </FormControl>
-                            <Button variant="contained"
-                                color="secondary"
-                                size="large"
-                                disabled={!this.isValid()}
-                                onClick={this.delete}
-                            >Delete Permission</Button>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <h2>Delete Permission to {this.state.name}</h2>
+                        <Box mx="auto">
+                            <Box mt={3}
+                                display="flex"
+                                flexDirection="column">
+                                {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
+                                {this.state.successMessage && <Alert severity="success">{this.state.successMessage}</Alert>}
+                                <FormControl style={formStyles}>
+                                    <TextField type="text" label="recipient" value={this.state.recipient} onChange={this.onChangeRecipient} />
+                                </FormControl>
+                                <FormControl style={formStyles}>
+                                    <InputLabel htmlFor="permission">Permission</InputLabel>
+                                    <Select
+                                        value={this.state.permission}
+                                        native
+                                        onChange={this.handleChangePermission('permission')}
+                                        inputProps={{
+                                            name: 'permission',
+                                            id: 'permission',
+                                        }}
+                                    >
+                                        <option value="" />
+                                        <option value="read">READ</option>
+                                        <option value="write">WRITE</option>
+                                    </Select>
+                                </FormControl>
+                                <FormControl style={formStyles}>
+                                    <InputLabel htmlFor="principal">Principal</InputLabel>
+                                    <Select
+                                        native
+                                        onChange={this.handleChangePrincipal('principal')}
+                                        inputProps={{
+                                            name: 'principal',
+                                            id: 'principal',
+                                        }}
+                                    >
+                                        <option value="" />
+                                        <option value="true">User</option>
+                                        <option value="false">Group</option>
+                                    </Select>
+                                </FormControl>
+                                <Button variant="contained"
+                                    color="secondary"
+                                    size="large"
+                                    disabled={!this.isValid()}
+                                    onClick={this.delete}
+                                >Delete Permission</Button>
+                            </Box>
                         </Box>
-                    </Box>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <h2>Users/Groups with access to {this.state.name}</h2>
+                        <TableContainer component={Paper}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <StyledTableCell>Choose</StyledTableCell>
+                                        <StyledTableCell>User/Group</StyledTableCell>
+                                        <StyledTableCell>Permission</StyledTableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {this.state.permissions.map(item => (
+                                        <StyledTableRow key={item.principal + item.permission}>
+                                            <StyledTableCell><AddIcon onClick={() => this.choose(item)} /></StyledTableCell>
+                                            <StyledTableCell component="th" scope="row">
+                                                {item.principal}
+                                            </StyledTableCell>
+                                            <StyledTableCell>{item.permission}</StyledTableCell>
+                                        </StyledTableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Grid>
                 </Grid>
-                <Grid item xs={4}>
-                    <h2>Users/Groups with access to {this.state.name}</h2>
-                    <TableContainer component={Paper}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <StyledTableCell>Choose</StyledTableCell>
-                                    <StyledTableCell>User/Group</StyledTableCell>
-                                    <StyledTableCell>Permission</StyledTableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {this.state.permissions.map(item => (
-                                    <StyledTableRow key={item.principal + item.permission}>
-                                        <StyledTableCell><AddIcon onClick={() => this.choose(item)}/></StyledTableCell>
-                                        <StyledTableCell component="th" scope="row">
-                                            {item.principal}
-                                        </StyledTableCell>
-                                        <StyledTableCell>{item.permission}</StyledTableCell>
-                                    </StyledTableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </Grid>
-            </Grid>
+            </Auth>
         );
     }
 }
