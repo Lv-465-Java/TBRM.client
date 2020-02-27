@@ -9,7 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { logout, isUserLoggedIn } from '../../service/authService';
-import { Link } from 'react-router-dom';
+import {BrowserRouter, Link} from 'react-router-dom';
 
 
 const Header = (props) => {
@@ -82,12 +82,12 @@ const Header = (props) => {
                 <Link to="/"><Button style={{ color: '#FFF' }}>Sign In</Button></Link>
                 <Link to="/"><Button style={{ color: '#FFF' }}>Sign Up</Button></Link>
             </Grid>
-    );
+        );
 
     let headerLinks;
-
     if (isUserLoggedIn()) {
         headerLinks = userLoggedIn;
+        console.log(isUserLoggedIn())
     } else {
         headerLinks = userNotLoggedIn;
     }

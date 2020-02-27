@@ -9,9 +9,6 @@ class DropdownParameterType extends Component {
             <>
                 <Select value={this.props.parameterType} onChange={this.props.onChangeParameterType}>
                     {this.props.list.map(element => <MenuItem key={element} value={element}>{element}</MenuItem>)}
-                    {/*<MenuItem value="POINT">Point</MenuItem>*/}
-                    {/*<MenuItem value="RANGE">Rangesss</MenuItem>*/}
-                    {/*<MenuItem value="coordinates">Coordinates</MenuItem>*/}
                 </Select>
             </>
         );

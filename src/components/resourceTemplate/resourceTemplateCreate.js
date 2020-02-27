@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { TextField, Button, FormControl, Grid, Box } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
-import Alert from '@material-ui/lab/Alert';
+import { Alert } from '@material-ui/lab';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import axios from '../../utils/axios';
 
@@ -24,7 +24,7 @@ class ResourceTemplateCreate extends Component {
         axios.post("/resource-template", this.state).then(response => {
             this.props.history.push("/resource-template");
         }, error => {
-            this.setState({ errorMessage: error.response.data.message });
+            this.setState({ errorMessage: error.response.data.message});
             console.log(error.response.data.message);
         })
     }
@@ -71,9 +71,8 @@ class ResourceTemplateCreate extends Component {
                             display="flex"
                             flexDirection="column">
                             <h1>Create Resource Template</h1>
-                            {/* {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>} */}
                             <FormControl style={formControlStyles}>
-                                <TextField type="text" label="name" onChange={this.onChangeName} helperText={this.state.errorMessage} error={!!this.state.errorMessage}/>
+                                <TextField type="text" label="name" onChange={this.onChangeName} helperText={this.state.errorMessage} error={!!this.state.errorMessage} />
                             </FormControl>
                             <FormControl style={formControlStyles}>
                                 <TextField type="text" label="description" onChange={this.onChangeDescription} />
