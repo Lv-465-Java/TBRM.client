@@ -1,7 +1,6 @@
-
-import React, { Component } from "react";
-import { BrowserRouter } from "react-router-dom";
-import { Route, Switch } from "react-router";
+import React, {Component} from "react";
+import {BrowserRouter} from "react-router-dom";
+import {Route, Switch} from "react-router";
 import LoginForm from "./components/loginForm/loginForm";
 import SearchResourceTemplate from "./components/search/resourceTemplate";
 import ResourceTemplateList from "./components/resourceTemplate/resourceTemplateList";
@@ -14,13 +13,18 @@ import ResourceTemplateView from "./components/resourceTemplate/resourcetemplate
 import OAuth2RedirectHandler from "./components/oauth2/OAuth2RedirectHandler";
 import PermissionResourceTemplateList from "./components/permissions/permissionResourceTemplateList";
 import PermissionResourceTemplateAdd from "./components/permissions/permissionResourceTemplateAdd";
+import GroupList from "./components/group/groupList";
+import GroupItem from "./components/group/groupItem";
+import EditGroup from "./components/group/editGroup";
+import AddPermission from "./components/group/addPermission";
 import FullOAuthRegister from "./components/oauth2/FullOAuthRegister";
+
 
 class Routers extends Component {
     render() {
         return (
             <BrowserRouter>
-                <Header />
+                <Header/>
                 <Switch>
                     <Route path="/home" component={HomePage} />
                     <Route path="/search" component={SearchResourceTemplate} />
@@ -30,13 +34,18 @@ class Routers extends Component {
                     <Route path="/resource-template/permission/add/:id" component={PermissionResourceTemplateAdd} />
                     <Route path="/resource-template/permission/:id" component={PermissionResourceTemplateList} />
                     <Route path="/resource-template" component={ResourceTemplateList} />
-                    <Route path="/" exact component={LoginForm} />
+                    <Route path="/group/edit/:name" component={EditGroup}/>
+                    <Route path="/group/view/:name" component={GroupItem}/>
+                    <Route path="/group/permission/:id" component={AddPermission}/>
+                    <Route path="/group" component={GroupList}/>
                     <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}/>
                     <Route path="/oauth2/fullRegister" component={FullOAuthRegister}/>
+                    <Route path="/" exact component={LoginForm} />
                 </Switch>
-                <Footer />
+                <Footer/>
             </BrowserRouter>
         );
     }
 }
+
 export default Routers;
