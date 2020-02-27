@@ -297,30 +297,7 @@ class ResourceTemplateView extends Component {
                                     Delete
                                 </Button>
                             </Box>
-                            {/* if (this.state.isPublished === false) {
-                                return(
-                            <Box mt={5}>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        startIcon={<CheckCircleIcon />}
-                                        style={useStyles.button}
-                                        onClick={this.publish}
-                                    >Publish</Button>
-                            </Box>)
-                            }else {
-                            <Box mt={5}>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        startIcon={<ReplayIcon />}
-                                        style={useStyles.button}
-                                        onClick={this.unpublish}
-                                    >Cancel publish</Button>
-                            </Box>} */}
                             {publishButton}
-                            {/* {this.renderButton()} */}
-
                         </Box>
                     </Grid>
                 </Grid>
