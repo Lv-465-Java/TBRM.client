@@ -89,7 +89,7 @@ class ResourceTemplateCreate extends Component {
                         </Box>
                     </Box>
                 </Grid>
-                <Grid item xs={4}></Grid>
+                <Grid item xs={4}/>
             </Grid>
         );
     }

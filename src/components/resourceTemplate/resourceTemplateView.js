@@ -6,7 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
+import PopupState, {bindTrigger, bindMenu} from 'material-ui-popup-state';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -18,8 +18,8 @@ import { Grid, Box } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import axios from '../../utils/axios';
 import CreateParameter from "../resourceParameters/CreateParameter";
+import ResourceParametersList from "../resourceParameters/ResourceParametersList";
 import MyDialog from "./popUp"
-
 const style = {
     maxWidth: 800,
     minWidth: 500,
@@ -31,6 +31,12 @@ const gridStyle = {
     marginTop: 40
 }
 
+const cardStyle = {
+    maxWidth: 100,
+    minWidth: 1000,
+    marginLeft: 100
+}
+
 const useStyles = makeStyles(theme => ({
     button: {
         margin: theme.spacing(1),
@@ -39,17 +45,18 @@ const useStyles = makeStyles(theme => ({
 
 const isPublished = '';
 
+
 class ResourceTemplateView extends Component {
 
     state = {
         resTempId: this.props.match.params.id,
-        name: this.props.name,
-        tableName: this.props.tableName,
-        description: this.props.description,
-        isPublished: this.props.isPublished,
-        userId: this.props.userId,
-        resourceParameters: this.props.resourceParameters,
-        open: false
+        name: "",
+        tableName: "",
+        description: "",
+        isPublished: "",
+        userId: "",
+        open: false,
+        resourceParameters: []
     }
 
     classes = () => {
@@ -155,7 +162,7 @@ class ResourceTemplateView extends Component {
 
         return (
             <Grid container spacing={3}>
-                <Grid item xs={3}>
+                <Grid item xs={1}>
                     <Grid
                         container
                         direction="column"
@@ -167,14 +174,15 @@ class ResourceTemplateView extends Component {
                                 <Button
                                     variant="contained"
                                     color="primary"
-                                    startIcon={<ArrowBackIosIcon />}
+                                    startIcon={<ArrowBackIosIcon/>}
                                     onClick={this.goBack}
                                 >Go Back</Button>
                             </Box>
                         </Box>
                     </Grid>
                 </Grid>
-                <Grid item xs={6}>
+
+                <Grid item xs={8}>
                     <Card style={style}>
                         <CardActionArea>
                             <CardContent>
@@ -194,15 +202,15 @@ class ResourceTemplateView extends Component {
                             </Typography>
                         </CardContent>
                     </Card>
-                    <CreateParameter getData={this.getData}
-                        resTempId={this.state.resTempId} />
+                    {/*<CreateParameter getData={this.getData}*/}
+                    {/*    resTempId={this.state.resTempId} />*/}
                 </Grid>
                 <Grid item xs={3}>
                     <Grid container
-                        direction="column"
-                        justify="center"
-                        alignItems="center"
-                        style={gridStyle}
+                          direction="column"
+                          justify="center"
+                          alignItems="center"
+                          style={gridStyle}
                     >
                         <Box mx="auto">
                             <Box>
@@ -230,7 +238,7 @@ class ResourceTemplateView extends Component {
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        startIcon={<EditIcon />}
+                                        startIcon={<EditIcon/>}
                                     >Update</Button>
                                 </Link>
                             </Box>
@@ -238,7 +246,7 @@ class ResourceTemplateView extends Component {
                                 <Button
                                     variant="contained"
                                     color="secondary"
-                                    startIcon={<DeleteIcon />}
+                                    startIcon={<DeleteIcon/>}
                                     style={useStyles.button}
                                     onClick={this.handleClickOpen}
                                 >
@@ -248,6 +256,21 @@ class ResourceTemplateView extends Component {
                             {publishButton}
                         </Box>
                     </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    <h3>Resource Parameters</h3>
+                    <Card style={cardStyle}>
+                        <CardContent>
+                            <CreateParameter getData={this.getData}
+                                             resTempId={this.state.resTempId}/>
+                        </CardContent>
+                        <CardContent>
+                            <ResourceParametersList resourceParameters={this.state.resourceParameters}
+                                                    resTempId={this.state.resTempId}
+                                                    getData={this.getData}/>
+                        </CardContent>
+                    </Card>
+
                 </Grid>
                 <MyDialog
                     delete={this.delete}

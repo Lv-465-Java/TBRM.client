@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 // import TextField from "../inputField/inputField";
-import Axios from "axios";
 //import Axios from "axios";
 import axios from '../../utils/axios';
-import {TextField, Button, FormControl, Grid, Box, CssBaseline, FormHelperText} from '@material-ui/core';
+import {Button, CssBaseline, FormControl, FormHelperText, Grid} from '@material-ui/core';
 import Typography from "@material-ui/core/Typography";
 import Alert from "@material-ui/lab/Alert";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -22,18 +21,16 @@ const buttomStyles = {
     marginTop: 20,
     marginBottom: 20
 }
-const BoxStyle = {
-    paddingLeft: 16,
-    paddingRight: 16
-}
+
 const gridStyles = {
     marginTop: 30
 }
+
 class ResetPassword extends Component {
 
     state = {
         password: undefined,
-        confirmationPassword:undefined,
+        confirmationPassword: undefined,
         errorMessages: {},
         showPassword: false,
         showConfPassword: false,
@@ -85,12 +82,12 @@ class ResetPassword extends Component {
         }
     }
 
-    getData =() => {
+    getData = () => {
         const search = this.props.location.search;
         const params = new URLSearchParams(search);
         const token = params.get('token');
         console.log(this.state.password);
-        axios.post(`/reset_password?token=${token}`,this.state.password, {
+        axios.post(`/reset_password?token=${token}`, this.state.password, {
             headers: {
                 'Content-Type': 'application/json',
             }
@@ -107,7 +104,7 @@ class ResetPassword extends Component {
     render() {
         return (
             <Grid container direction='column' alignItems='center' justify='space-between'
-            style={gridStyles}>
+                  style={gridStyles}>
                 <CssBaseline/>
                 {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
                 <Typography variant='h5' color='primary'>Change password</Typography>

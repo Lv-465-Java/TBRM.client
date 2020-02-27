@@ -28,7 +28,7 @@ class ResourceTemplateItem extends Component{
         isPublished: this.props.item.isPublished,
         userId:	this.props.item.userId,
         resourceParameters: this.props.item.resourceParameters
-    }
+    };
     
     render(){
         return(

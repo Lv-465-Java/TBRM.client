@@ -8,8 +8,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 export default class MyDialog extends Component {
     render() {
-        console.log("dialog")
-        console.log(this.props.open)
         return (<>
             <Dialog
                 open={this.props.open}

@@ -12,11 +12,10 @@ import ResourceTemplateCreate from "./components/resourceTemplate/resourceTempla
 import ResetPassword from "./components/resetPassword/resetPassword";
 import ForgotPassword from "./components/resetPassword/forgotPassword";
 import ResourceTemplateUpdate from "./components/resourceTemplate/resourceTemplateUpdate";
-import ResourceTemplateView from "./components/resourceTemplate/resourcetemplateView";
+import ResourceTemplateView from "./components/resourceTemplate/resourceTemplateView";
 import OAuth2RedirectHandler from "./components/oauth2/OAuth2RedirectHandler";
 import PermissionResourceTemplateList from "./components/permissions/permissionResourceTemplateList";
 import PermissionResourceTemplateAdd from "./components/permissions/permissionResourceTemplateAdd";
-import {Message} from "@material-ui/icons";
 import ForgotPasswordMessage from "./components/resetPassword/ForgotPasswordMessage";
 import ProfileForm from "./components/profile/ProfileForm";
 import GroupList from "./components/group/groupList";
