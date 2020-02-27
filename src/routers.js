@@ -1,7 +1,6 @@
-
-import React, { Component } from "react";
-import { BrowserRouter } from "react-router-dom";
-import { Route, Switch } from "react-router";
+import React, {Component} from "react";
+import {BrowserRouter} from "react-router-dom";
+import {Route, Switch} from "react-router";
 import LoginForm from "./components/loginForm/loginForm";
 import SearchResourceTemplate from "./components/search/resourceTemplate";
 import RegistrationForm from "./components/registrationForm/registrationForm";
@@ -14,12 +13,17 @@ import ResetPassword from "./components/resetPassword/resetPassword";
 import ForgotPassword from "./components/resetPassword/forgotPassword";
 import ResourceTemplateUpdate from "./components/resourceTemplate/resourceTemplateUpdate";
 import ResourceTemplateView from "./components/resourceTemplate/resourcetemplateView";
+import OAuth2RedirectHandler from "./components/oauth2/OAuth2RedirectHandler";
 import PermissionResourceTemplateList from "./components/permissions/permissionResourceTemplateList";
 import PermissionResourceTemplateAdd from "./components/permissions/permissionResourceTemplateAdd";
 import {Message} from "@material-ui/icons";
 import ForgotPasswordMessage from "./components/resetPassword/ForgotPasswordMessage";
 import ProfileForm from "./components/profile/ProfileForm";
-
+import GroupList from "./components/group/groupList";
+import GroupItem from "./components/group/groupItem";
+import EditGroup from "./components/group/editGroup";
+import AddPermission from "./components/group/addPermission";
+import FullOAuthRegister from "./components/oauth2/FullOAuthRegister";
 
 
 
@@ -42,6 +46,12 @@ class Routers extends Component {
                     <Route path="/resource-template/permission/:id" component={PermissionResourceTemplateList} />
                     <Route path="/resource-template" component={ResourceTemplateList} />
                     <Route path="/forgot_password/:email" component={ForgotPasswordMessage} />
+                    <Route path="/group/edit/:name" component={EditGroup}/>
+                    <Route path="/group/view/:name" component={GroupItem}/>
+                    <Route path="/group/permission/:id" component={AddPermission}/>
+                    <Route path="/group" component={GroupList}/>
+                    <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}/>
+                    <Route path="/oauth2/fullRegister" component={FullOAuthRegister}/>
                     <Route path="/" exact component={LoginForm} />
                 </Switch>
                 <Footer/>
@@ -49,4 +59,5 @@ class Routers extends Component {
         );
     }
 }
+
 export default Routers;

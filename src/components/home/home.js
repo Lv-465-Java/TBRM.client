@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Grid, Box } from '@material-ui/core';
+import Alert from "@material-ui/lab/Alert";
 
 class HomePage extends Component {
 
@@ -8,7 +9,7 @@ class HomePage extends Component {
         return (
             <div>
                 <Grid item xs={12}>
-                    <h1>Resource Managment System</h1>
+                    <h1>Resource Management System</h1>
                 </Grid>
                 <Grid container spacing={3}>
                     <Grid item xs>
@@ -42,6 +43,14 @@ class HomePage extends Component {
                                             variant="contained"
                                             color="primary"
                                         >Resources</Button>
+                                    </Link>
+                                </Box>
+                                <Box mt={5}>
+                                    <Link to="/group">
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                        >Groups</Button>
                                     </Link>
                                 </Box>
                             </Box>
