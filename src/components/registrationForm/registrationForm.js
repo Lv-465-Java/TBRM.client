@@ -1,20 +1,13 @@
 import React, {Component} from "react";
-import {TextField, Button, FormControl, Grid, Box, CssBaseline, FormHelperText} from '@material-ui/core';
+import {Button, FormControl, FormHelperText, Grid, TextField} from '@material-ui/core';
 import axios from "../../utils/axios";
-import SaveIcon from '@material-ui/icons/Save';
-import {makeStyles} from '@material-ui/core/styles';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import Container from "@material-ui/core/Container";
 import {Link} from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
-import {width} from "@material-ui/system";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
-import EmailIcon from "@material-ui/icons/Email";
 import Input from "@material-ui/core/Input";
-import Alert from "@material-ui/lab/Alert";
 import InputLabel from "@material-ui/core/InputLabel";
 
 // const formControlStyles = {
@@ -26,18 +19,18 @@ const gridStyles = {
     // minWidth: 100,
     // maxWidth: 300,
     // padding: 10
-}
+};
 const textFieldStyles = {
     // height: 50,
     width: 300,
     minWidth: 100,
     maxWidth: 300
-}
+};
 
 const buttomStyles = {
     marginTop: 20,
     marginBottom: 20
-}
+};
 // const handleClickShowPassword = () => {
 //     this.setState({showPassword: !this.state.showPassword});
 // };
@@ -54,37 +47,37 @@ class RegistrationForm extends Component {
         showPassword: false,
         showConfPassword: false,
         errorMessages: {}
-    }
+    };
 
     isNotValid = () => {
         return (this.state.lastName === undefined ||
             this.state.password === undefined || this.state.firstName === undefined
             || this.state.email === undefined || this.state.confirmationPassword === undefined);
-    }
+    };
     validateEmail = (email) => {
         let re = /^\s*[a-zA-Z0-9]+(([._\-])?[a-zA-Z0-9])+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}\s*$/;
         return re.test((email).toLowerCase());
-    }
+    };
 
     validateFirstName = (firstName) => {
         let re = /^\s*(([A-Za-z]){2,})+(((-')[A-Za-z]+)*){2,}\s*$/;
         return re.test(firstName);
-    }
+    };
 
     validateLastName = (lastName) => {
         let re = /^\s*([A-Za-z]+((-')[A-Za-z]+)*){2,}\s*$/;
         return re.test(lastName);
-    }
+    };
 
     validatePhone = (phone) => {
         let re = /^\s*\+[0-9]{12}\s*$/;
         return re.test(phone);
-    }
+    };
 
     validatePassword = (password) => {
         let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!@#$*%^&(_)/><?"|+=:])[A-Za-z\d~`!@#*$%^&(_)/><?"|+=:]{8,}$/;
         return re.test(password);
-    }
+    };
 
     onChangeFirstName = (event) => {
         let firstName = event.target.value;
@@ -96,7 +89,7 @@ class RegistrationForm extends Component {
             let errors = {...this.state.errorMessages, ["firstName"]: undefined};
             this.setState({errorMessages: errors}, () => console.log(this.state));
         }
-    }
+    };
 
     onChangeLastName = (event) => {
         let lastName = event.target.value;
@@ -109,7 +102,7 @@ class RegistrationForm extends Component {
             this.setState({errorMessages: errors}, () => console.log(this.state));
 
         }
-    }
+    };
     onChangeEmail = (event) => {
         let email = event.target.value;
         this.setState({email});
@@ -122,7 +115,7 @@ class RegistrationForm extends Component {
             this.setState({errorMessages: errors}, () => console.log(this.state));
 
         }
-    }
+    };
     onChangePhone = (event) => {
         let phone = event.target.value;
         this.setState({phone});
@@ -134,7 +127,7 @@ class RegistrationForm extends Component {
             this.setState({errorMessages: errors}, () => console.log(this.state));
 
         }
-    }
+    };
 
     onChangePassword = (event) => {
         let password = event.target.value;
@@ -150,7 +143,7 @@ class RegistrationForm extends Component {
             let errors = {...this.state.errorMessages, ["password"]: undefined};
             this.setState({errorMessages: errors}, () => console.log(this.state));
         }
-    }
+    };
 
     onChangeConfirmationPassword = (event) => {
         let confirmationPassword = event.target.value;
@@ -163,20 +156,20 @@ class RegistrationForm extends Component {
             this.setState({errorMessages: errors}, () => console.log(this.state));
 
         }
-    }
+    };
 
     getData = () => {
         console.log('response.data.status');
         axios.post("/registration", this.state).then(response => {
             this.props.history.push("/");
         }, error => {
-            let errors = {}
+            let errors = {};
             error.response.data.forEach(err => {
                 errors[[err.name]] = err.message;
-            })
+            });
             this.setState({errorMessages: errors}, () => console.log(this.state));
         });
-    }
+    };
 
     handleClickShowPassword = () => {
         this.setState({showPassword: !this.state.showPassword});

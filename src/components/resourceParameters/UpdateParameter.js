@@ -1,15 +1,11 @@
 import React, {Component} from 'react';
-import {Box, Grid, TextField} from "@material-ui/core";
+import {TextField} from "@material-ui/core";
 import DropdownParameterType from "./DropdownParameterType";
-import Button from "@material-ui/core/Button";
-import EditIcon from "@material-ui/icons/Edit";
 import axios from "../../utils/axios";
-import ResourceParametersList from "./ResourceParametersList";
 import DropdownTemplate from "../resourceTemplate/DropdownTemplate";
 import TableCell from "@material-ui/core/TableCell";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
 
@@ -65,10 +61,6 @@ class UpdateParameter extends Component {
             // console.dir(error.response.data);
         })
     };
-    isNotValid = () => {
-        return this.state.name.length === 0;
-    };
-
 
     render() {
         return (

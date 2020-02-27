@@ -1,7 +1,4 @@
 import React, {Component} from 'react';
-import axios from "../../utils/axios";
-import ResourceTemplateItem from "../resourceTemplate/resourceTemplateItem";
-import {Grid} from "@material-ui/core";
 import ResourceParameterItem from "./ResourceParameterItem";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
@@ -13,7 +10,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 class ResourceParametersList extends Component {
 
     render() {
-        console.log("ResourceParametersList")
         return (
             <div>
                 <TableContainer>

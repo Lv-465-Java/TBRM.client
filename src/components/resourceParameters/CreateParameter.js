@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import {Box, Grid, TextField} from "@material-ui/core";
+import {Grid, TextField} from "@material-ui/core";
 import DropdownParameterType from "./DropdownParameterType";
 import Button from "@material-ui/core/Button";
 import EditIcon from "@material-ui/icons/Edit";
 import axios from "../../utils/axios";
-import ResourceParametersList from "./ResourceParametersList";
 import DropdownTemplate from "../resourceTemplate/DropdownTemplate";
 
 const PARAMETER_TYPE = {
@@ -65,7 +64,8 @@ class CreateParameter extends Component {
         })
     };
     isNotValid = () => {
-        return (this.state.name.length === 0 || this.state.parameter.length === 0 || this.state.parameterType.length === 0);
+        let {name, parameter, parameterType} = this.state;
+        return (name === "" || parameter === "" || parameterType === "");
     };
 
 

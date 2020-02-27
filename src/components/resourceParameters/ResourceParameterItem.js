@@ -1,17 +1,11 @@
 import React, {Component} from 'react';
-import TableContainer from "@material-ui/core/TableContainer";
-import Table from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import TableBody from "@material-ui/core/TableBody";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import axios from "../../utils/axios";
-import CreateParameter from "./CreateParameter";
 import UpdateParameter from "./UpdateParameter";
 
 class ResourceParameterItem extends Component {
@@ -25,18 +19,19 @@ class ResourceParameterItem extends Component {
         resourceRelation: this.props.item.relatedResourceTemplateName,
         isNotEdit: true
     };
-    UNSAFE_componentWillReceiveProps(nextProps){
+
+    UNSAFE_componentWillReceiveProps(nextProps) {
         let newData = {}
-        if(this.props.item.name !== nextProps.item.name){
+        if (this.props.item.name !== nextProps.item.name) {
             newData.name = nextProps.item.name
         }
-        if(this.props.item.parameterType !== nextProps.item.parameterType){
+        if (this.props.item.parameterType !== nextProps.item.parameterType) {
             newData.parameterType = nextProps.item.parameterType
         }
-        if(this.props.item.pattern !== nextProps.item.pattern){
+        if (this.props.item.pattern !== nextProps.item.pattern) {
             newData.pattern = nextProps.item.pattern
         }
-        if(this.props.item.resourceRelation !== nextProps.item.relatedResourceTemplateName){
+        if (this.props.item.resourceRelation !== nextProps.item.relatedResourceTemplateName) {
             newData.resourceRelation = nextProps.item.relatedResourceTemplateName
         }
         this.setState({...newData})
