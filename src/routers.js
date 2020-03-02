@@ -25,6 +25,7 @@ import GroupItem from "./components/group/groupItem";
 import EditGroup from "./components/group/editGroup";
 import AddPermission from "./components/group/addPermission";
 import FullOAuthRegister from "./components/oauth2/FullOAuthRegister";
+import ChangeEmailMassage from "./components/profile/ChangeEmailMassage";
 
 
 
@@ -39,6 +40,7 @@ class Routers extends Component {
                     <Route path="/registration" component={RegistrationForm}/>
                     <Route path="/reset_password" component={ResetPassword} />
                     <Route path="/profile" component={ProfileForm} />
+                    <Route path="/profile/massage" component={ChangeEmailMassage}/>
                     <Route path="/forgot_password" exact component={ForgotPassword} />
                     <Route path="/resource-template/create" component={ResourceTemplateCreate} />
                     <Route path="/resource-template/update/:id" component={ResourceTemplateUpdate} />
