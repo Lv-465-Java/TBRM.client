@@ -12,6 +12,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import googleLogo from "../../img/google-logo.png";
 import Alert from "@material-ui/lab/Alert";
+import DropDownMenu from '@material-ui/core/D/DropDownMenu';
 
 const localStorageService = LocalSessionStorageService.getService();
 
@@ -23,7 +24,8 @@ class LoginForm extends Component {
 
     state = {
         email: undefined,
-        password: undefined
+        password: undefined,
+        selection: 1 //////
     }
 
     getData = () => {
@@ -48,6 +50,12 @@ class LoginForm extends Component {
         this.setState({
             password: event.target.value
         })
+    }
+
+    handleChange(event, index, value) {
+        //set selection to the value selected
+        this.setState({ selection : value });
+
     }
     
 
@@ -83,6 +91,16 @@ class LoginForm extends Component {
                         id="password"
                         autoComplete="current-password"
                     />
+
+                    <DropDownMenu
+                        value={this.state.selection}
+                        onChange={this.handleChange}
+                    >
+                        <MenuItem value={1} primaryText="English"  />
+                        <MenuItem value={2} primaryText="Spanish" />
+                        <MenuItem value={3} primaryText="French" />
+
+                    </DropDownMenu>
 
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary"/>}

@@ -33,7 +33,11 @@ class OAuth2RedirectHandler extends Component {
                     state: {from: this.props.location}
                 }}/>;
             } else {
-                return  window.location.href="/home"
+                return <Redirect to={{
+                    pathname: "/home",
+                    state: {from: this.props.location}
+                }}/>;
+                // return  window.location.href="/home"
             }
 
 
