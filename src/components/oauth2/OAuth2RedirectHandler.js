@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { ACCESS_TOKEN, REFRESH_TOKEN } from '../../constants';
-import { Redirect } from 'react-router-dom'
+import React, {Component} from 'react';
+import {ACCESS_TOKEN, REFRESH_TOKEN} from '../../constants';
+import {Redirect} from 'react-router-dom'
 import LocalSessionStorageService from "../../services/LocalStorageService";
 
 const localStorageService = LocalSessionStorageService.getService();
@@ -17,32 +17,28 @@ class OAuth2RedirectHandler extends Component {
     render() {
         const accessToken = this.getUrlParameter(ACCESS_TOKEN);
         const refreshToken = this.getUrlParameter(REFRESH_TOKEN);
-        const isNewUser=this.getUrlParameter("isNewUser");
+        const isNewUser = this.getUrlParameter("isNewUser");
         console.log(accessToken);
         console.log(refreshToken);
         console.log(isNewUser);
         const error = this.getUrlParameter('error');
         console.log(error);
 
-        if(accessToken) {
+        if (accessToken) {
             localStorageService.setAccessToken(accessToken);
             localStorageService.setRefreshToken(refreshToken);
-            if (isNewUser==='true') {
+            if (isNewUser === 'true') {
                 return <Redirect to={{
                     pathname: "/oauth2/fullRegister",
                     state: {from: this.props.location}
                 }}/>;
             } else {
-                return <Redirect to={{
-                    pathname: "/home",
-                    state: {from: this.props.location}
-                }}/>;
-                // return  window.location.href="/home"
+                return window.location.href = "/home"
             }
 
 
         } else {
-            return  window.location.href="/"
+            return window.location.href = "/"
         }
     }
 }

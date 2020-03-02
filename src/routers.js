@@ -12,18 +12,20 @@ import ResourceTemplateCreate from "./components/resourceTemplate/resourceTempla
 import ResetPassword from "./components/resetPassword/resetPassword";
 import ForgotPassword from "./components/resetPassword/forgotPassword";
 import ResourceTemplateUpdate from "./components/resourceTemplate/resourceTemplateUpdate";
-import ResourceTemplateView from "./components/resourceTemplate/resourcetemplateView";
+import ResourceTemplateView from "./components/resourceTemplate/resourceTemplateView";
 import OAuth2RedirectHandler from "./components/oauth2/OAuth2RedirectHandler";
 import PermissionResourceTemplateList from "./components/permissions/permissionResourceTemplateList";
 import PermissionResourceTemplateAdd from "./components/permissions/permissionResourceTemplateAdd";
-import FullOAuthRegister from "./components/oauth2/FullOAuthRegister";
 import {Message} from "@material-ui/icons";
+import PermissionResourceTemplateRemove from "./components/permissions/permissionResourcetemplateRemove";
+import PermissionResourceTemplateChangeOwner from "./components/permissions/permissionResourceTemplateChangeOwner";
 import ForgotPasswordMessage from "./components/resetPassword/ForgotPasswordMessage";
 import ProfileForm from "./components/profile/ProfileForm";
 import GroupList from "./components/group/groupList";
 import GroupItem from "./components/group/groupItem";
 import EditGroup from "./components/group/editGroup";
 import AddPermission from "./components/group/addPermission";
+import FullOAuthRegister from "./components/oauth2/FullOAuthRegister";
 
 
 
@@ -43,6 +45,8 @@ class Routers extends Component {
                     <Route path="/resource-template/update/:id" component={ResourceTemplateUpdate} />
                     <Route path="/resource-template/view/:id" component={ResourceTemplateView} />
                     <Route path="/resource-template/permission/add/:id" component={PermissionResourceTemplateAdd} />
+                    <Route path="/resource-template/permission/remove/:id" component={PermissionResourceTemplateRemove} />
+                    <Route path="/resource-template/permission/owner/:id" component={PermissionResourceTemplateChangeOwner} />
                     <Route path="/resource-template/permission/:id" component={PermissionResourceTemplateList} />
                     <Route path="/resource-template" component={ResourceTemplateList} />
                     <Route path="/forgot_password/:email" component={ForgotPasswordMessage} />
@@ -53,8 +57,6 @@ class Routers extends Component {
                     <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}/>
                     <Route path="/oauth2/fullRegister" component={FullOAuthRegister}/>
                     <Route path="/" exact component={LoginForm} />
-                    <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}/>
-                    <Route path="/oauth2/fullRegister" component={FullOAuthRegister}/>
                 </Switch>
                 <Footer/>
             </BrowserRouter>

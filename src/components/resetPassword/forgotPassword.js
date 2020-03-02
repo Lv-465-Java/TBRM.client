@@ -1,9 +1,7 @@
 import React, {Component} from "react";
 import TextField from "../inputField/inputField";
-import Axios from "axios";
 import axios from '../../utils/axios';
-import {Box, Button, CssBaseline, FormControl, Grid} from "@material-ui/core";
-import Container from "@material-ui/core/Container";
+import {Box, Button, CssBaseline} from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import EmailIcon from '@material-ui/icons/Email';
 import Typography from "@material-ui/core/Typography";
@@ -23,6 +21,7 @@ const textFieldStyles = {
     maxWidth: 100
 
 }
+
 class ForgotPassword extends Component {
 
     state = {
@@ -57,7 +56,7 @@ class ForgotPassword extends Component {
 
     render() {
         return (
-            <Box m={2} style={BoxStyle} >
+            <Box m={2} style={BoxStyle}>
                 {this.logout && <Alert severity="success">Email has been sent</Alert>}
                 <CssBaseline/>
                 {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
@@ -67,7 +66,7 @@ class ForgotPassword extends Component {
                            value={this.state.email} onChange={this.onChangeEmail}/>
                 <Button style={buttomStyles} variant="contained" color="primary"
                         size="large"
-                        onClick={this.getData} disabled={!this.validateEmail()}><EmailIcon /> Send email</Button>
+                        onClick={this.getData} disabled={!this.validateEmail()}><EmailIcon/> Send email</Button>
             </Box>
 
         );
