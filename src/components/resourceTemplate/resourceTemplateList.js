@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import axios from '../../utils/axios';
 import ResourceTemplateItem from './resourceTemplateItem';
-import { Button, Grid, Box } from '@material-ui/core';
+import {Box, Button, Grid} from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import { getUserRole } from '../../service/authService';
+import {getUserRole} from '../../service/authService';
 import Auth from '../../hoc/auth';
 
 const style = {
@@ -24,22 +24,33 @@ class ResourceTemplateList extends Component {
 
     state = {
         resourceTemplates: []
-    }
+    };
 
     getData = () => {
         axios.get('resource-template').then(response => {
             let resourceTemplates = response.data;
-            this.setState({ resourceTemplates });
+            this.setState({resourceTemplates});
         })
-    }
+    };
+
+    getAllPublishedTemplates = () => {
+        axios.get('resource-template/published').then(response => {
+            let resourceTemplates = response.data;
+            this.setState({resourceTemplates});
+        })
+    };
 
     componentDidMount() {
-        this.getData();
+        if (getUserRole() === "ROLE_MANAGER") {
+            this.getData();
+        } else {
+            this.getAllPublishedTemplates();
+        }
     }
 
     goToCreateResource = () => {
         this.props.history.push("/resource-template/create");
-    }
+    };
 
     goHome = () => {
         this.props.history.push("/home");
@@ -71,7 +82,7 @@ class ResourceTemplateList extends Component {
                                 <Box>
                                     <Button
                                         variant="contained"
-                                        startIcon={<ArrowBackIosIcon />}
+                                        startIcon={<ArrowBackIosIcon/>}
                                         onClick={this.goHome}
                                     >Go Back</Button>
                                 </Box>
@@ -82,7 +93,7 @@ class ResourceTemplateList extends Component {
                         <div style={style}>
                             {this.state.resourceTemplates.map((item) =>
                                 (<ResourceTemplateItem key={item.id}
-                                    item={item} />)
+                                                       item={item}/>)
                             )}
                         </div>
                     </Grid>

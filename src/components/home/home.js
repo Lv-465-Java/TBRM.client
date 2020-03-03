@@ -103,6 +103,14 @@ class HomePage extends Component {
             userLinks = (
                 <Box mx="auto">
                     <Box mt={5}>
+                        <Link to="/resource-template">
+                            <Button
+                                variant="contained"
+                                color="primary"
+                            >Resource Templates</Button>
+                        </Link>
+                    </Box>
+                    <Box mt={5}>
                         <Link to="/resource">
                             <Button
                                 variant="contained"
