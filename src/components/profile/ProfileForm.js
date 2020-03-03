@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import axios from "../../utils/axios";
 import Axios from 'axios';
-import {Box, Paper,FormControl, FormHelperText, Grid, TextField} from "@material-ui/core";
+import {Box, Paper, FormControl, FormHelperText, Grid, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import Card from "@material-ui/core/Card";
@@ -27,7 +27,8 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Container from "@material-ui/core/Container";
-
+import { Alert } from "@material-ui/lab";
+import { logout } from '../../service/authService';
 const gridStyles = {
     marginTop: 30
 };
@@ -50,10 +51,10 @@ const divStyle = {
 }
 
 const photoLarge = {
-    maxWidth: 400,
-    minWidth: 400,
+    width: 400,
     height: 350,
-    display: 'flex',
+    // display: 'center',
+    align: "center"
     // sizes: '200'
 };
 const useStyles = makeStyles(theme => ({
@@ -70,6 +71,7 @@ class ProfileForm extends Component {
         lastName: this.props.lastName,
         email: this.props.email,
         phone: this.props.phone,
+        password: undefined,
         selectedFile: undefined,
         oldPassword: undefined,
         newPassword: undefined,
@@ -83,7 +85,8 @@ class ProfileForm extends Component {
         openDialogDelete: false,
         openDialogDeletePicture: false,
         errorMessage: '',
-        errorMessages: {}
+        errorMessages: {},
+        reLogin: ''
     }
     validatePassword = (password) => {
         let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!@#$*%^&(_)/><?"|+=:])[A-Za-z\d~`!@#*$%^&(_)/><?"|+=:]{8,}$/;
@@ -209,7 +212,6 @@ class ProfileForm extends Component {
                     lastName: data.lastName,
                     email: data.email,
                     phone: data.phone,
-                    password: data.password,
                     enabled: data.enabled
                 })
             }).catch(error => {
@@ -286,6 +288,7 @@ class ProfileForm extends Component {
     };
     handleCloseDialogChangeEmail = () => {
         this.setState({openDialogChangeEmail: false});
+        this.getData()
     };
 
     handleOpenDialogChangeData = () => {
@@ -352,194 +355,237 @@ class ProfileForm extends Component {
         ).then(
             response => {
                 this.setState({openDialogChangeData: false})
-            }).catch(error => {
-            this.setState({errorMessage: error.response.data.message});
-            console.log(error.response.data.message);
+            }).catch(error => {let errors = {};
+            error.response.data.forEach(err => {
+                errors[[err.name]] = err.message;
+            });
+            this.setState({errorMessages: errors}
+            );
         });
     };
+    reLogin = () => {
+        setTimeout(() => {
+            logout();
+        }, 10000);
+    };
     editEmail = () => {
-        axios.put(`/profile/update/email`, {
-                password: this.state.password,
+        axios.patch(`/profile/update/email`, {
+                password: this.state.oldPassword,
                 email: this.state.email
             }
         ).then(
             response => {
-                this.props.history.push("/profile/massage")
-            }).catch(error => {
-            this.setState({errorMessage: error.response.data.message});
-            console.log(error.response.data.message);
+                this.setState({
+                    reLogin: "You have successfully changed you email. Now you will be redirected to login page for login with new email address "
+                });
+                this.reLogin();
+                window.location.href="/";
+            },errors => {
+                if(errors.response.data.message){
+                    this.setState({errorMessage: errors.response.data.message}, () => console.log(this.state));
+                    } else {
+                    let error = {};
+                    errors.response.data.forEach(err => {
+                        error[[err.name]] = err.message;
+
+                        this.setState({errorMessages: error}, () => console.log(this.state));
+                    })
+                }
         });
     }
 
     render() {
         return (
-            <Grid container spacing={2}>
+            <Grid container spacing={4}>
                 <Grid item xs={1}/>
                 <Card style={style}>
                     <CardActionArea>
                         <CardContent>
-
                             <Grid container={"true"} justify={"space-evenly"}>
-                                <Grid item xs={6}>
+                                <Grid item xs={12} sm={6} >
                                     <Avatar src={this.state.photo}
                                             style={photoLarge}
-                                            // variant='rounded'
                                     />
-                                    {/*<Grid*/}
-                                    {/*    // container={"true"}*/}
-                                    {/*>*/}
-                                        <IconButton
-                                            color="primary"
-                                            style={{
-                                                position: "absolute",
-                                                right: 610
-                                            }}
-                                            component="label"
-                                        >
-                                            <AddAPhotoIcon/>
-                                            <Input type='file' disableUnderline='true' fullWidth='true'
-                                                   style={{display: "none"}}
-                                                   onChange={this.handleClickAddPhoto}
-                                                   placeholder='Change profile picture'/>
-                                        </IconButton>
-                                        <IconButton
-                                            color="primary"
-                                            style={{position: "absolute",
-                                                right: 570
-                                            }}
-                                            onClick={this.handleOpenDialogDeletePicture}>
-                                            <DeleteIcon/></IconButton>
-                                        <MyDialog
-                                            delete={this.handleClickDeletePhoto}
-                                            open={this.state.openDialogDeletePicture}
-                                            handleClose={this.handleCloseDialogDeletePicture}
-                                            title="Delete profile picture"
-                                            msg="Are you sure you want to delete your profile picture?"/>
-                                        {/*</div>*/}
-                                    {/*</Grid>*/}
                                 </Grid>
-                                <Grid item xs={6}>
-                                    {/*<Grid container={"true"}>*/}
-                                    <Typography variant="h3" component="h3" color="textPrimary">
-                                        {this.state.firstName} {this.state.lastName}
-                                    </Typography>
-                                    <Typography variant="h5" align="left" color="textSecondary" component="p">
-                                        {this.state.phone}
-                                    </Typography>
-                                    <Button
-                                        align="left"
-                                        variant="contained"
+                                <Grid
+                                    item xs={12} sm={12}
+                                >
+                                    <IconButton
                                         color="primary"
-                                        size="small"
-                                        // style={{
-                                        // marginTop: 90
-                                        // ,width: 200}}
-                                        onClick={this.handleOpenDialogChangeData}
-                                        startIcon={<EditIcon/>}>
-                                        Change user data</Button>
-                                    <Dialog
-                                        open={this.state.openDialogChangeData}
-                                        onClose={this.handleCloseDialogChangeData}
-                                        aria-labelledby="responsive-dialog-title"
+                                        style={{
+                                            position: "relative",
+                                            left: 118
+                                        }}
+                                        component="label"
                                     >
-                                        <DialogTitle id="responsive-dialog-title">Change profile data</DialogTitle>
-                                        <DialogContent>
-                                            <TextField type="firstName" style={textFieldStyles} label="First name"
-                                                       onChange={this.onChangeFirstName}
-                                                       helperText={this.state.errorMessages["firstName"]}
-                                                       error={this.state.errorMessages["firstName"] !== undefined}
-                                            />
-                                            <TextField type="lastName" label="Last name" style={textFieldStyles}
-                                                       onChange={this.onChangeLastName}
-                                                       helperText={this.state.errorMessages["lastName"]}
-                                                       error={this.state.errorMessages["lastName"] !== undefined}
-                                            />
-                                            <TextField type="phone" label="Phone" style={textFieldStyles}
-                                                       onChange={this.onChangePhone}
-                                                       helperText={this.state.errorMessages["phone"]}
-                                                       error={this.state.errorMessages["phone"] !== undefined}
-                                            />
-                                        </DialogContent>
-                                        <DialogActions>
-                                            <Button onClick={this.handleCloseDialogChangeData}
-                                                    color="primary">
-                                                Cancel
-                                            </Button>
-                                            <Button onClick={this.editData} color="primary">
-                                                Save
-                                            </Button>
-                                        </DialogActions>
-                                    </Dialog>
-
-                                    <Typography variant="h5" align="left" color="textSecondary" component="p">
-                                        {this.state.email}
+                                        <AddAPhotoIcon/>
+                                        <Input type='file' disableUnderline='true' fullWidth='true'
+                                               style={{display: "none"}}
+                                               onChange={this.handleClickAddPhoto}
+                                               placeholder='Change profile picture'/>
+                                    </IconButton>
+                                    <IconButton
+                                        color="primary"
+                                        style={{
+                                            position: "relative",
+                                            left: 120
+                                        }}
+                                        onClick={this.handleOpenDialogDeletePicture}>
+                                        <DeleteIcon/></IconButton>
+                                    <MyDialog
+                                        delete={this.handleClickDeletePhoto}
+                                        open={this.state.openDialogDeletePicture}
+                                        handleClose={this.handleCloseDialogDeletePicture}
+                                        title="Delete profile picture"
+                                        msg="Are you sure you want to delete your profile picture?"/>
+                                </Grid>
+                                <Grid container spacing={5} justify={"space-evenly"}>
+                                    <Grid xl={12} xs={12}>
+                                        <Typography variant="h3" component="h3" style={{marginTop: 10}}
+                                                    align={"center"} color="textPrimary">
+                                            {this.state.firstName} {this.state.lastName}
+                                        </Typography>
+                                    </Grid>
+                                    {/*<Grid direction={"column"}>*/}
+                                    <Grid xs={12} sm={6} alignContent={"flex-start"}>
+                                        <Typography variant="h5"
+                                                    style={{
+                                                        // padding: 3,
+                                                        position: "relative",
+                                                        right: 19,
+                                                        marginTop: 3}}
+                                                    color="textSecondary" component="p">
+                                            {this.state.phone}
+                                        </Typography>
+                                    </Grid>
+                                    <Grid xs={12} sm={6}>
                                         <Button
+                                            align={"left"}
                                             variant="contained"
                                             color="primary"
-                                            onClick={this.handleOpenDialogChangeEmail}
-                                            startIcon={<EditIcon/>}/>
+                                            size="small"
+                                            // style={{
+                                            // marginTop: 90
+                                            // ,width: 200}}
+                                            onClick={this.handleOpenDialogChangeData}
+                                            startIcon={<EditIcon/>}>
+                                            Change data</Button>
                                         <Dialog
-                                            open={this.state.openDialogChangeEmail}
-                                            onClose={this.handleCloseDialogChangeEmail}
+                                            open={this.state.openDialogChangeData}
+                                            onClose={this.handleCloseDialogChangeData}
                                             aria-labelledby="responsive-dialog-title"
                                         >
-                                            <DialogTitle id="responsive-dialog-title">Change email</DialogTitle>
-                                            <DialogContentText>
-                                                Please enter your password
-                                            </DialogContentText>
+                                            <DialogTitle id="responsive-dialog-title">Change profile data</DialogTitle>
                                             <DialogContent>
-                                                <FormControl>
-                                                    <InputLabel htmlFor="Password">Password</InputLabel>
-                                                    <Input id="Password"
-                                                           type={this.state.showPassword ? 'text' : 'password'}
-                                                           placeholder="Password"
-                                                           style={textFieldStyles}
-                                                           onChange={this.onChangePassword}
-                                                           endAdornment={
-                                                               <InputAdornment position="end">
-                                                                   <IconButton
-                                                                       onClick={this.handleClickShowPassword}>
-                                                                       {this.state.showPassword ? <Visibility/> :
-                                                                           <VisibilityOff/>}
-                                                                   </IconButton>
-                                                               </InputAdornment>
-                                                           }
-                                                    />
-                                                    {this.state.errorMessages["password"] !== undefined &&
-                                                    <FormHelperText style={textFieldStyles}
-                                                                    htmlFor="Password"
-                                                                    error={true}>
-                                                        {this.state.errorMessages["password"]}
-                                                    </FormHelperText>}
-                                                </FormControl>
-                                                <TextField type="email" label="Email" style={textFieldStyles}
-                                                           onChange={this.onChangeEmail}
-                                                           helperText={this.state.errorMessages["email"]}
-                                                           error={this.state.errorMessages["email"] !== undefined}
+                                                <TextField type="firstName" style={textFieldStyles} label="First name"
+                                                           onChange={this.onChangeFirstName}
+                                                           helperText={this.state.errorMessages["firstName"]}
+                                                           error={this.state.errorMessages["firstName"] !== undefined}
+                                                />
+                                                <TextField type="lastName" label="Last name" style={textFieldStyles}
+                                                           onChange={this.onChangeLastName}
+                                                           helperText={this.state.errorMessages["lastName"]}
+                                                           error={this.state.errorMessages["lastName"] !== undefined}
+                                                />
+                                                <TextField type="phone" label="Phone" style={textFieldStyles}
+                                                           onChange={this.onChangePhone}
+                                                           helperText={this.state.errorMessages["phone"]}
+                                                           error={this.state.errorMessages["phone"] !== undefined}
                                                 />
                                             </DialogContent>
                                             <DialogActions>
-                                                <Button onClick={this.handleCloseDialogChangeEmail}
+                                                <Button onClick={this.handleCloseDialogChangeData}
                                                         color="primary">
                                                     Cancel
                                                 </Button>
-                                                <Button onClick={this.editEmail} color="primary">
+                                                <Button onClick={this.editData} color="primary">
                                                     Save
                                                 </Button>
                                             </DialogActions>
                                         </Dialog>
-                                    </Typography>
-                                    {/*</div>*/}
-                                    <Grid xl={6}/>
-                                    <Grid xs={12} direction={"row-reverse"} alignContent={"flex-end"}>
-                                        <Button
-                                            align="left"
+                                    </Grid>
+                                    <Grid xs={12} sm={6} alignContent={"flex-start"}>
+
+                                        <Typography variant="h5" color="textSecondary" component="p"
+                                                    style={{
+                                                        // padding: 3,
+                                                        position: "relative",
+                                                        left: 55,
+                                                        marginTop: 3}}>
+                                            {this.state.email}
+                                            <IconButton
+                                                // variant="contained"
+                                                color="primary"
+                                                onClick={this.handleOpenDialogChangeEmail}
+                                            ><EditIcon/></IconButton>
+                                            <Dialog
+                                                open={this.state.openDialogChangeEmail}
+                                                onClose={this.handleCloseDialogChangeEmail}
+                                                aria-labelledby="responsive-dialog-title"
+                                            >
+                                                <DialogTitle id="responsive-dialog-title">Change email</DialogTitle>
+                                                <DialogContentText>
+                                                    Please enter your password
+                                                </DialogContentText>
+                                                <DialogContent>
+                                                    {this.state.reLogin && <Alert severity="success">
+                                                        {this.state.reLogin}
+                                                    </Alert>}
+                                                    <FormControl>
+                                                        <InputLabel htmlFor="Password">Password</InputLabel>
+                                                        <Input id="Password"
+                                                               type={this.state.showPassword ? 'text' : 'password'}
+                                                               placeholder="Password"
+                                                               style={textFieldStyles}
+                                                               onChange={this.onChangeOldPassword}
+                                                               endAdornment={
+                                                                   <InputAdornment position="end">
+                                                                       <IconButton
+                                                                           onClick={this.handleClickShowPassword}>
+                                                                           {this.state.showPassword ? <Visibility/> :
+                                                                               <VisibilityOff/>}
+                                                                       </IconButton>
+                                                                   </InputAdornment>
+                                                               }
+                                                        />
+                                                        {!!this.state.errorMessage &&
+                                                        <FormHelperText style={textFieldStyles}
+                                                                        htmlFor="Password"
+                                                                        error={true}>
+                                                            {this.state.errorMessage}
+                                                        </FormHelperText>}
+                                                    </FormControl>
+                                                    <TextField type="email" label="Email" style={textFieldStyles}
+                                                               onChange={this.onChangeEmail}
+                                                               helperText={this.state.errorMessages["email"]}
+                                                               error={this.state.errorMessages["email"] !== undefined}
+                                                    />
+                                                </DialogContent>
+                                                <DialogActions>
+                                                    <Button onClick={this.handleCloseDialogChangeEmail}
+                                                            color="primary">
+                                                        Cancel
+                                                    </Button>
+                                                    <Button onClick={this.editEmail} color="primary">
+                                                        Save
+                                                    </Button>
+                                                </DialogActions>
+                                            </Dialog>
+                                        </Typography>
+                                    </Grid>
+                                    <Grid xs={12} sm={6}/>
+                                    <Grid xs={12} sm={12} justify={"flex-start"} direction={"column"}>
+                                       <Grid> <Button
+                                           align="left"
                                             variant="contained"
                                             color="primary"
-                                            size="small" style={{
-                                            marginTop: 90
-                                            , width: 200
-                                        }}
+                                            size="small"
+                                            style={{
+                                                padding: 3,
+                                                position: "relative",
+                                                right: 260,
+                                                marginTop: 5,
+                                                width: 200}}
                                             onClick={this.handleOpenDialogChangePassword}
                                             startIcon={<EditIcon/>}>
                                             Change password</Button>
@@ -639,13 +685,24 @@ class ProfileForm extends Component {
                                                 </Button>
                                             </DialogActions>
                                         </Dialog>
+                                       </Grid>
+                                        {/*</Grid>*/}
+                                        {/*<Grid xs={12} sm={6}/>*/}
+
+                                        {/*<Grid xs={12} sm={6} >*/}
+                                        <Grid>
                                         <Button
                                             variant="contained"
                                             color="primary"
-                                            size="small" style={{
-                                            marginTop: 90,
-                                            width: 200
-                                        }}
+                                            size="small"
+                                            // align="left"
+                                            style={{
+                                            padding: 3,
+                                            width: 200,
+                                                marginTop: 5,
+                                                position: "relative",
+                                                 right: 260
+                                            }}
                                             startIcon={<DeleteIcon/>}
                                             // style={useStyles.button}
                                             onClick={this.handleOpenDialogDelete}
@@ -658,8 +715,13 @@ class ProfileForm extends Component {
                                             title="Delete account"
                                             msg="Are you sure you want to delete your account?"/>
                                     </Grid>
+                                    </Grid>
+                                    {/*</Grid>*/}
                                 </Grid>
                             </Grid>
+
+
+                            {/*</Grid>*/}
                             {/*</div>*/}
                             {/*</Grid>*/}
                             {/*</Grid>*/}
