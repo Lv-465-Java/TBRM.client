@@ -13,3 +13,5 @@ export const isUserLoggedIn = () => {
 export const getUserRole = () => {
     return sessionStorage.getItem('userrole');
 }
+
+ 

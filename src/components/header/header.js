@@ -1,15 +1,15 @@
 import React from "react";
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import {Grid} from "@material-ui/core";
+import { Grid, Container, Typography } from "@material-ui/core";
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import {isUserLoggedIn, logout} from '../../service/authService';
-import {Link} from 'react-router-dom';
+import { isUserLoggedIn, logout, getUserRole } from '../../service/authService';
+import { Link } from 'react-router-dom';
 
 
 const Header = (props) => {
@@ -22,7 +22,11 @@ const Header = (props) => {
             marginRight: theme.spacing(2),
         },
         title: {
+            justifyContent: "space-between",
+        },
+        link: {
             flexGrow: 1,
+            
         },
     }));
 
@@ -45,43 +49,61 @@ const Header = (props) => {
     }
 
     const userLoggedIn = (
-        <Grid>
-            <div>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="menu-appbar"
-                    aria-haspopup="true"
-                    onClick={handleMenu}
-                    color="inherit"
-                >
-                    <AccountCircle/>
-                </IconButton>
-                <Menu
-                    id="menu-appbar"
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    open={open}
-                    onClose={handleClose}
-                >
-                    <MenuItem onClick={logoutUser}>Logout</MenuItem>
-                </Menu>
-            </div>
-        </Grid>
+
+        <div>
+            <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+            >
+                <AccountCircle />
+            </IconButton>
+            <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                open={open}
+                onClose={handleClose}
+            >
+                <MenuItem><Link to="/profile">My Profile</Link></MenuItem>
+                <MenuItem onClick={logoutUser}>Logout</MenuItem>
+            </Menu>
+        </div>
     );
 
-    const userNotLoggedIn = (
-        <Grid>
-            <Link to="/"><Button style={{color: '#FFF'}}>Sign In</Button></Link>
-            <Link to="/"><Button style={{color: '#FFF'}}>Sign Up</Button></Link>
-        </Grid>
+    const userNotLoggedIn = ( 
+        <div>
+            <Link to="/"><Button style={{ color: '#FFF' }}>Sign In</Button></Link>
+            <Link to="/"><Button style={{ color: '#FFF' }}>Sign Up</Button></Link>
+        </div>
+    );
+
+    const adminLinks = (
+        <Link to="/admin-panel"><Button style={{ color: '#FFF' }}>Admin Panel</Button></Link>
+
+    );
+
+    const managerLinks = (
+        <div>
+            <Link to="/resource-template"><Button style={{ color: '#FFF' }}>Resource Templates</Button></Link>
+        </div>
+    );
+
+    const registerLinks = (
+        <div>
+            <Link to="/resource-template"><Button style={{ color: '#FFF' }}>Resource Templates</Button></Link>
+            <Link to="/resource"><Button style={{ color: '#FFF' }}>Resources</Button></Link>
+        </div>
     );
 
     let headerLinks;
@@ -91,18 +113,23 @@ const Header = (props) => {
         headerLinks = userNotLoggedIn;
     }
 
+    let userRoleLinks;
+    if (getUserRole() === "ROLE_ADMIN") {
+        userRoleLinks = adminLinks;
+    } else if (getUserRole() === "ROLE_MANAGER") {
+        userRoleLinks = managerLinks;
+    } else if (getUserRole() === "ROLE_REGISTER") {
+        userRoleLinks = registerLinks;
+    }else{
+        userRoleLinks = (<div></div>);
+    }
+
     return (
         <div className={classes.root}>
-            <AppBar position="static" style={{background: '#64b5f6'}}>
-                <Toolbar>
-                    <Grid
-                        justify="space-between"
-                        container>
-                        <Grid>
-                            <Link to="/home"><Button style={{color: '#FFF'}}>TBRM</Button></Link>
-                        </Grid>
-                        {headerLinks}
-                    </Grid>
+            <AppBar position="static" style={{ background: '#64b5f6' }}>
+                <Toolbar className={classes.title}>
+                    {userRoleLinks}
+                    {headerLinks}
                 </Toolbar>
             </AppBar>
         </div>

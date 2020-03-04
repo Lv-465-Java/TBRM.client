@@ -1,11 +1,10 @@
-import React, {Component} from "react";
-import {BrowserRouter} from "react-router-dom";
-import {Route, Switch} from "react-router";
+import React, { Component } from "react";
+import { BrowserRouter } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router";
 import LoginForm from "./components/loginForm/loginForm";
 import SearchResourceTemplate from "./components/search/resourceTemplate";
 import RegistrationForm from "./components/registrationForm/registrationForm";
 import ResourceTemplateList from "./components/resourceTemplate/resourceTemplateList";
-import HomePage from "./components/home/home";
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
 import ResourceTemplateCreate from "./components/resourceTemplate/resourceTemplateCreate";
@@ -25,39 +24,57 @@ import GroupItem from "./components/group/groupItem";
 import EditGroup from "./components/group/editGroup";
 import AddPermission from "./components/group/addPermission";
 import FullOAuthRegister from "./components/oauth2/FullOAuthRegister";
+import { getUserRole } from './service/authService';
+import Forbidden from "./hoc/forbidden";
 
+const AdminRoute
+    = ({ isAllowed, ...props }) =>
+        getUserRole() === "ROLE_ADMIN"
+            ? <Route {...props} />
+            : <Forbidden/>;
+
+const ManagerRoute
+    = ({ isAllowed, ...props }) =>
+        getUserRole() === "ROLE_MANAGER"
+            ? <Route {...props} />
+            : <Forbidden/>;
+
+const RegisterRoute
+    = ({ isAllowed, ...props }) =>
+        getUserRole() === "ROLE_REGISTER"
+            ? <Route {...props} />
+            : <Forbidden/>;
 
 
 class Routers extends Component {
     render() {
         return (
             <BrowserRouter>
-                <Header/>
+                <Header />
                 <Switch>
-                    <Route path="/home" component={HomePage} />
                     <Route path="/search" component={SearchResourceTemplate} />
-                    <Route path="/registration" component={RegistrationForm}/>
+                    <Route path="/registration" component={RegistrationForm} />
                     <Route path="/reset_password" component={ResetPassword} />
                     <Route path="/profile" component={ProfileForm} />
                     <Route path="/forgot_password" exact component={ForgotPassword} />
-                    <Route path="/resource-template/create" component={ResourceTemplateCreate} />
-                    <Route path="/resource-template/update/:id" component={ResourceTemplateUpdate} />
+                    <ManagerRoute path="/resource-template/create" component={ResourceTemplateCreate} />
+                    <ManagerRoute path="/resource-template/update/:id" component={ResourceTemplateUpdate} />
                     <Route path="/resource-template/view/:id" component={ResourceTemplateView} />
-                    <Route path="/resource-template/permission/add/:id" component={PermissionResourceTemplateAdd} />
-                    <Route path="/resource-template/permission/remove/:id" component={PermissionResourceTemplateRemove} />
-                    <Route path="/resource-template/permission/owner/:id" component={PermissionResourceTemplateChangeOwner} />
-                    <Route path="/resource-template/permission/:id" component={PermissionResourceTemplateList} />
+                    <ManagerRoute path="/resource-template/permission/add/:id" component={PermissionResourceTemplateAdd} />
+                    <ManagerRoute path="/resource-template/permission/remove/:id" component={PermissionResourceTemplateRemove} />
+                    <ManagerRoute path="/resource-template/permission/owner/:id" component={PermissionResourceTemplateChangeOwner} />
+                    <ManagerRoute path="/resource-template/permission/:id" component={PermissionResourceTemplateList} />
                     <Route path="/resource-template" component={ResourceTemplateList} />
                     <Route path="/forgot_password/:email" component={ForgotPasswordMessage} />
-                    <Route path="/group/edit/:name" component={EditGroup}/>
-                    <Route path="/group/view/:name" component={GroupItem}/>
-                    <Route path="/group/permission/:id" component={AddPermission}/>
-                    <Route path="/group" component={GroupList}/>
-                    <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}/>
-                    <Route path="/oauth2/fullRegister" component={FullOAuthRegister}/>
+                    <ManagerRoute path="/group/edit/:name" component={EditGroup} />
+                    <ManagerRoute path="/group/view/:name" component={GroupItem} />
+                    <ManagerRoute path="/group/permission/:id" component={AddPermission} />
+                    <ManagerRoute path="/group" component={GroupList} />
+                    <Route path="/oauth2/redirect" component={OAuth2RedirectHandler} />
+                    <Route path="/oauth2/fullRegister" component={FullOAuthRegister} />
                     <Route path="/" exact component={LoginForm} />
                 </Switch>
-                <Footer/>
+                <Footer />
             </BrowserRouter>
         );
     }

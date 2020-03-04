@@ -124,7 +124,7 @@ class PermissionResourceTemplateAdd extends Component {
 
     verifyUser = () => {
         if(getUserRole() !== "ROLE_MANAGER"){
-            this.props.history.push("/home");
+            this.goBack();
         }
     }
 

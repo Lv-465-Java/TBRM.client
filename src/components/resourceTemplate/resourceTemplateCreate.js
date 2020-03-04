@@ -48,18 +48,8 @@ class ResourceTemplateCreate extends Component {
         this.setState({description});
     }
 
-    verifyUser = () => {
-        if (getUserRole() !== "ROLE_MANAGER") {
-            this.props.history.push("/home");
-        }
-    }
-
     goBack = () => {
         this.props.history.goBack();
-    }
-
-    componentDidMount() {
-        this.verifyUser();
     }
 
     render() {
