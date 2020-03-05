@@ -20,10 +20,9 @@ import PermissionResourceTemplateRemove from "./components/permissions/permissio
 import PermissionResourceTemplateChangeOwner from "./components/permissions/permissionResourceTemplateChangeOwner";
 import ForgotPasswordMessage from "./components/resetPassword/ForgotPasswordMessage";
 import ProfileForm from "./components/profile/ProfileForm";
-import GroupList from "./components/group/groupList";
-import GroupItem from "./components/group/groupItem";
-import EditGroup from "./components/group/editGroup";
-import AddPermission from "./components/group/addPermission";
+import GroupItem from "./components/permissions/group/groupItem";
+import EditGroup from "./components/permissions/group/editGroup";
+import AddPermission from "./components/permissions/group/addPermission";
 import FullOAuthRegister from "./components/oauth2/FullOAuthRegister";
 import ResourceRecordView from "./components/resourceRecord/ResourceRecordView";
 
@@ -54,7 +53,6 @@ class Routers extends Component {
                     <Route path="/group/edit/:name" component={EditGroup}/>
                     <Route path="/group/view/:name" component={GroupItem}/>
                     <Route path="/group/permission/:id" component={AddPermission}/>
-                    <Route path="/group" component={GroupList}/>
                     <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}/>
                     <Route path="/oauth2/fullRegister" component={FullOAuthRegister}/>
                     <Route path="/" exact component={LoginForm} />

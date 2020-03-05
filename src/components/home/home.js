@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Grid, Box } from '@material-ui/core';
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+import {Button, Grid, Box} from '@material-ui/core';
 import axios from '../../utils/axios';
 import Auth from '../../hoc/auth';
 
@@ -13,7 +13,7 @@ class HomePage extends Component {
     getRole() {
         axios.get("/user/role").then(response => {
             sessionStorage.setItem('userrole', response.data.role.name)
-            this.setState({ 'userrole': response.data.role.name });
+            this.setState({'userrole': response.data.role.name});
             console.log(response.data);
 
         }, error => {
@@ -25,7 +25,6 @@ class HomePage extends Component {
         this.getRole();
 
     }
-
 
 
     render() {
@@ -75,14 +74,6 @@ class HomePage extends Component {
                                 variant="contained"
                                 color="primary"
                             >Resources</Button>
-                        </Link>
-                    </Box>
-                    <Box mt={5}>
-                        <Link to="/group">
-                            <Button
-                                variant="contained"
-                                color="primary"
-                            >Groups</Button>
                         </Link>
                     </Box>
                 </Box>
@@ -174,28 +165,28 @@ class HomePage extends Component {
                         <h1>Resource Managment System</h1>
                     </Grid>
                     <Grid container spacing={3}>
-                        <Grid item xs></Grid>
+                        <Grid item xs/>
                         <Grid item xs>
                             <Grid container
-                                direction="column"
-                                justify="center"
-                                alignItems="center"
+                                  direction="column"
+                                  justify="center"
+                                  alignItems="center"
                             >
                                 {userLinks}
                             </Grid>
                         </Grid>
                         <Grid item xs>
                             <Grid container
-                                direction="column"
-                                justify="center"
-                                alignItems="center"
+                                  direction="column"
+                                  justify="center"
+                                  alignItems="center"
                             >
                                 {myProfile}
                             </Grid>
                         </Grid>
                     </Grid>
                 </Auth>
-            </div >
+            </div>
         );
     }
 }
