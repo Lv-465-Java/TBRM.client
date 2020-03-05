@@ -11,7 +11,7 @@ import ResourceRecordItem from "./ResourceRecordItem";
 class ResourceRecordList extends Component {
     state = {
         headers: [],
-        data: this.props.records
+        data: this.props.records,
     }
 
     componentDidMount() {
@@ -19,19 +19,25 @@ class ResourceRecordList extends Component {
             {name: "Name", columnName: "name"},
             {name: "Description", columnName: "description"}];
         this.props.resourceTemplate.resourceParameters.forEach(element => {
-            if (element.parameterType === "RANGE_DOUBLE") {
-                // headers.push({
-                //     name: element.name,
-                //     columnName: [element.columnName+"_from", element.columnName+"_to"]
-                // });
+            if (element.parameterType !== "COORDINATES_STRING") {
+                if (element.parameterType === "RANGE_DOUBLE") {
+                    // headers.push({
+                    //     name: element.name,
+                    //     columnName: [element.columnName+"_from", element.columnName+"_to"]
+                    // });
 
 
-                headers.push({name: element.name+"_from", columnName: element.columnName+"_from"});
-                headers.push({name: element.name+"_to", columnName: element.columnName+"_to"})
-            } else if (element.parameterType === "POINT_REFERENCE") {
-                headers.push({name: element.name, columnName: element.columnName + "_ref"})
-            } else {
-                headers.push({name: element.name, columnName: element.columnName})
+                    headers.push({name: element.name + "_from", columnName: element.columnName + "_from"});
+                    headers.push({name: element.name + "_to", columnName: element.columnName + "_to"})
+                }
+                    // else if (element.parameterType === "COORDINATES_STRING") {
+                    //     headers.push({name: element.name + " Coordinate", columnName: element.columnName + "_coordinate"})
+                // }
+                else if (element.parameterType === "POINT_REFERENCE") {
+                    headers.push({name: element.name, columnName: element.columnName + "_ref"})
+                } else {
+                    headers.push({name: element.name, columnName: element.columnName})
+                }
             }
         });
         this.setState({headers: headers});
@@ -41,19 +47,22 @@ class ResourceRecordList extends Component {
         return (
             <>
                 <TableContainer component={Paper}>
-                    <Table aria-label="caption table">
-                        <caption>A basic table example with a caption</caption>
+                    <Table>
                         <TableHead>
                             <TableRow>
-                                {this.state.headers.map(element => <TableCell align="right">{element.name}</TableCell>)}
+                                {this.state.headers.map(element => <TableCell key={element.name}
+                                                                              align="right">{element.name}</TableCell>)}
                             </TableRow>
                         </TableHead>
                         <TableBody>
+
                             {this.props.records.map((item) =>
                                 (<ResourceRecordItem key={item.id}
                                                      item={item}
+                                                     tableName={this.props.tableName}
                                                      headers={this.state.headers}/>)
                             )}
+
                             {/*{rows.map(row => (*/}
                             {/*    <TableRow key={row.name}>*/}
                             {/*        <TableCell component="th" scope="row">*/}

@@ -26,6 +26,9 @@ import EditGroup from "./components/group/editGroup";
 import AddPermission from "./components/group/addPermission";
 import FullOAuthRegister from "./components/oauth2/FullOAuthRegister";
 import ResourceRecordView from "./components/resourceRecord/ResourceRecordView";
+import TestMaps from "./components/resourceParameters/GoogleMap";
+import ResourceTemplateItem from "./components/resourceTemplate/resourceTemplateItem";
+import ResourceRecordItemView from "./components/resourceRecord/ResourceRecordItemView";
 
 
 
@@ -49,7 +52,9 @@ class Routers extends Component {
                     <Route path="/resource-template/permission/owner/:id" component={PermissionResourceTemplateChangeOwner} />
                     <Route path="/resource-template/permission/:id" component={PermissionResourceTemplateList} />
                     <Route path="/resource-template" component={ResourceTemplateList} />
+                    <Route path="/resource/view/:tableName/:recordId" component={ResourceRecordItemView} />
                     <Route path="/resource/:tableName" component={ResourceRecordView} />
+                    <Route path="/test-maps" component={TestMaps} />
                     <Route path="/forgot_password/:email" component={ForgotPasswordMessage} />
                     <Route path="/group/edit/:name" component={EditGroup}/>
                     <Route path="/group/view/:name" component={GroupItem}/>

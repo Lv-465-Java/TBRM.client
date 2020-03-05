@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
+import {Link} from "react-router-dom";
+
+const linkStyle = {
+    textDecoration: 'none'
+}
 
 class resourceRecordItem extends Component {
 
@@ -13,25 +18,6 @@ class resourceRecordItem extends Component {
 
         headers: this.props.headers
     };
-
-    // appendParameters = () => {
-    //     for (let value of this.state.parameters) {
-    //         console.log(value);
-    //     }
-    // };
-
-
-// Iterate over the property names:
-//     appendSth = () => {
-//         for (let value of Object.entries(this.state.parameters)) {
-//             console.log(value);
-//         }
-//     }
-//     appendSth = () => {
-//         for (let value of Object.values(this.state.parameters)) {
-//             (`<TableCell align="right">${value}</TableCell>`)
-//         }
-//     };
 
 
     render() {
@@ -69,56 +55,24 @@ class resourceRecordItem extends Component {
         // })
 
         Object.keys(this.props.item['parameters']).forEach(key => {
-            data[key]=this.props.item['parameters'][key]
+            data[key] = this.props.item['parameters'][key]
         })
-
         return (
             <>
-                <TableRow>
-                    {this.props.headers.map((element, index)=> <TableCell key={index} align="right">{data[element.columnName]}</TableCell>)}
-                    {/*<TableCell align="right">{this.state.name}</TableCell>*/}
-                    {/*{list}*/}
-                {/*    {*/}
-                {/*    this.state.parameters.map((value) => {*/}
-                {/*        return (<TableCell  align="right">${value}</TableCell>)*/}
-                {/*    })*/}
-                {/*}*/}
 
-                    {/*{*/}
-                    {/*    this.state.obj.map((value) => {*/}
-                    {/*    return(<TableCell align="right">{value}</TableCell>)*/}
-                    {/*})*/}
-                    {/*}*/}
+                    <TableRow component={Link}
+                              to={`/resource/view/${this.props.tableName}/${this.props.item['id']}`}
+                              style={linkStyle}>
+                        {/*<Link to={`/resource/view/${tableName}/${this.state.id}`}>*/}
+                        {this.props.headers.map((element, index) =>
+                            <TableCell key={index} align="right">{data[element.columnName]}
+                            </TableCell>)}
+                        {/*</Link>*/}
+                    </TableRow>
+                {/*</Link>*/}
+                </>
+                );
+                }
+                }
 
-
-                    {/*{*/}
-                    {/*    this.state.parameters.map(element => {*/}
-                    {/*    return(<TableCell align="right">${element.value}</TableCell>)*/}
-                    {/*    })*/}
-                    {/*}*/}
-                    {/*<TableCell align="right">{this.appendParameters()}</TableCell>*/}
-                    {/*<TableCell align="right">{this.state.parameters.map(value => )}</TableCell>*/}
-
-                    {/*<TableCell align="right">{this.state.parameters}</TableCell>*/}
-
-                    {/*    <Tooltip title="Delete">*/}
-                    {/*        <IconButton aria-label="delete" onClick={this.delete}>*/}
-                    {/*           <DeleteIcon/>*/}
-                    {/*        </IconButton>*/}
-                    {/*    </Tooltip>*/}
-                    {/*    <Tooltip title="Edit">*/}
-                    {/*        <IconButton aria-label="edit">*/}
-                    {/*            <EditIcon/>*/}
-                    {/*        </IconButton>*/}
-                    {/*    </Tooltip>*/}
-                    {/*<CreateParameter getData={this.getData}*/}
-                    {/*                 resTempId={this.state.resTempId}/>*/}
-                    {/*{element}*/}
-
-                </TableRow>
-            </>
-        );
-    }
-}
-
-export default resourceRecordItem;
+                export default resourceRecordItem;
