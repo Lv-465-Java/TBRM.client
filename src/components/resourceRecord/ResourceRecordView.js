@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import ResourceRecordCreate from "./ResourceRecordCreate";
 
 // const gridStyles = {
 //     marginLeft: 300
@@ -16,7 +17,7 @@ class ResourceRecordView extends Component {
 
     state = {
         records: [],
-        resourceTemplate: undefined,
+        resourceTemplate: "",
         tableName: this.props.match.params.tableName,
         openDialog: false
     }
@@ -47,6 +48,9 @@ class ResourceRecordView extends Component {
     render() {
         return (
             <div>
+                <div>
+                    <h1>{this.state.resourceTemplate.name}</h1>
+                </div>
                 <Button
                     variant="contained"
                     color="primary"
@@ -69,13 +73,13 @@ class ResourceRecordView extends Component {
                     <Grid item xs={3}></Grid>
                 </Grid>
                 <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.state.openDialog}>
-                    <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
-                    <ResourceRecordList
-                        tableName={this.state.tableName}
-                        records={this.state.records}
-                        resourceTemplate={this.state.resourceTemplate}
-                        getRecordData={this.getRecordsData}
+                    <DialogTitle id="simple-dialog-title">Create new {this.state.resourceTemplate.name}</DialogTitle>
+
+                    <ResourceRecordCreate handleClose={this.handleClose}
+                                          tableName={this.state.tableName}
+                                          resourceTemplate={this.state.resourceTemplate}
                     />
+
                 </Dialog>
             </div>
         );

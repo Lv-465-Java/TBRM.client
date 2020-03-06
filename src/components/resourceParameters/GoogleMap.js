@@ -67,7 +67,7 @@ class GoogleMap extends Component {
             <div>
                 <Map
                     google={this.props.google}
-                    zoom={16}
+                    zoom={14}
                     style={mapStyles}
                     initialCenter={{lat: 49.822182, lng: 23.984633}}
                     // initialCenter={initialCenter}

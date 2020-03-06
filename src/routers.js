@@ -29,6 +29,7 @@ import ResourceRecordView from "./components/resourceRecord/ResourceRecordView";
 import TestMaps from "./components/resourceParameters/GoogleMap";
 import ResourceTemplateItem from "./components/resourceTemplate/resourceTemplateItem";
 import ResourceRecordItemView from "./components/resourceRecord/ResourceRecordItemView";
+import ResourceRecordCreate from "./components/resourceRecord/ResourceRecordCreate";
 
 
 
@@ -54,6 +55,7 @@ class Routers extends Component {
                     <Route path="/resource-template" component={ResourceTemplateList} />
                     <Route path="/resource/view/:tableName/:recordId" component={ResourceRecordItemView} />
                     <Route path="/resource/:tableName" component={ResourceRecordView} />
+                    <Route path="/resource/create" component={ResourceRecordCreate} />
                     <Route path="/test-maps" component={TestMaps} />
                     <Route path="/forgot_password/:email" component={ForgotPasswordMessage} />
                     <Route path="/group/edit/:name" component={EditGroup}/>
