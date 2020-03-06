@@ -61,13 +61,13 @@ class ResourceRecordView extends Component {
 
                 <Grid container spacing={3}>
                     <Grid item xs={3}></Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={7}>
                         {this.state.resourceTemplate &&
                         <ResourceRecordList
                             tableName={this.state.tableName}
                             records={this.state.records}
                             resourceTemplate={this.state.resourceTemplate}
-                            getRecordData={this.getRecordsData}
+                            getRecordsData={this.getRecordsData}
                         />}
                     </Grid>
                     <Grid item xs={3}></Grid>

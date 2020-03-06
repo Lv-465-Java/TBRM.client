@@ -1,21 +1,16 @@
 import React, {Component} from 'react';
-import {FormControl, TextField} from "@material-ui/core";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "@material-ui/core/Button";
 import axios from "../../utils/axios";
+import DialogContent from "@material-ui/core/DialogContent";
+import {FormControl, TextField} from "@material-ui/core";
 import PointInteger from "./parametersTypes/PointInteger";
-import RangeDouble from "./parametersTypes/RangeDouble";
 import PointString from "./parametersTypes/PointString";
 import PointDouble from "./parametersTypes/PointDouble";
 import RangeInteger from "./parametersTypes/RangeInteger";
+import RangeDouble from "./parametersTypes/RangeDouble";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
 
-const formControlStyles = {
-    marginBottom: 20
-}
-
-
-class ResourceRecordCreate extends Component {
+class ResourceRecordUpdate extends Component {
 
     state = {
         name: undefined,
@@ -24,15 +19,8 @@ class ResourceRecordCreate extends Component {
         parameters: {}
     }
 
-    create = () => {
-        // let data = {
-        //     "name": this.props.name,
-        //     "parameterType": `${this.state.parameter.toUpperCase()}_${this.state.parameterType.toUpperCase()}`
-        // }
-        // if (this.state.parameterType === "reference") {
-        //     data["relatedResourceTemplateId"] = this.state.relatedResourceTemplateId
-        // }
-        axios.post(`/resource-template/resource/${this.props.tableName}`, this.state).then(
+    update = () => {
+        axios.patch(`/resource-template/resource/${this.props.tableName}/${this.props.item.id}`, this.state).then(
             response => {
                 this.setState({
                     name: "",
@@ -65,26 +53,7 @@ class ResourceRecordCreate extends Component {
         this.setState({parameters: {...this.state.parameters, [columnName]: value}})
     }
 
-
     render() {
-        // let elements = this.state.resourceParameters.map(element =>
-        //
-        //     (<div>
-        //         <FormControl>
-        //
-        //
-        //             {(element.parameterType === 'POINT_INT')}?
-        //             <TextField key={element.name}
-        //                        type="text"
-        //                        label={element.name}
-        //                        setData={this.setData}/>:
-        //             <div/>
-        //
-        //         </FormControl>
-        //     </div>)
-        // )
-
-        console.log(this.state.parameters)
         return (
             <div>
                 <DialogContent dividers>
@@ -147,8 +116,8 @@ class ResourceRecordCreate extends Component {
                     {/*// )}*/}
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={this.create} color="primary">
-                        Create
+                    <Button autoFocus onClick={this.update} color="primary">
+                        Update
                     </Button>
                     <Button autoFocus onClick={this.props.handleClose} color="primary">
                         Close
@@ -159,4 +128,4 @@ class ResourceRecordCreate extends Component {
     }
 }
 
-export default ResourceRecordCreate;
+export default ResourceRecordUpdate;

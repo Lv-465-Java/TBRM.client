@@ -30,6 +30,7 @@ import TestMaps from "./components/resourceParameters/GoogleMap";
 import ResourceTemplateItem from "./components/resourceTemplate/resourceTemplateItem";
 import ResourceRecordItemView from "./components/resourceRecord/ResourceRecordItemView";
 import ResourceRecordCreate from "./components/resourceRecord/ResourceRecordCreate";
+import ResourceRecordUpdate from "./components/resourceRecord/ResourceRecordUpdate";
 
 
 
@@ -53,6 +54,7 @@ class Routers extends Component {
                     <Route path="/resource-template/permission/owner/:id" component={PermissionResourceTemplateChangeOwner} />
                     <Route path="/resource-template/permission/:id" component={PermissionResourceTemplateList} />
                     <Route path="/resource-template" component={ResourceTemplateList} />
+                    <Route path="/resource/update/:tableName/:id" component={ResourceRecordUpdate} />
                     <Route path="/resource/view/:tableName/:recordId" component={ResourceRecordItemView} />
                     <Route path="/resource/:tableName" component={ResourceRecordView} />
                     <Route path="/resource/create" component={ResourceRecordCreate} />

@@ -60,8 +60,12 @@ class ResourceRecordList extends Component {
                                 (<ResourceRecordItem key={item.id}
                                                      item={item}
                                                      tableName={this.props.tableName}
-                                                     headers={this.state.headers}/>)
+                                                     headers={this.state.headers}
+                                                     getRecordsData={this.props.getRecordsData}
+                                                     resourceTemplate={this.props.resourceTemplate}/>
+                                )
                             )}
+
 
                             {/*{rows.map(row => (*/}
                             {/*    <TableRow key={row.name}>*/}

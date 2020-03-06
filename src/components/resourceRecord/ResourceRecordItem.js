@@ -2,10 +2,25 @@ import React, {Component} from 'react';
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import {Link} from "react-router-dom";
+import {blue} from "@material-ui/core/colors";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Tooltip from "@material-ui/core/Tooltip";
+import axios from "../../utils/axios";
+import EditIcon from "@material-ui/icons/Edit";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import ResourceRecordCreate from "./ResourceRecordCreate";
+import Dialog from "@material-ui/core/Dialog";
+import ResourceRecordUpdate from "./ResourceRecordUpdate";
+
 
 const linkStyle = {
-    textDecoration: 'none'
+    textDecoration: 'none',
+    color: blue['A400']
+
 }
+
+
 
 class resourceRecordItem extends Component {
 
@@ -18,6 +33,23 @@ class resourceRecordItem extends Component {
 
         headers: this.props.headers
     };
+
+
+    delete = () => {
+        axios.delete(`/resource-template/resource/${this.props.tableName}/${this.props.item.id}`).then(
+            response => {
+                this.props.getRecordsData();
+            }).catch(error => {
+            // console.dir(error.response.data);
+        })
+    };
+
+    handleClose = () => {
+        this.setState({openDialog: false})
+    }
+    handleOpen = () => {
+        this.setState({openDialog: true})
+    }
 
 
     render() {
@@ -60,19 +92,50 @@ class resourceRecordItem extends Component {
         return (
             <>
 
-                    <TableRow component={Link}
-                              to={`/resource/view/${this.props.tableName}/${this.props.item['id']}`}
-                              style={linkStyle}>
-                        {/*<Link to={`/resource/view/${tableName}/${this.state.id}`}>*/}
-                        {this.props.headers.map((element, index) =>
-                            <TableCell key={index} align="right">{data[element.columnName]}
-                            </TableCell>)}
-                        {/*</Link>*/}
-                    </TableRow>
-                {/*</Link>*/}
-                </>
-                );
-                }
-                }
+                {/*<TableRow component={Link}*/}
+                {/*          to={`/resource/view/${this.props.tableName}/${this.props.item['id']}`}*/}
+                {/*          style={linkStyle}>*/}
+                <TableRow>
+                    {this.props.headers.map((element, index) => {
+                        let e;
+                        if (element.columnName === 'name') {
+                            e = (<TableCell component={Link} key={index}
+                                            to={`/resource/view/${this.props.tableName}/${this.props.item['id']}`}
+                                            style={linkStyle} align="right">{data[element.columnName]}
+                            </TableCell>)
+                        } else {
+                            e = (<TableCell key={index} align="right">{data[element.columnName]}
+                            </TableCell>)
+                        }
+                        return e;
+                    })
+                    }
+                    <Tooltip title="Edit">
+                        <IconButton aria-label="edit" color="secondary" onClick={this.handleOpen}>
+                            <EditIcon/>
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                        <IconButton aria-label="delete" color="primary" onClick={this.delete}>
+                            <DeleteIcon/>
+                        </IconButton>
+                    </Tooltip>
+                </TableRow>
 
-                export default resourceRecordItem;
+                <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.state.openDialog}>
+                    <DialogTitle id="simple-dialog-title">Update {this.props.resourceTemplate.name}</DialogTitle>
+
+                    <ResourceRecordUpdate handleClose={this.handleClose}
+                                          tableName={this.props.tableName}
+                                          resourceTemplate={this.props.resourceTemplate}
+                                          getRecordsData={this.props.getRecordsData}
+                                          item={this.props.item}
+                    />
+
+                </Dialog>
+            </>
+        );
+    }
+}
+
+export default resourceRecordItem;
