@@ -1,21 +1,17 @@
 import React, {Component} from "react";
 import axios from "../../utils/axios";
-import Axios from 'axios';
-import {Box, Paper, FormControl, FormHelperText, Grid, TextField} from "@material-ui/core";
+import {CssBaseline, FormControl, FormHelperText, Grid, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import {Link} from "react-router-dom";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {makeStyles} from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Input from "@material-ui/core/Input";
-import EmailIcon from "@material-ui/icons/Email";
 import MyDialog from "../resourceTemplate/popUp";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -26,12 +22,9 @@ import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import Container from "@material-ui/core/Container";
-import { Alert } from "@material-ui/lab";
-import { logout } from '../../service/authService';
-const gridStyles = {
-    marginTop: 30
-};
+import {Alert} from "@material-ui/lab";
+import {logout} from '../../service/authService';
+
 
 const textFieldStyles = {
     width: 300,
@@ -43,29 +36,18 @@ const style = {
     minWidth: 1000,
     marginTop: 50,
     height: 700
-    // backgroundColor: '#e0ebeb'
-
 };
-const divStyle = {
-    display: 'inline-block'
-}
+
 
 const photoLarge = {
     width: 400,
     height: 350,
-    // display: 'center',
     align: "center"
-    // sizes: '200'
 };
-const useStyles = makeStyles(theme => ({
-    button: {
-        margin: theme.spacing(1),
-    },
-}));
+
 
 class ProfileForm extends Component {
     state = {
-        // classes: useStyles(),
         photo: this.props.photo,
         firstName: this.props.firstName,
         lastName: this.props.lastName,
@@ -86,6 +68,7 @@ class ProfileForm extends Component {
         openDialogDeletePicture: false,
         errorMessage: '',
         errorMessages: {},
+        err: undefined,
         reLogin: ''
     }
     validatePassword = (password) => {
@@ -93,7 +76,7 @@ class ProfileForm extends Component {
         return re.test(password);
     }
     validateEmail = (email) => {
-        let re = /^\s*[a-zA-Z0-9]+(([._\-])?[a-zA-Z0-9])+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}\s*$/;
+        let re = /^\s*[a-zA-Z0-9]+(([._-])?[a-zA-Z0-9])+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}\s*$/;
         return re.test((email).toLowerCase());
     };
     validatePhone = (phone) => {
@@ -221,34 +204,13 @@ class ProfileForm extends Component {
     };
 
     handleClickAddPhoto = (event) => {
-        // event.preventDefault();
-        if (this.state.photo.includes("null")) {
-            this.setState({
-                selectedFile: event.target.files[0]
-            }, () => this.UploadPhoto());
-        } else {
+        if (this.checkMimeType(event) && (this.checkFileSize(event))) {
             this.setState({
                 selectedFile: event.target.files[0]
             }, () => this.UpdatePhoto());
         }
-
-
-        // this.props.history.push("/profile")
-
     };
-    UploadPhoto = () => {
-        const formData = new FormData();
-        formData.append('file', this.state.selectedFile);
-        axios.post("/profile/upload_photo", formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }).then(r => {
-            this.getData();
-        });
-        // this.props.history.push("/profile")
 
-    };
     UpdatePhoto = () => {
         const formData = new FormData();
         formData.append('file', this.state.selectedFile);
@@ -355,7 +317,8 @@ class ProfileForm extends Component {
         ).then(
             response => {
                 this.setState({openDialogChangeData: false})
-            }).catch(error => {let errors = {};
+            }).catch(error => {
+            let errors = {};
             error.response.data.forEach(err => {
                 errors[[err.name]] = err.message;
             });
@@ -363,6 +326,30 @@ class ProfileForm extends Component {
             );
         });
     };
+    checkMimeType = (event) => {
+        let files = event.target.files[0];
+        if ((files.type !== 'image/png')&&(files.type!=='image/jpeg')&&(files.type!=='image/gif')) {
+            this.setState({err: (' Chosen file is not a supported format')});
+        } else {
+            this.setState({err: ('')});
+            return true;
+        }
+    }
+
+
+    checkFileSize = (event) => {
+        let files = event.target.files[0];
+        let size = 4000000;
+        if (files.size > size) {
+            this.setState({err: 'image is too large, please pick a smaller file'});
+            return false
+        } else {
+            this.setState({err: ('')});
+            return true;
+        }
+    }
+
+
     reLogin = () => {
         setTimeout(() => {
             logout();
@@ -379,11 +366,11 @@ class ProfileForm extends Component {
                     reLogin: "You have successfully changed you email. Now you will be redirected to login page for login with new email address "
                 });
                 this.reLogin();
-                window.location.href="/";
-            },errors => {
-                if(errors.response.data.message){
+                window.location.href = "/";
+            }, errors => {
+                if (errors.response.data.message) {
                     this.setState({errorMessage: errors.response.data.message}, () => console.log(this.state));
-                    } else {
+                } else {
                     let error = {};
                     errors.response.data.forEach(err => {
                         error[[err.name]] = err.message;
@@ -391,7 +378,7 @@ class ProfileForm extends Component {
                         this.setState({errorMessages: error}, () => console.log(this.state));
                     })
                 }
-        });
+            });
     }
 
     render() {
@@ -401,8 +388,10 @@ class ProfileForm extends Component {
                 <Card style={style}>
                     <CardActionArea>
                         <CardContent>
+                            <CssBaseline/>
+                            {this.state.err && <Alert severity="error">{this.state.err}</Alert>}
                             <Grid container={"true"} justify={"space-evenly"}>
-                                <Grid item xs={12} sm={6} >
+                                <Grid item xs={12} sm={6}>
                                     <Avatar src={this.state.photo}
                                             style={photoLarge}
                                     />
@@ -453,7 +442,8 @@ class ProfileForm extends Component {
                                                         // padding: 3,
                                                         position: "relative",
                                                         right: 19,
-                                                        marginTop: 3}}
+                                                        marginTop: 3
+                                                    }}
                                                     color="textSecondary" component="p">
                                             {this.state.phone}
                                         </Typography>
@@ -511,7 +501,8 @@ class ProfileForm extends Component {
                                                         // padding: 3,
                                                         position: "relative",
                                                         left: 55,
-                                                        marginTop: 3}}>
+                                                        marginTop: 3
+                                                    }}>
                                             {this.state.email}
                                             <IconButton
                                                 // variant="contained"
@@ -575,8 +566,8 @@ class ProfileForm extends Component {
                                     </Grid>
                                     <Grid xs={12} sm={6}/>
                                     <Grid xs={12} sm={12} justify={"flex-start"} direction={"column"}>
-                                       <Grid> <Button
-                                           align="left"
+                                        <Grid> <Button
+                                            align="left"
                                             variant="contained"
                                             color="primary"
                                             size="small"
@@ -585,146 +576,136 @@ class ProfileForm extends Component {
                                                 position: "relative",
                                                 right: 260,
                                                 marginTop: 5,
-                                                width: 200}}
+                                                width: 200
+                                            }}
                                             onClick={this.handleOpenDialogChangePassword}
                                             startIcon={<EditIcon/>}>
                                             Change password</Button>
-                                        <Dialog
-                                            open={this.state.openDialogChangePassword}
-                                            onClose={this.handleCloseDialogChangePassword}
-                                            aria-labelledby="responsive-dialog-title"
-                                        >
-                                            <DialogTitle id="responsive-dialog-title">Change password</DialogTitle>
-                                            <DialogContent>
-                                                <FormControl>
-                                                    <InputLabel htmlFor="Old Password">Old Password</InputLabel>
-                                                    <Input type={this.state.showOldPassword ? 'text' : 'password'}
-                                                           placeholder="Old Password"
-                                                           fullWidth
-                                                           id={"Old Password"}
-                                                           style={textFieldStyles}
-                                                           onChange={this.onChangeOldPassword}
-                                                           helperText={this.state.errorMessage}
-                                                           error={!!this.state.errorMessage}
-                                                           endAdornment={
-                                                               <InputAdornment position="end">
-                                                                   <IconButton
-                                                                       onClick={this.handleClickShowOldPassword}>
-                                                                       {this.state.showOldPassword ? <Visibility/> :
-                                                                           <VisibilityOff/>}
-                                                                   </IconButton>
-                                                               </InputAdornment>
-                                                           }
-                                                    />
-                                                    {!!this.state.errorMessage &&
-                                                    <FormHelperText style={textFieldStyles}
-                                                                    htmlFor="Old Password"
-                                                                    error={true}>
-                                                        {this.state.errorMessage}
-                                                    </FormHelperText>}
-                                                </FormControl>
-                                                <FormControl>
-                                                    <InputLabel htmlFor="New Password">Password</InputLabel>
-                                                    <Input id="New Password"
-                                                           type={this.state.showPassword ? 'text' : 'password'}
-                                                           placeholder="New Password"
-                                                           style={textFieldStyles}
-                                                           fullWidth
-                                                           onChange={this.onChangePassword}
-                                                           endAdornment={
-                                                               <InputAdornment position="end">
-                                                                   <IconButton
-                                                                       onClick={this.handleClickShowPassword}>
-                                                                       {this.state.showPassword ? <Visibility/> :
-                                                                           <VisibilityOff/>}
-                                                                   </IconButton>
-                                                               </InputAdornment>
-                                                           }
-                                                    />
-                                                    {this.state.errorMessages["newPassword"] !== undefined &&
-                                                    <FormHelperText style={textFieldStyles}
-                                                                    htmlFor="New Password"
-                                                                    error={true}>
-                                                        {this.state.errorMessages["newPassword"]}
-                                                    </FormHelperText>}
-                                                </FormControl>
-                                                <FormControl>
-                                                    <InputLabel htmlFor="Repeat Password">Repeat Password</InputLabel>
-                                                    <Input type={this.state.showConfPassword ? 'text' : 'password'}
-                                                           placeholder="Repeat Password"
-                                                           id={"Repeat Password"}
-                                                           style={textFieldStyles}
-                                                           onChange={this.onChangeConfirmationPassword}
-                                                           helperText={this.state.errorMessages["confirmationPassword"]}
-                                                           error={this.state.errorMessages["confirmationPassword"] !== undefined}
-                                                           endAdornment={
-                                                               <InputAdornment position="end">
-                                                                   <IconButton
-                                                                       onClick={this.handleClickShowConfPassword}>
-                                                                       {this.state.showConfPassword ? <Visibility/> :
-                                                                           <VisibilityOff/>}
-                                                                   </IconButton>
-                                                               </InputAdornment>
-                                                           }
-                                                    />
-                                                    {this.state.errorMessages["confirmationPassword"] !== undefined &&
-                                                    <FormHelperText style={textFieldStyles}
-                                                                    htmlFor="Repeat Password"
-                                                                    error={true}>
-                                                        {this.state.errorMessages["confirmationPassword"]}
-                                                    </FormHelperText>}
-                                                </FormControl>
-                                            </DialogContent>
-                                            <DialogActions>
-                                                <Button onClick={this.handleCloseDialogChangePassword}
-                                                        color="primary">
-                                                    Cancel
-                                                </Button>
-                                                <Button onClick={this.editPassword} color="primary">
-                                                    Save
-                                                </Button>
-                                            </DialogActions>
-                                        </Dialog>
-                                       </Grid>
-                                        {/*</Grid>*/}
-                                        {/*<Grid xs={12} sm={6}/>*/}
-
-                                        {/*<Grid xs={12} sm={6} >*/}
+                                            <Dialog
+                                                open={this.state.openDialogChangePassword}
+                                                onClose={this.handleCloseDialogChangePassword}
+                                                aria-labelledby="responsive-dialog-title"
+                                            >
+                                                <DialogTitle id="responsive-dialog-title">Change password</DialogTitle>
+                                                <DialogContent>
+                                                    <FormControl>
+                                                        <InputLabel htmlFor="Old Password">Old Password</InputLabel>
+                                                        <Input type={this.state.showOldPassword ? 'text' : 'password'}
+                                                               placeholder="Old Password"
+                                                               fullWidth
+                                                               id={"Old Password"}
+                                                               style={textFieldStyles}
+                                                               onChange={this.onChangeOldPassword}
+                                                               helperText={this.state.errorMessage}
+                                                               error={!!this.state.errorMessage}
+                                                               endAdornment={
+                                                                   <InputAdornment position="end">
+                                                                       <IconButton
+                                                                           onClick={this.handleClickShowOldPassword}>
+                                                                           {this.state.showOldPassword ? <Visibility/> :
+                                                                               <VisibilityOff/>}
+                                                                       </IconButton>
+                                                                   </InputAdornment>
+                                                               }
+                                                        />
+                                                        {!!this.state.errorMessage &&
+                                                        <FormHelperText style={textFieldStyles}
+                                                                        htmlFor="Old Password"
+                                                                        error={true}>
+                                                            {this.state.errorMessage}
+                                                        </FormHelperText>}
+                                                    </FormControl>
+                                                    <FormControl>
+                                                        <InputLabel htmlFor="New Password">Password</InputLabel>
+                                                        <Input id="New Password"
+                                                               type={this.state.showPassword ? 'text' : 'password'}
+                                                               placeholder="New Password"
+                                                               style={textFieldStyles}
+                                                               fullWidth
+                                                               onChange={this.onChangePassword}
+                                                               endAdornment={
+                                                                   <InputAdornment position="end">
+                                                                       <IconButton
+                                                                           onClick={this.handleClickShowPassword}>
+                                                                           {this.state.showPassword ? <Visibility/> :
+                                                                               <VisibilityOff/>}
+                                                                       </IconButton>
+                                                                   </InputAdornment>
+                                                               }
+                                                        />
+                                                        {this.state.errorMessages["newPassword"] !== undefined &&
+                                                        <FormHelperText style={textFieldStyles}
+                                                                        htmlFor="New Password"
+                                                                        error={true}>
+                                                            {this.state.errorMessages["newPassword"]}
+                                                        </FormHelperText>}
+                                                    </FormControl>
+                                                    <FormControl>
+                                                        <InputLabel htmlFor="Repeat Password">Repeat
+                                                            Password</InputLabel>
+                                                        <Input type={this.state.showConfPassword ? 'text' : 'password'}
+                                                               placeholder="Repeat Password"
+                                                               id={"Repeat Password"}
+                                                               style={textFieldStyles}
+                                                               onChange={this.onChangeConfirmationPassword}
+                                                               helperText={this.state.errorMessages["confirmationPassword"]}
+                                                               error={this.state.errorMessages["confirmationPassword"] !== undefined}
+                                                               endAdornment={
+                                                                   <InputAdornment position="end">
+                                                                       <IconButton
+                                                                           onClick={this.handleClickShowConfPassword}>
+                                                                           {this.state.showConfPassword ?
+                                                                               <Visibility/> :
+                                                                               <VisibilityOff/>}
+                                                                       </IconButton>
+                                                                   </InputAdornment>
+                                                               }
+                                                        />
+                                                        {this.state.errorMessages["confirmationPassword"] !== undefined &&
+                                                        <FormHelperText style={textFieldStyles}
+                                                                        htmlFor="Repeat Password"
+                                                                        error={true}>
+                                                            {this.state.errorMessages["confirmationPassword"]}
+                                                        </FormHelperText>}
+                                                    </FormControl>
+                                                </DialogContent>
+                                                <DialogActions>
+                                                    <Button onClick={this.handleCloseDialogChangePassword}
+                                                            color="primary">
+                                                        Cancel
+                                                    </Button>
+                                                    <Button onClick={this.editPassword} color="primary">
+                                                        Save
+                                                    </Button>
+                                                </DialogActions>
+                                            </Dialog>
+                                        </Grid>
                                         <Grid>
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            size="small"
-                                            // align="left"
-                                            style={{
-                                            padding: 3,
-                                            width: 200,
-                                                marginTop: 5,
-                                                position: "relative",
-                                                 right: 260
-                                            }}
-                                            startIcon={<DeleteIcon/>}
-                                            // style={useStyles.button}
-                                            onClick={this.handleOpenDialogDelete}
-                                        >
-                                            Delete Account</Button>
-                                        <MyDialog
-                                            delete={this.delete}
-                                            open={this.state.openDialogDelete}
-                                            handleClose={this.handleCloseDialogDelete}
-                                            title="Delete account"
-                                            msg="Are you sure you want to delete your account?"/>
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                size="small"
+                                                style={{
+                                                    padding: 3,
+                                                    width: 200,
+                                                    marginTop: 5,
+                                                    position: "relative",
+                                                    right: 260
+                                                }}
+                                                startIcon={<DeleteIcon/>}
+                                                onClick={this.handleOpenDialogDelete}
+                                            >
+                                                Delete Account</Button>
+                                            <MyDialog
+                                                delete={this.delete}
+                                                open={this.state.openDialogDelete}
+                                                handleClose={this.handleCloseDialogDelete}
+                                                title="Delete account"
+                                                msg="Are you sure you want to delete your account?"/>
+                                        </Grid>
                                     </Grid>
-                                    </Grid>
-                                    {/*</Grid>*/}
                                 </Grid>
                             </Grid>
-
-
-                            {/*</Grid>*/}
-                            {/*</div>*/}
-                            {/*</Grid>*/}
-                            {/*</Grid>*/}
                         </CardContent>
                     </CardActionArea>
                 </Card>
