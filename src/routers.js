@@ -53,7 +53,7 @@ const RegisterRoute
             ? <Route {...props} />
             : <Forbidden />;
 
-const ResTempRoute
+const ResourceRoute
     = ({ isAllowed, ...props }) =>
         getUserRole() === "ROLE_MANAGER" || getUserRole() === "ROLE_REGISTER"
          || getUserRole() === "ROLE_USER"
@@ -78,8 +78,8 @@ class Routers extends Component {
                     <ManagerRoute path="/resource-template/permission/remove/:id" component={PermissionResourceTemplateRemove} />
                     <ManagerRoute path="/resource-template/permission/owner/:id" component={PermissionResourceTemplateChangeOwner} />
                     <ManagerRoute path="/resource-template/permission/:id" component={PermissionResourceTemplateList} />
-                    <ResTempRoute path="/resource-template" component={ResourceTemplateList} />
-                    <RegisterRoute path="/resource/:tableName" component={ResourceRecordView}/>
+                    <ResourceRoute path="/resource-template" component={ResourceTemplateList} />
+                    <ResourceRoute path="/resource/:tableName" component={ResourceRecordView}/>
                     <Route path="/forgot_password/:email" component={ForgotPasswordMessage} />
                     <ManagerRoute path="/group/edit/:name" component={EditGroup} />
                     <ManagerRoute path="/group/view/:name" component={GroupItem} />
