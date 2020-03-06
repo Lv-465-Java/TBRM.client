@@ -5,7 +5,6 @@ import MaterialTable from 'material-table';
 import Alert from '@material-ui/lab/Alert';
 import { getUserRole } from '../../service/authService';
 import axios from '../../utils/axios';
-import Auth from '../../hoc/auth';
 
 const formStyles = {
     marginBottom: 30

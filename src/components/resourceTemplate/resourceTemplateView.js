@@ -21,7 +21,6 @@ import axios from '../../utils/axios';
 import CreateParameter from "../resourceParameters/CreateParameter";
 import ResourceParametersList from "../resourceParameters/ResourceParametersList";
 import MyDialog from "./popUp"
-import Auth from '../../hoc/auth';
 
 const style = {
     maxWidth: 800,

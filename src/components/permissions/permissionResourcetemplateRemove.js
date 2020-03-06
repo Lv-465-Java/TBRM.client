@@ -15,7 +15,6 @@ import AddIcon from '@material-ui/icons/Add';
 import Alert from '@material-ui/lab/Alert';
 import { getUserRole } from '../../service/authService';
 import axios from '../../utils/axios';
-import Auth from '../../hoc/auth';
 
 const formStyles = {
     marginBottom: 20,

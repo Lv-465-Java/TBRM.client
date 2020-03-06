@@ -3,7 +3,6 @@ import {TextField, Button, FormControl, Grid, Box} from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import axios from '../../utils/axios';
-import Auth from '../../hoc/auth';
 
 const gridStyles = {
     marginTop: 30

@@ -4,7 +4,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import axios from '../../utils/axios';
 import { getUserRole } from '../../service/authService';
-import Auth from '../../hoc/auth';
 
 
 const gridStyles = {

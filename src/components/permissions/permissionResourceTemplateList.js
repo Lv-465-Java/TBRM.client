@@ -11,7 +11,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { getUserRole } from '../../service/authService';
-import Auth from '../../hoc/auth';
 
 const StyledTableCell = withStyles(theme => ({
     head: {
@@ -123,9 +122,7 @@ class PermissionResourceTemplateList extends Component {
                             </Table>
                         </TableContainer>
                     </Grid>
-                    <Grid item xs>
-
-                    </Grid>
+                    <Grid item xs></Grid>
                 </Grid>
             </div>
         );
