@@ -4,6 +4,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import axios from "../../utils/axios";
+import PointInteger from "./parametersTypes/PointInteger";
 
 const formControlStyles = {
     marginBottom: 20
@@ -55,13 +56,29 @@ class ResourceRecordCreate extends Component {
         // this.props.setData(this.props.columnName, event.target.value)
     }
 
-    setData = (columnName, value) =>
-    {
-        this.setState({data: {...this.state.data, [columnName]:value}})
+    setData = (columnName, value) => {
+        this.setState({data: {...this.state.data, [columnName]: value}})
     }
 
 
     render() {
+        let elements = this.state.parameters.map(element =>
+
+            (<div>
+                <FormControl>
+
+
+                    {(element.parameterType === 'POINT_INT')}?
+                    <TextField key={element.name}
+                               type="text"
+                               label={element.name}
+                               setData={this.setData}/>:
+                    <div/>
+
+                </FormControl>
+            </div>)
+        )
+
         console.log(this.state.data)
         return (
             <div>
@@ -78,11 +95,31 @@ class ResourceRecordCreate extends Component {
                             <TextField type="text" label="description" onChange={this.onChangeDescription}/>
                         </FormControl>
                     </div>
-                    {this.state.parameters.map(element => <div><FormControl>
-                        {/*if (element.)*/}
-                            <TextField key={element.name} type="text" label={element.name} setData={this.setData}/>
-                        </FormControl></div>
-                    )}
+                    {
+                        // elements
+                        this.state.parameters.map(element => {
+                            let e;
+                            if (element.parameterType === 'POINT_INT') {
+                                e = (<PointInteger key={element.name}
+                                                   label={element.name}
+                                                   columnName={element.columnName}
+                                                   setData={this.setData}/>)
+                            }
+                            return e;
+                        })
+                    }
+                    {/*//     (<FormControl>*/}
+                    {/*//*/}
+                    {/*//             {*/}
+                    {/*//                 if(element.parameterType === 'POINT_INT'){*/}
+                    {/*//                 <TextField key={element.name}*/}
+                    {/*//                 type="text"*/}
+                    {/*//                 label={element.name}*/}
+                    {/*//                 setData={this.setData}/>}*/}
+                    {/*//             }*/}
+                    {/*//         </FormControl>)*/}
+                    {/*//*/}
+                    {/*// )}*/}
                 </DialogContent>
                 <DialogActions>
                     <Button autoFocus onClick={this.create} color="primary">
