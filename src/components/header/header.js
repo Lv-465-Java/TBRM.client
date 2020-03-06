@@ -4,7 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import { Grid, Container, Typography } from "@material-ui/core";
+import { Hidden } from "@material-ui/core";
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -30,10 +30,13 @@ const Header = (props) => {
         },
     }));
 
+    const linkStyle = {
+        textDecoration: 'none'
+    }
+
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
-
 
     const handleMenu = event => {
         setAnchorEl(event.currentTarget);
@@ -75,7 +78,9 @@ const Header = (props) => {
                 open={open}
                 onClose={handleClose}
             >
-                <MenuItem><Link to="/profile">My Profile</Link></MenuItem>
+                <Hidden mdUp={getUserRole() === "ROLE_GUEST"}>
+                <MenuItem><Link to="/profile" style={linkStyle}>My Profile</Link></MenuItem>
+                </Hidden>
                 <MenuItem onClick={logoutUser}>Logout</MenuItem>
             </Menu>
         </div>
@@ -84,7 +89,7 @@ const Header = (props) => {
     const userNotLoggedIn = ( 
         <div>
             <Link to="/"><Button style={{ color: '#FFF' }}>Sign In</Button></Link>
-            <Link to="/"><Button style={{ color: '#FFF' }}>Sign Up</Button></Link>
+            <Link to="/registration"><Button style={{ color: '#FFF' }}>Sign Up</Button></Link>
         </div>
     );
 
@@ -93,13 +98,7 @@ const Header = (props) => {
 
     );
 
-    const managerLinks = (
-        <div>
-            <Link to="/resource-template"><Button style={{ color: '#FFF' }}>Resource Templates</Button></Link>
-        </div>
-    );
-
-    const registerLinks = (
+    const managarLinks = (
         <div>
             <Link to="/resource-template"><Button style={{ color: '#FFF' }}>Resource Templates</Button></Link>
             <Link to="/resource"><Button style={{ color: '#FFF' }}>Resources</Button></Link>
@@ -116,10 +115,8 @@ const Header = (props) => {
     let userRoleLinks;
     if (getUserRole() === "ROLE_ADMIN") {
         userRoleLinks = adminLinks;
-    } else if (getUserRole() === "ROLE_MANAGER") {
-        userRoleLinks = managerLinks;
-    } else if (getUserRole() === "ROLE_REGISTER") {
-        userRoleLinks = registerLinks;
+    } else if (getUserRole() === "ROLE_MANAGER" || getUserRole() === "ROLE_REGISTER" || getUserRole() === "ROLE_USER") {
+        userRoleLinks = managarLinks;
     }else{
         userRoleLinks = (<div></div>);
     }

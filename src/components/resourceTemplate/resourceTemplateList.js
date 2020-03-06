@@ -41,10 +41,6 @@ class ResourceTemplateList extends Component {
         this.props.history.push("/resource-template/create");
     }
 
-    goHome = () => {
-        this.props.history.push("/home");
-    }
-
     render() {
 
         let userLinks = (getUserRole() === "ROLE_MANAGER") ?
@@ -58,25 +54,8 @@ class ResourceTemplateList extends Component {
             )
 
         return (
-            <Auth>
                 <Grid container spacing={3} style={gridStyle}>
                     <Grid item xs>
-                        <Grid
-                            container
-                            direction="column"
-                            justify="center"
-                            alignItems="center"
-                        >
-                            <Box mx="auto">
-                                <Box>
-                                    <Button
-                                        variant="contained"
-                                        startIcon={<ArrowBackIosIcon />}
-                                        onClick={this.goHome}
-                                    >Go Back</Button>
-                                </Box>
-                            </Box>
-                        </Grid>
                     </Grid>
                     <Grid item xs={8}>
                         <div style={style}>
@@ -90,7 +69,6 @@ class ResourceTemplateList extends Component {
                         {userLinks}
                     </Grid>
                 </Grid>
-            </Auth>
         );
     }
 }

@@ -14,4 +14,14 @@ export const getUserRole = () => {
     return sessionStorage.getItem('userrole');
 }
 
+export const verifyUser = () => {   
+    if(getUserRole() === "ROLE_ADMIN"){
+        window.location.href = "/admin-panel";
+    } else if(getUserRole() === "ROLE_MANAGER" || getUserRole() === "ROLE_REGISTER"){
+        window.location.href = "/resource-template";
+    } else if(getUserRole() === "ROLE_GUEST"){
+        window.location.href = "/welcome";
+    }
+}
+
  

@@ -3,7 +3,6 @@ import {TextField, Button, FormControl, Grid, Box} from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import axios from '../../utils/axios';
-import {getUserRole} from '../../service/authService';
 import Auth from '../../hoc/auth';
 
 const gridStyles = {
@@ -54,7 +53,7 @@ class ResourceTemplateCreate extends Component {
 
     render() {
         return (
-            <Auth>
+            <div>
                 <Grid container spacing={3}
                       style={gridStyles}>
                     <Grid item xs={4}>
@@ -95,7 +94,7 @@ class ResourceTemplateCreate extends Component {
                     </Grid>
                     <Grid item xs={4}/>
                 </Grid>
-            </Auth>
+            </div>
         );
     }
 }

@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { Alert, AlertTitle } from '@material-ui/lab';
-import { createBrowserHistory } from "history";
-import { Box } from '@material-ui/core';
+import { createBrowserHistory } from 'history';
+import { Box, Button } from '@material-ui/core';
 
 const alertStyles = {
     textAlign: 'center'
 }
 
+const buttonStyles = {
+    marginTop:  20,
+    minWidth: 150
+}
+
 let history = createBrowserHistory();
 
 class Forbidden extends Component {
-    timer = () => {
-        setTimeout(() => {
-            history.goBack();
-        }, 4000);
+
+    goBack = () => {
+        history.goBack();
     }
 
-    componentDidMount() {
-        this.timer();
-    }
     render() {
 
         return (
@@ -33,6 +34,11 @@ class Forbidden extends Component {
                                 You tried to open page which you are not permitted
                             </Alert>
                         </Box>
+                        <Button
+                        variant="contained"
+                        color="default"
+                        style={buttonStyles}
+                        onClick={this.goBack}>Go Back</Button>
                     </Box>
                 </Grid><Grid item xs>
                 </Grid>

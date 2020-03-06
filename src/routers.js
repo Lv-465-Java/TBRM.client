@@ -24,27 +24,42 @@ import GroupItem from "./components/group/groupItem";
 import EditGroup from "./components/group/editGroup";
 import AddPermission from "./components/group/addPermission";
 import FullOAuthRegister from "./components/oauth2/FullOAuthRegister";
-import { getUserRole } from './service/authService';
+import { getUserRole, isUserLoggedIn } from './service/authService';
 import Forbidden from "./hoc/forbidden";
+import GuestPage from "./components/guest";
+
+
+
+const ProtectedRoute
+    = ({ isAllowed, ...props }) =>
+        !isUserLoggedIn() || getUserRole() === "ROLE_GUEST"
+            ? <Forbidden />
+            : <Route {...props} />;
 
 const AdminRoute
     = ({ isAllowed, ...props }) =>
         getUserRole() === "ROLE_ADMIN"
             ? <Route {...props} />
-            : <Forbidden/>;
+            : <Forbidden />;
 
 const ManagerRoute
     = ({ isAllowed, ...props }) =>
         getUserRole() === "ROLE_MANAGER"
             ? <Route {...props} />
-            : <Forbidden/>;
+            : <Forbidden />;
 
 const RegisterRoute
     = ({ isAllowed, ...props }) =>
         getUserRole() === "ROLE_REGISTER"
             ? <Route {...props} />
-            : <Forbidden/>;
+            : <Forbidden />;
 
+const ResTempRoute
+    = ({ isAllowed, ...props }) =>
+        getUserRole() === "ROLE_MANAGER" || getUserRole() === "ROLE_REGISTER"
+         || getUserRole() === "ROLE_USER"
+            ? <Route {...props} />
+            : <Forbidden />;
 
 class Routers extends Component {
     render() {
@@ -55,16 +70,16 @@ class Routers extends Component {
                     <Route path="/search" component={SearchResourceTemplate} />
                     <Route path="/registration" component={RegistrationForm} />
                     <Route path="/reset_password" component={ResetPassword} />
-                    <Route path="/profile" component={ProfileForm} />
+                    <ProtectedRoute path="/profile" component={ProfileForm} />
                     <Route path="/forgot_password" exact component={ForgotPassword} />
                     <ManagerRoute path="/resource-template/create" component={ResourceTemplateCreate} />
                     <ManagerRoute path="/resource-template/update/:id" component={ResourceTemplateUpdate} />
-                    <Route path="/resource-template/view/:id" component={ResourceTemplateView} />
+                    <ManagerRoute path="/resource-template/view/:id" component={ResourceTemplateView} />
                     <ManagerRoute path="/resource-template/permission/add/:id" component={PermissionResourceTemplateAdd} />
                     <ManagerRoute path="/resource-template/permission/remove/:id" component={PermissionResourceTemplateRemove} />
                     <ManagerRoute path="/resource-template/permission/owner/:id" component={PermissionResourceTemplateChangeOwner} />
                     <ManagerRoute path="/resource-template/permission/:id" component={PermissionResourceTemplateList} />
-                    <Route path="/resource-template" component={ResourceTemplateList} />
+                    <ResTempRoute path="/resource-template" component={ResourceTemplateList} />
                     <Route path="/forgot_password/:email" component={ForgotPasswordMessage} />
                     <ManagerRoute path="/group/edit/:name" component={EditGroup} />
                     <ManagerRoute path="/group/view/:name" component={GroupItem} />
@@ -72,6 +87,7 @@ class Routers extends Component {
                     <ManagerRoute path="/group" component={GroupList} />
                     <Route path="/oauth2/redirect" component={OAuth2RedirectHandler} />
                     <Route path="/oauth2/fullRegister" component={FullOAuthRegister} />
+                    <Route path="/welcome" component={GuestPage} />
                     <Route path="/" exact component={LoginForm} />
                 </Switch>
                 <Footer />

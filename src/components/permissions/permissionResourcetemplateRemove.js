@@ -141,7 +141,7 @@ class PermissionResourceTemplateRemove extends Component {
 
     render() {
         return (
-            <Auth>
+            <div>
                 <Grid container spacing={3}>
                     <Grid item xs={2}>
                         <Box mx="auto">
@@ -231,7 +231,7 @@ class PermissionResourceTemplateRemove extends Component {
                         </TableContainer>
                     </Grid>
                 </Grid>
-            </Auth>
+            </div>
         );
     }
 }

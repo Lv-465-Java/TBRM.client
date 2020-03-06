@@ -123,7 +123,7 @@ class PermissionResourceTemplateAdd extends Component {
     }
 
     verifyUser = () => {
-        if(getUserRole() !== "ROLE_MANAGER"){
+        if (getUserRole() !== "ROLE_MANAGER") {
             this.goBack();
         }
     }
@@ -151,7 +151,7 @@ class PermissionResourceTemplateAdd extends Component {
             { title: 'Group', field: 'name' },
         ];
         return (
-            <Auth>
+            <div>
                 <Grid container spacing={3}>
                     <Grid item xs={2}>
                         <Box mx="auto">
@@ -171,7 +171,7 @@ class PermissionResourceTemplateAdd extends Component {
                             <DialogContent>
                                 <DialogContentText>
                                     To add permission to {this.state.name}, please enter recipient, choose permission and principal.
-          </DialogContentText>
+                            </DialogContentText>
                                 <Box mx={1}>
                                     <Box mt={3}
                                         display="flex"
@@ -303,8 +303,7 @@ class PermissionResourceTemplateAdd extends Component {
                         </Container>
                     </Grid>
                 </Grid>
-
-            </Auth>
+            </div>
         );
     }
 }

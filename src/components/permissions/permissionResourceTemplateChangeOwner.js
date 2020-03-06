@@ -104,7 +104,7 @@ class PermissionResourceTemplateChangeOwner extends Component {
 
     render() {
         return (
-            <Auth>
+            <div>
                 <Grid container spacing={3}>
                     <Grid item xs={2}>
                         <Box mx="auto">
@@ -181,7 +181,7 @@ class PermissionResourceTemplateChangeOwner extends Component {
                     </Grid>
 
                 </Grid>
-            </Auth>
+            </div>
         );
     }
 }
