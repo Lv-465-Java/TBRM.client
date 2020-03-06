@@ -5,6 +5,10 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import axios from "../../utils/axios";
 import PointInteger from "./parametersTypes/PointInteger";
+import RangeDouble from "./parametersTypes/RangeDouble";
+import PointString from "./parametersTypes/PointString";
+import PointDouble from "./parametersTypes/PointDouble";
+import InputField from "../inputField/inputField";
 
 const formControlStyles = {
     marginBottom: 20
@@ -16,8 +20,8 @@ class ResourceRecordCreate extends Component {
     state = {
         name: undefined,
         description: undefined,
-        parameters: this.props.resourceTemplate.resourceParameters,
-        data: {}
+        resourceParameters: this.props.resourceTemplate.resourceParameters,
+        parameters: {}
     }
 
     create = () => {
@@ -33,9 +37,10 @@ class ResourceRecordCreate extends Component {
                 this.setState({
                     name: "",
                     description: "",
-                    parameters: {}
+                    parameters: {},
+                    // data: {}
                 })
-                // this.props.getData()
+                this.props.getRecordsData()
             }).catch(error => {
             console.dir(error.response.data);
         })
@@ -57,35 +62,35 @@ class ResourceRecordCreate extends Component {
     }
 
     setData = (columnName, value) => {
-        this.setState({data: {...this.state.data, [columnName]: value}})
+        this.setState({parameters: {...this.state.parameters, [columnName]: value}})
     }
 
 
     render() {
-        let elements = this.state.parameters.map(element =>
+        // let elements = this.state.resourceParameters.map(element =>
+        //
+        //     (<div>
+        //         <FormControl>
+        //
+        //
+        //             {(element.parameterType === 'POINT_INT')}?
+        //             <TextField key={element.name}
+        //                        type="text"
+        //                        label={element.name}
+        //                        setData={this.setData}/>:
+        //             <div/>
+        //
+        //         </FormControl>
+        //     </div>)
+        // )
 
-            (<div>
-                <FormControl>
-
-
-                    {(element.parameterType === 'POINT_INT')}?
-                    <TextField key={element.name}
-                               type="text"
-                               label={element.name}
-                               setData={this.setData}/>:
-                    <div/>
-
-                </FormControl>
-            </div>)
-        )
-
-        console.log(this.state.data)
+        console.log(this.state.parameters)
         return (
             <div>
                 <DialogContent dividers>
                     <div>
                         <FormControl>
-                            <TextField type="text" label="name" onChange={this.onChangeName}/>
+                            <TextField required type="text" label="name" onChange={this.onChangeName}/>
                             {/*// helperText={this.state.errorMessage} error={!!this.state.errorMessage}/>*/}
 
                         </FormControl>
@@ -97,13 +102,28 @@ class ResourceRecordCreate extends Component {
                     </div>
                     {
                         // elements
-                        this.state.parameters.map(element => {
+                        this.state.resourceParameters.map(element => {
                             let e;
                             if (element.parameterType === 'POINT_INT') {
                                 e = (<PointInteger key={element.name}
                                                    label={element.name}
                                                    columnName={element.columnName}
                                                    setData={this.setData}/>)
+                            } else if (element.parameterType === 'RANGE_DOUBLE') {
+                                e = (<RangeDouble key={element.name}
+                                                  label={element.name}
+                                                  columnName={element.columnName}
+                                                  setData={this.setData}/>)
+                            } else if (element.parameterType === 'POINT_STRING') {
+                                e = (<PointString key={element.name}
+                                                  label={element.name}
+                                                  columnName={element.columnName}
+                                                  setData={this.setData}/>)
+                            } else if (element.parameterType === 'POINT_DOUBLE') {
+                                e = (<PointDouble key={element.name}
+                                                  label={element.name}
+                                                  columnName={element.columnName}
+                                                  setData={this.setData}/>)
                             }
                             return e;
                         })

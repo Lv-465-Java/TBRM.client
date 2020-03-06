@@ -78,6 +78,7 @@ class ResourceRecordView extends Component {
                     <ResourceRecordCreate handleClose={this.handleClose}
                                           tableName={this.state.tableName}
                                           resourceTemplate={this.state.resourceTemplate}
+                                          getRecordsData={this.getRecordsData}
                     />
 
                 </Dialog>
