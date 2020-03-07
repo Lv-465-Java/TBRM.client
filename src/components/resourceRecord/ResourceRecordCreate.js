@@ -9,6 +9,7 @@ import RangeDouble from "./parametersTypes/RangeDouble";
 import PointString from "./parametersTypes/PointString";
 import PointDouble from "./parametersTypes/PointDouble";
 import RangeInteger from "./parametersTypes/RangeInteger";
+import PointReference from "./parametersTypes/PointReference";
 
 const formControlStyles = {
     marginBottom: 20
@@ -65,8 +66,18 @@ class ResourceRecordCreate extends Component {
         this.setState({parameters: {...this.state.parameters, [columnName]: value}})
     }
 
+    // relatedResourceTableName() {
+    //     this.state.resourceParameters.map(key => {
+    //         if (key.parameterType === "POINT_REFERENCE") {
+    //             return  key['relatedResourceTemplateTableName'];
+    //         }
+    //     })
+    // }
+
 
     render() {
+
+        // console.log(this.state.resourceParameters.relatedResourceTemplateName);
         // let elements = this.state.resourceParameters.map(element =>
         //
         //     (<div>
@@ -127,6 +138,12 @@ class ResourceRecordCreate extends Component {
                                                   label={element.name}
                                                   columnName={element.columnName}
                                                   setData={this.setData}/>)
+                            } else if (element.parameterType === 'POINT_REFERENCE') {
+                                e = (<PointReference key={element.name}
+                                                     label={element.name}
+                                                     columnName={element.columnName}
+                                                     relatedResourceTableName={element['relatedResourceTemplateTableName']}
+                                                     setData={this.setData}/>)
                             }
                             return e;
                         })

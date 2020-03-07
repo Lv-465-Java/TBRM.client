@@ -87,7 +87,13 @@ class resourceRecordItem extends Component {
         Object.keys(this.props.item['parameters']).forEach(key => {
             data[key] = this.props.item['parameters'][key]
         })
+        this.props.resourceTemplate.resourceParameters.map(key => {
+            if (key.parameterType === "POINT_REFERENCE") {
+                console.log(key['relatedResourceTemplateTableName']);
+            }
+        })
         return (
+
             <>
 
                 {/*<TableRow component={Link}*/}
@@ -111,8 +117,12 @@ class resourceRecordItem extends Component {
                             console.log(element.columnName + '_ref_name');
                             e = (<TableCell key={index} align="right">{data[element.columnName]}
                             </TableCell>)
+                            let string = ""
+                            // console.log(this.props.resourceTemplate.resourceParameters);
+
                         }
                         return e;
+
 
                     })
                     }

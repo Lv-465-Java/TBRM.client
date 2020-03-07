@@ -45,7 +45,16 @@ class ResourceRecordView extends Component {
         this.getResourceTemplateData();
     }
 
+
+
     render() {
+        // function relatedResourceTableName() {
+        //     this.state.resourceTemplate.resourceParameters.map(key => {
+        //         if (key.parameterType === "POINT_REFERENCE") {
+        //             return key['relatedResourceTemplateTableName'];
+        //         }
+        //     })
+        // }
         return (
             <div>
                 <div>
@@ -78,6 +87,7 @@ class ResourceRecordView extends Component {
                     <ResourceRecordCreate handleClose={this.handleClose}
                                           tableName={this.state.tableName}
                                           resourceTemplate={this.state.resourceTemplate}
+                                          // relatedResourceTableName={relatedResourceTableName}
                                           getRecordsData={this.getRecordsData}
                     />
 
