@@ -19,10 +19,12 @@ class RangeDouble extends Component {
         return (
             <div>
                 <div>
-                    <TextField required type="number" label={this.state.label.concat(' from')} onChange={this.onChangeRangeDoubleFrom}/>
+                    <TextField required type="number" label={this.state.label.concat(' from')}
+                               onChange={this.onChangeRangeDoubleFrom}/>
                 </div>
                 <div>
-                    <TextField required type="number" label={this.state.label.concat(' to')} onChange={this.onChangeRangeDoubleTo}/>
+                    <TextField required type="number" label={this.state.label.concat(' to')}
+                               onChange={this.onChangeRangeDoubleTo}/>
                 </div>
             </div>
         );

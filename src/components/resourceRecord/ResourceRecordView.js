@@ -60,8 +60,8 @@ class ResourceRecordView extends Component {
                 </Button>
 
                 <Grid container spacing={3}>
-                    <Grid item xs={3}></Grid>
-                    <Grid item xs={7}>
+                    <Grid item xs={2}></Grid>
+                    <Grid item xs={8}>
                         {this.state.resourceTemplate &&
                         <ResourceRecordList
                             tableName={this.state.tableName}

@@ -83,8 +83,6 @@ class ResourceRecordCreate extends Component {
         //         </FormControl>
         //     </div>)
         // )
-
-        console.log(this.state.parameters)
         return (
             <div>
                 <DialogContent dividers>

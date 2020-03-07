@@ -9,7 +9,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 import axios from "../../utils/axios";
 import EditIcon from "@material-ui/icons/Edit";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import ResourceRecordCreate from "./ResourceRecordCreate";
 import Dialog from "@material-ui/core/Dialog";
 import ResourceRecordUpdate from "./ResourceRecordUpdate";
 
@@ -19,7 +18,6 @@ const linkStyle = {
     color: blue['A400']
 
 }
-
 
 
 class resourceRecordItem extends Component {
@@ -103,11 +101,19 @@ class resourceRecordItem extends Component {
                                             to={`/resource/view/${this.props.tableName}/${this.props.item['id']}`}
                                             style={linkStyle} align="right">{data[element.columnName]}
                             </TableCell>)
+                        } else if (element.columnName.endsWith('_ref_name')) {
+                            e = (<TableCell component={Link} key={index}
+                                            to={`/resource/view/${this.props.tableName}/${this.props.item['id']}`}
+                                            style={linkStyle} align="right">{data[element.columnName]}
+                            </TableCell>)
                         } else {
+                            console.log(element.columnName);
+                            console.log(element.columnName + '_ref_name');
                             e = (<TableCell key={index} align="right">{data[element.columnName]}
                             </TableCell>)
                         }
                         return e;
+
                     })
                     }
                     <Tooltip title="Edit">

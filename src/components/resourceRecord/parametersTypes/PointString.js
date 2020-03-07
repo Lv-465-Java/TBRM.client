@@ -10,7 +10,8 @@ class PointString extends Component {
     render() {
         return (
             <div>
-                <TextField required type="text" label={this.props.label} onChange={this.onChangePointString}/>
+                <TextField required type="text" label={this.props.label}
+                           onChange={this.onChangePointString}/>
             </div>
         );
     }

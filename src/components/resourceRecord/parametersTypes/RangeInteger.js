@@ -19,10 +19,12 @@ class RangeInteger extends Component {
         return (
             <div>
                 <div>
-                    <TextField required type="number" label={this.state.label.concat(' from')} onChange={this.onChangeRangeIntegerFrom}/>
+                    <TextField required type="number" label={this.state.label.concat(' from')}
+                               onChange={this.onChangeRangeIntegerFrom}/>
                 </div>
                 <div>
-                    <TextField required type="number" label={this.state.label.concat(' to')} onChange={this.onChangeRangeIntegerTo}/>
+                    <TextField required type="number" label={this.state.label.concat(' to')}
+                               onChange={this.onChangeRangeIntegerTo}/>
                 </div>
             </div>
         );

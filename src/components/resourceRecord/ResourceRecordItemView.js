@@ -54,14 +54,14 @@ class ResourceRecordItemView extends Component {
 
 
     render() {
-        let value = {}
-        Object.keys(this.state.parameters).forEach(key => {
-            value[key] = this.state.parameters[key];
-            if (key === 'coordinates') {
-                console.log(value[key]);
-            }
-            console.log(value[key]);
-        })
+        // let value = {}
+        // Object.keys(this.state.parameters).forEach(key => {
+        //     value[key] = this.state.parameters[key];
+        //     if (key === 'coordinates') {
+        //         console.log(value[key]);
+        //     }
+        //     console.log(value[key]);
+        // })
         // let googleMap = (this.state.para
 
         let googleMap = (this.state.parameters['coordinates'] !== undefined) ?
@@ -87,10 +87,10 @@ class ResourceRecordItemView extends Component {
                             {/*    <Typography key={index}>{element}*/}
                             {/*    </Typography>)}*/}
 
-                            {Object.keys(this.state.parameters).map(key =><Typography key={key}
-                                                                                       variant="body2"
-                                                                                       color="textSecondary"
-                                                                                       component="p"> {key}: {value[key]}</Typography>)}
+                            {/*{Object.keys(this.state.parameters).map(key =><Typography key={key}*/}
+                            {/*                                                           variant="body2"*/}
+                            {/*                                                           color="textSecondary"*/}
+                            {/*                                                           component="p"> {key}: {value[key]}</Typography>)}*/}
 
 
                             {/*{this.state.map((element, index) =>*/}

@@ -59,14 +59,14 @@ class ResourceRecordUpdate extends Component {
                 <DialogContent dividers>
                     <div>
                         <FormControl>
-                            <TextField required type="text" label="name" onChange={this.onChangeName}/>
+                            <TextField required type="text" label="name" value={this.props.item.name} onChange={this.onChangeName}/>
                             {/*// helperText={this.state.errorMessage} error={!!this.state.errorMessage}/>*/}
 
                         </FormControl>
                     </div>
                     <div>
                         <FormControl>
-                            <TextField type="text" label="description" onChange={this.onChangeDescription}/>
+                            <TextField type="text" label="description" value={this.props.item.description} onChange={this.onChangeDescription}/>
                         </FormControl>
                     </div>
                     {
@@ -77,26 +77,31 @@ class ResourceRecordUpdate extends Component {
                                 e = (<PointInteger key={element.name}
                                                    label={element.name}
                                                    columnName={element.columnName}
+                                                   value={this.props.item.parameters[element.columnName]}
                                                    setData={this.setData}/>)
                             } else if (element.parameterType === 'POINT_STRING') {
                                 e = (<PointString key={element.name}
                                                   label={element.name}
                                                   columnName={element.columnName}
+                                                  value={this.props.item.parameters[element.columnName]}
                                                   setData={this.setData}/>)
                             } else if (element.parameterType === 'POINT_DOUBLE') {
                                 e = (<PointDouble key={element.name}
                                                   label={element.name}
                                                   columnName={element.columnName}
+                                                  value={this.props.item.parameters[element.columnName]}
                                                   setData={this.setData}/>)
                             } else if (element.parameterType === 'RANGE_INTEGER') {
                                 e = (<RangeInteger key={element.name}
                                                    label={element.name}
                                                    columnName={element.columnName}
+                                                   value={this.props.item.parameters[element.columnName]}
                                                    setData={this.setData}/>)
                             } else if (element.parameterType === 'RANGE_DOUBLE') {
                                 e = (<RangeDouble key={element.name}
                                                   label={element.name}
                                                   columnName={element.columnName}
+                                                  value={this.props.item.parameters[element.columnName]}
                                                   setData={this.setData}/>)
                             }
                             return e;

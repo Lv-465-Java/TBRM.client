@@ -10,7 +10,8 @@ class PointInteger extends Component {
     render() {
         return (
             <div>
-                <TextField required pattern="^\d+$" type="number" label={this.props.label} onChange={this.onChangePointInteger}/>
+                <TextField required pattern="^\d+$" type="number" label={this.props.label}
+                           onChange={this.onChangePointInteger}/>
             </div>
         );
     }

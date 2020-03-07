@@ -34,7 +34,8 @@ class ResourceRecordList extends Component {
                     //     headers.push({name: element.name + " Coordinate", columnName: element.columnName + "_coordinate"})
                 // }
                 else if (element.parameterType === "POINT_REFERENCE") {
-                    headers.push({name: element.name, columnName: element.columnName + "_ref"})
+                    headers.push({name: element.name, columnName: element.columnName + "_ref_name"})
+                    // headers.push({name: element.name, columnName: element.columnName + "_ref"})
                 } else {
                     headers.push({name: element.name, columnName: element.columnName})
                 }

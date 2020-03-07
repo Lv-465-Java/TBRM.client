@@ -19,7 +19,8 @@ class PointDouble extends Component {
         return (
             <div>
                 {/*<NumericInput label={this.props.label} onClick={this.onChangePointDouble}/>*/}
-                <InputField type="number" label={this.props.label}  onChange={this.onChangePointDouble}/>
+                <TextField required type="number" label={this.props.label} onChange={this.onChangePointDouble}/>
+
                 {/*<input type="number" label={this.props.label} onChange={this.onChangePointDouble}/>*/}
                 {/*<TextField type="number" label={this.props.label} onChange={this.onChangePointDouble}/>*/}
             </div>
