@@ -1,9 +1,10 @@
-
+import Alert from "@material-ui/lab/Alert";
 
 export const logout = () => {
     sessionStorage.removeItem('authorization');
     localStorage.removeItem('refreshToken');
     sessionStorage.removeItem('userrole');
+    // Alert.success("You're safely logged out!");
 }
 
 export const isUserLoggedIn = () => {

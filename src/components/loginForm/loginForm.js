@@ -12,20 +12,29 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import googleLogo from "../../img/google-logo.png";
 import Alert from "@material-ui/lab/Alert";
-import DropDownMenu from '@material-ui/core/D/DropDownMenu';
+// import Alert  from 'react-s-alert';
+// import 'react-s-alert/dist/s-alert-default.css';
+// import 'react-s-alert/dist/s-alert-css-effects/slide.css';
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
 
 const localStorageService = LocalSessionStorageService.getService();
 
 const style={
     marginTop:40
 }
+const formControl= {
+        marginTop: 15,
+        minWidth: 395,
+    }
 
 class LoginForm extends Component {
 
     state = {
         email: undefined,
         password: undefined,
-        selection: 1 //////
+        tenant: undefined
     }
 
     getData = () => {
@@ -52,18 +61,18 @@ class LoginForm extends Component {
         })
     }
 
-    handleChange(event, index, value) {
-        //set selection to the value selected
-        this.setState({ selection : value });
-
-    }
+    handleChange = name => event => {
+        this.setState({
+            ...this.state,
+            [name]: event.target.value,
+        });
+    };
     
 
     render() {
 
         return (
             <Container component="main" maxWidth="xs" style={style}>
-                {this.logout && <Alert severity="success">You're safely logged out!</Alert>}
                 <CssBaseline/>
                 {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
                 <div>
@@ -92,15 +101,41 @@ class LoginForm extends Component {
                         autoComplete="current-password"
                     />
 
-                    <DropDownMenu
-                        value={this.state.selection}
-                        onChange={this.handleChange}
-                    >
-                        <MenuItem value={1} primaryText="English"  />
-                        <MenuItem value={2} primaryText="Spanish" />
-                        <MenuItem value={3} primaryText="French" />
-
-                    </DropDownMenu>
+                    <Grid>
+                    <FormControl variant="outlined" style={formControl}>
+                        <InputLabel ref="" htmlFor="outlined-age-native-simple">
+                            Choose Tenant
+                        </InputLabel>
+                        <Select
+                            native
+                            value={this.state.tenant}
+                            onChange={this.handleChange('tenant')}
+                            labelWidth={110}
+                            inputProps={{
+                                name: 'tenant',
+                                id: 'outlined-age-native-simple',
+                            }}
+                        >
+                            <option value="" />
+                            <option value={10}>Ten</option>
+                            <option value={20}>Twenty</option>
+                            <option value={30}>Thirty</option>
+                        </Select>
+                    </FormControl>
+                    </Grid>
+                    {/*<PopupState variant="popover" popupId="demo-popup-menu">*/}
+                    {/*    {popupState => (*/}
+                    {/*        <React.Fragment>*/}
+                    {/*            <Button variant="contained" color="primary" {...bindTrigger(popupState)}>*/}
+                    {/*                Choose tenant*/}
+                    {/*            </Button>*/}
+                    {/*            <Menu {...bindMenu(popupState)}>*/}
+                    {/*                <MenuItem onClick={popupState.close}>Cake</MenuItem>*/}
+                    {/*                <MenuItem onClick={popupState.close}>Death</MenuItem>*/}
+                    {/*            </Menu>*/}
+                    {/*        </React.Fragment>*/}
+                    {/*    )}*/}
+                    {/*</PopupState>*/}
 
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary"/>}

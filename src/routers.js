@@ -16,7 +16,6 @@ import ResourceTemplateView from "./components/resourceTemplate/resourceTemplate
 import OAuth2RedirectHandler from "./components/oauth2/OAuth2RedirectHandler";
 import PermissionResourceTemplateList from "./components/permissions/permissionResourceTemplateList";
 import PermissionResourceTemplateAdd from "./components/permissions/permissionResourceTemplateAdd";
-import {Message} from "@material-ui/icons";
 import PermissionResourceTemplateRemove from "./components/permissions/permissionResourcetemplateRemove";
 import PermissionResourceTemplateChangeOwner from "./components/permissions/permissionResourceTemplateChangeOwner";
 import ForgotPasswordMessage from "./components/resetPassword/ForgotPasswordMessage";
@@ -26,6 +25,7 @@ import GroupItem from "./components/group/groupItem";
 import EditGroup from "./components/group/editGroup";
 import AddPermission from "./components/group/addPermission";
 import FullOAuthRegister from "./components/oauth2/FullOAuthRegister";
+import AddTenant from "./components/home/AddTenant";
 
 
 
@@ -56,6 +56,7 @@ class Routers extends Component {
                     <Route path="/group" component={GroupList}/>
                     <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}/>
                     <Route path="/oauth2/fullRegister" component={FullOAuthRegister}/>
+                    <Route path="/add_tenant" component={AddTenant}/>
                     <Route path="/" exact component={LoginForm} />
                 </Switch>
                 <Footer/>
