@@ -64,7 +64,7 @@ class resourceRecordItem extends Component {
         //
         // this.props.he
         // data{name, description} = this.props.item
-        console.log(this.props.item)
+        console.log(this.props.item.parameters)
         let data = {}
         data['description'] = this.props.item['description']
         data['name'] = this.props.item['name']
@@ -86,19 +86,17 @@ class resourceRecordItem extends Component {
 
         Object.keys(this.props.item['parameters']).forEach(key => {
             data[key] = this.props.item['parameters'][key]
+            console.log(data[key])
         })
-        this.props.resourceTemplate.resourceParameters.map(key => {
-            if (key.parameterType === "POINT_REFERENCE") {
-                console.log(key['relatedResourceTemplateTableName']);
-            }
-        })
+        // data[]
+        // this.props.resourceTemplate.resourceParameters.map(key => {
+        //     if (key.parameterType === "POINT_REFERENCE") {
+        //         console.log(key['relatedResourceTemplateTableName']);
+        //     }
+        // })
         return (
 
             <>
-
-                {/*<TableRow component={Link}*/}
-                {/*          to={`/resource/view/${this.props.tableName}/${this.props.item['id']}`}*/}
-                {/*          style={linkStyle}>*/}
                 <TableRow>
                     {this.props.headers.map((element, index) => {
                         let e;
@@ -108,22 +106,17 @@ class resourceRecordItem extends Component {
                                             style={linkStyle} align="right">{data[element.columnName]}
                             </TableCell>)
                         } else if (element.columnName.endsWith('_ref_name')) {
+                            let id = data[element.columnName.substring(0, element.columnName.length - 5)];
                             e = (<TableCell component={Link} key={index}
-                                            to={`/resource/view/${this.props.tableName}/${this.props.item['id']}`}
+                                            to={`/resource/view/${this.props.relatedResourceTableName}/${id}`}
+                                // to={`/resource/view/${this.props.tableName}/${this.props.item['id']}`}
                                             style={linkStyle} align="right">{data[element.columnName]}
                             </TableCell>)
                         } else {
-                            console.log(element.columnName);
-                            console.log(element.columnName + '_ref_name');
                             e = (<TableCell key={index} align="right">{data[element.columnName]}
                             </TableCell>)
-                            let string = ""
-                            // console.log(this.props.resourceTemplate.resourceParameters);
-
                         }
                         return e;
-
-
                     })
                     }
                     <Tooltip title="Edit">
