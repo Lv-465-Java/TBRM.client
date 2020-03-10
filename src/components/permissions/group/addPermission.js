@@ -4,13 +4,18 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import Alert from "@material-ui/lab/Alert";
-import axios from "../../utils/axios";
+import axios from "../../../utils/axios";
 import MaterialTable from "material-table";
+import CustomPagination from "../../pagination/customPagination";
 
 
 const columns = [
     {title: "Email", field: 'principal'}
 ];
+
+const paginationStyle = {
+    padding: 20
+};
 
 const noError = '';
 
@@ -19,6 +24,10 @@ class AddPermission extends Component {
         id: this.props.match.params.id,
         recipient: "",
         users: [],
+        activePage: 1,
+        totalPages: 0,
+        itemsCountPerPage: 0,
+        totalItemsCount: 0,
         errorMessage: "",
     };
 
@@ -103,7 +112,23 @@ class AddPermission extends Component {
                                     })
                                 }
                             }}
+                            options={{
+                                actionsColumnIndex: -1,
+                                paging: false,
+                                search: false
+                            }}
                         />
+                        <Grid container
+                              style={paginationStyle}
+                              justify="center">
+                            <CustomPagination
+                                activepage={this.state.activePage}
+                                totalPages={this.state.totalPages}
+                                itemsCountPerPage={this.state.itemsCountPerPage}
+                                totalItemsCount={this.state.totalItemsCount}
+                                onChange={this.handlePageChange}
+                            />
+                        </Grid>
                     </Box>
                 </Grid>
             </Grid>
