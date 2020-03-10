@@ -4,6 +4,7 @@ import axios from '../../utils/axios';
 import { Button } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
+import { verifyUser } from '../../service/authService';
 
 
 const style={
@@ -16,16 +17,29 @@ class FullOAuthRegister extends Component {
         phone: undefined,
         password: undefined
     }
+
+    getRole() {
+        axios.get("/user/role").then(response => {
+            sessionStorage.setItem('userrole', response.data.role.name)
+            this.setState({ 'userrole': response.data.role.name });
+            this.verifyUser();
+
+        }, error => {
+            console.log(error.response.data.message);
+        })
+    }
+
     getData = () => {
         axios.post("/oauth2/fullRegister", this.state).then(response => {
             if (response !== undefined) {
-                window.location.href = "/home";
+                verifyUser();
             }
         }, error => {
             this.setState({ errorMessage: error.response.data.message });
             console.log(error.response.data.message);
         })
     }
+
 
     onChangePhone = (event) => {
         this.setState({

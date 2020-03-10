@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -9,26 +9,26 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 export default class MyDialog extends Component {
     render() {
         return (<>
-            <Dialog
-                open={this.props.open}
-                onClose={this.props.handleClose}
-                aria-labelledby="responsive-dialog-title"
-            >
-                <DialogTitle id="responsive-dialog-title">{this.props.title}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        {this.props.msg}
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button autoFocus onClick={this.props.handleClose} color="primary">
-                        Disagree
-          </Button>
-                    <Button onClick={this.props.delete} color="primary" autoFocus>
-                        Agree
-          </Button>
-                </DialogActions>
-            </Dialog></>
+                <Dialog
+                    open={this.props.open}
+                    onClose={this.props.handleClose}
+                    aria-labelledby="responsive-dialog-title"
+                >
+                    <DialogTitle id="responsive-dialog-title">{this.props.title}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            {this.props.msg}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button autoFocus onClick={this.props.handleClose} color="primary">
+                            Disagree
+                        </Button>
+                        <Button onClick={this.props.delete} color="primary" autoFocus>
+                            Agree
+                        </Button>
+                    </DialogActions>
+                </Dialog></>
         )
     }
 }
