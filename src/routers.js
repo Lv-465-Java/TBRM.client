@@ -26,6 +26,12 @@ import FullOAuthRegister from "./components/oauth2/FullOAuthRegister";
 import { getUserRole, isUserLoggedIn } from './service/authService';
 import Forbidden from "./hoc/forbidden";
 import GuestPage from "./components/guest";
+import ResourceRecordView from "./components/resourceRecord/ResourceRecordView";
+import TestMaps from "./components/resourceParameters/GoogleMap";
+import ResourceTemplateItem from "./components/resourceTemplate/resourceTemplateItem";
+import ResourceRecordItemView from "./components/resourceRecord/ResourceRecordItemView";
+import ResourceRecordCreate from "./components/resourceRecord/ResourceRecordCreate";
+import ResourceRecordUpdate from "./components/resourceRecord/ResourceRecordUpdate";
 import FilterView from "./components/resourceRecord/filters/filterView";
 // import ResourceRecordView from "./components/resourceRecord/ResourceRecordView";
 
@@ -80,7 +86,11 @@ class Routers extends Component {
                     <ManagerRoute path="/resource-template/permission/owner/:id" component={PermissionResourceTemplateChangeOwner} />
                     <ManagerRoute path="/resource-template/permission/:id" component={PermissionResourceTemplateList} />
                     <ResourceRoute path="/resource-template" component={ResourceTemplateList} />
-                    {/*<ResourceRoute path="/resource/:tableName" component={ResourceRecordView}/>*/}
+                    <RegisterRoute path="/resource/update/:tableName/:id" component={ResourceRecordUpdate} />
+                    <RegisterRoute path="/resource/view/:tableName/:recordId" component={ResourceRecordItemView} />
+                    <RegisterRoute path="/resource/:tableName" component={ResourceRecordView}/>
+                    <RegisterRoute path="/resource/create" component={ResourceRecordCreate} />
+                    <Route path="/test-maps" component={TestMaps} />
                     <Route path="/forgot_password/:email" component={ForgotPasswordMessage} />
                     <ManagerRoute path="/group/edit/:name" component={EditGroup} />
                     <ManagerRoute path="/group/view/:name" component={GroupItem} />

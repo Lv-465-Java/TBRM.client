@@ -1,6 +1,24 @@
 import React, {Component} from 'react';
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
+import {Link} from "react-router-dom";
+import {blue} from "@material-ui/core/colors";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Tooltip from "@material-ui/core/Tooltip";
+import axios from "../../utils/axios";
+import EditIcon from "@material-ui/icons/Edit";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Dialog from "@material-ui/core/Dialog";
+import ResourceRecordUpdate from "./ResourceRecordUpdate";
+
+
+const linkStyle = {
+    textDecoration: 'none',
+    color: blue['A400']
+
+}
+
 
 class resourceRecordItem extends Component {
 
@@ -14,24 +32,22 @@ class resourceRecordItem extends Component {
         headers: this.props.headers
     };
 
-    // appendParameters = () => {
-    //     for (let value of this.state.parameters) {
-    //         console.log(value);
-    //     }
-    // };
 
+    delete = () => {
+        axios.delete(`/resource-template/resource/${this.props.tableName}/${this.props.item.id}`).then(
+            response => {
+                this.props.getRecordsData();
+            }).catch(error => {
+            // console.dir(error.response.data);
+        })
+    };
 
-// Iterate over the property names:
-//     appendSth = () => {
-//         for (let value of Object.entries(this.state.parameters)) {
-//             console.log(value);
-//         }
-//     }
-//     appendSth = () => {
-//         for (let value of Object.values(this.state.parameters)) {
-//             (`<TableCell align="right">${value}</TableCell>`)
-//         }
-//     };
+    handleClose = () => {
+        this.setState({openDialog: false})
+    }
+    handleOpen = () => {
+        this.setState({openDialog: true})
+    }
 
 
     render() {
@@ -48,7 +64,7 @@ class resourceRecordItem extends Component {
         //
         // this.props.he
         // data{name, description} = this.props.item
-        console.log(this.props.item)
+        console.log(this.props.item.parameters)
         let data = {}
         data['description'] = this.props.item['description']
         data['name'] = this.props.item['name']
@@ -69,53 +85,63 @@ class resourceRecordItem extends Component {
         // })
 
         Object.keys(this.props.item['parameters']).forEach(key => {
-            data[key]=this.props.item['parameters'][key]
+            data[key] = this.props.item['parameters'][key]
+            console.log(data[key])
         })
-
+        // data[]
+        // this.props.resourceTemplate.resourceParameters.map(key => {
+        //     if (key.parameterType === "POINT_REFERENCE") {
+        //         console.log(key['relatedResourceTemplateTableName']);
+        //     }
+        // })
         return (
+
             <>
                 <TableRow>
-                    {this.props.headers.map((element, index)=> <TableCell key={index} align="right">{data[element.columnName]}</TableCell>)}
-                    {/*<TableCell align="right">{this.state.name}</TableCell>*/}
-                    {/*{list}*/}
-                {/*    {*/}
-                {/*    this.state.parameters.map((value) => {*/}
-                {/*        return (<TableCell  align="right">${value}</TableCell>)*/}
-                {/*    })*/}
-                {/*}*/}
-
-                    {/*{*/}
-                    {/*    this.state.obj.map((value) => {*/}
-                    {/*    return(<TableCell align="right">{value}</TableCell>)*/}
-                    {/*})*/}
-                    {/*}*/}
-
-
-                    {/*{*/}
-                    {/*    this.state.parameters.map(element => {*/}
-                    {/*    return(<TableCell align="right">${element.value}</TableCell>)*/}
-                    {/*    })*/}
-                    {/*}*/}
-                    {/*<TableCell align="right">{this.appendParameters()}</TableCell>*/}
-                    {/*<TableCell align="right">{this.state.parameters.map(value => )}</TableCell>*/}
-
-                    {/*<TableCell align="right">{this.state.parameters}</TableCell>*/}
-
-                    {/*    <Tooltip title="Delete">*/}
-                    {/*        <IconButton aria-label="delete" onClick={this.delete}>*/}
-                    {/*           <DeleteIcon/>*/}
-                    {/*        </IconButton>*/}
-                    {/*    </Tooltip>*/}
-                    {/*    <Tooltip title="Edit">*/}
-                    {/*        <IconButton aria-label="edit">*/}
-                    {/*            <EditIcon/>*/}
-                    {/*        </IconButton>*/}
-                    {/*    </Tooltip>*/}
-                    {/*<CreateParameter getData={this.getData}*/}
-                    {/*                 resTempId={this.state.resTempId}/>*/}
-                    {/*{element}*/}
-
+                    {this.props.headers.map((element, index) => {
+                        let e;
+                        if (element.columnName === 'name') {
+                            e = (<TableCell component={Link} key={index}
+                                            to={`/resource/view/${this.props.tableName}/${this.props.item['id']}`}
+                                            style={linkStyle} align="right">{data[element.columnName]}
+                            </TableCell>)
+                        } else if (element.columnName.endsWith('_ref_name')) {
+                            let id = data[element.columnName.substring(0, element.columnName.length - 5)];
+                            e = (<TableCell component={Link} key={index}
+                                            to={`/resource/view/${this.props.relatedResourceTableName}/${id}`}
+                                // to={`/resource/view/${this.props.tableName}/${this.props.item['id']}`}
+                                            style={linkStyle} align="right">{data[element.columnName]}
+                            </TableCell>)
+                        } else {
+                            e = (<TableCell key={index} align="right">{data[element.columnName]}
+                            </TableCell>)
+                        }
+                        return e;
+                    })
+                    }
+                    <Tooltip title="Edit">
+                        <IconButton aria-label="edit" color="secondary" onClick={this.handleOpen}>
+                            <EditIcon/>
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                        <IconButton aria-label="delete" color="primary" onClick={this.delete}>
+                            <DeleteIcon/>
+                        </IconButton>
+                    </Tooltip>
                 </TableRow>
+
+                <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.state.openDialog}>
+                    <DialogTitle id="simple-dialog-title">Update {this.props.resourceTemplate.name}</DialogTitle>
+
+                    <ResourceRecordUpdate handleClose={this.handleClose}
+                                          tableName={this.props.tableName}
+                                          resourceTemplate={this.props.resourceTemplate}
+                                          getRecordsData={this.props.getRecordsData}
+                                          item={this.props.item}
+                    />
+
+                </Dialog>
             </>
         );
     }
