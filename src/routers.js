@@ -84,10 +84,10 @@ class Routers extends Component {
                     <ManagerRoute path="/resource-template/permission/owner/:id" component={PermissionResourceTemplateChangeOwner} />
                     <ManagerRoute path="/resource-template/permission/:id" component={PermissionResourceTemplateList} />
                     <ResourceRoute path="/resource-template" component={ResourceTemplateList} />
-                    <Route path="/resource/update/:tableName/:id" component={ResourceRecordUpdate} />
-                    <Route path="/resource/view/:tableName/:recordId" component={ResourceRecordItemView} />
-                    <ResourceRoute path="/resource/:tableName" component={ResourceRecordView}/>
-                    <Route path="/resource/create" component={ResourceRecordCreate} />
+                    <RegisterRoute path="/resource/update/:tableName/:id" component={ResourceRecordUpdate} />
+                    <RegisterRoute path="/resource/view/:tableName/:recordId" component={ResourceRecordItemView} />
+                    <RegisterRoute path="/resource/:tableName" component={ResourceRecordView}/>
+                    <RegisterRoute path="/resource/create" component={ResourceRecordCreate} />
                     <Route path="/test-maps" component={TestMaps} />
                     <Route path="/forgot_password/:email" component={ForgotPasswordMessage} />
                     <ManagerRoute path="/group/edit/:name" component={EditGroup} />
