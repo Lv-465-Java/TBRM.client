@@ -91,7 +91,7 @@ class PermissionResourceTemplateAdd extends Component {
     }
 
     getGroups = (pageNumber) => {
-        axios.get(`group?page=${pageNumber}&size=${itemsNumber}`).then(response => {
+        axios.get(`group?page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
             let groups = response.data.content;
             let totalPages = response.data.totalPages;
             let itemsCountPerPage = response.data.numberOfElements;
