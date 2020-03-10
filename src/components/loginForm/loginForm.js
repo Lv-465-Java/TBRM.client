@@ -12,6 +12,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import googleLogo from "../../img/google-logo.png";
 import Alert from "@material-ui/lab/Alert";
+import { getUserRole, verifyUser } from '../../service/authService';
 
 
 const localStorageService = LocalSessionStorageService.getService();
@@ -24,12 +25,28 @@ class LoginForm extends Component {
 
     state = {
         email: undefined,
-        password: undefined
+        password: undefined,
+        userrole: '',
+        errorMessage: ''
     }
+
+    getRole() {
+        axios.get("/user/role").then(response => {
+            sessionStorage.setItem('userrole', response.data.role.name)
+            this.setState({ 'userrole': response.data.role.name });
+            verifyUser();
+
+        }, error => {
+            console.log(error.response.data.message);
+        })
+    }
+
+    
+
     getData = () => {
         axios.post("/authentication", this.state).then(response => {
                 if (response !== undefined) {
-                    window.location.href = "/home";
+                    this.getRole();
                 }
             }, error => {
            this.setState({ errorMessage: error.response.data.message });

@@ -12,10 +12,15 @@ const axios = Axios.create({
 
 axios.interceptors.request.use(
         config => {
+            console.log(config);
             const token = localStorageService.getAccessToken();
             if (token) {
                 config.headers['authorization'] = token;
             }
+            // if (config.url.endsWith("upload_photo")){
+            // config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+            // }
+            console.log(config);
             return config;
         },
             error => {

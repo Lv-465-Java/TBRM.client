@@ -15,7 +15,6 @@ import AddIcon from '@material-ui/icons/Add';
 import Alert from '@material-ui/lab/Alert';
 import { getUserRole } from '../../service/authService';
 import axios from '../../utils/axios';
-import Auth from '../../hoc/auth';
 
 const formStyles = {
     marginBottom: 20,
@@ -141,7 +140,7 @@ class PermissionResourceTemplateRemove extends Component {
 
     render() {
         return (
-            <Auth>
+            <div>
                 <Grid container spacing={3}>
                     <Grid item xs={2}>
                         <Box mx="auto">
@@ -231,7 +230,7 @@ class PermissionResourceTemplateRemove extends Component {
                         </TableContainer>
                     </Grid>
                 </Grid>
-            </Auth>
+            </div>
         );
     }
 }
