@@ -9,6 +9,7 @@ import RangeInteger from "./parametersTypes/RangeInteger";
 import RangeDouble from "./parametersTypes/RangeDouble";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
+import PointReference from "./parametersTypes/PointReference";
 
 class ResourceRecordUpdate extends Component {
 
@@ -59,14 +60,16 @@ class ResourceRecordUpdate extends Component {
                 <DialogContent dividers>
                     <div>
                         <FormControl>
-                            <TextField required type="text" label="name" value={this.props.item.name} onChange={this.onChangeName}/>
+                            <TextField required type="text" label="name" onChange={this.onChangeName}/>
+                            {/*<TextField required type="text" label="name" value={this.props.item.name} onChange={this.onChangeName}/>*/}
                             {/*// helperText={this.state.errorMessage} error={!!this.state.errorMessage}/>*/}
 
                         </FormControl>
                     </div>
                     <div>
                         <FormControl>
-                            <TextField type="text" label="description" value={this.props.item.description} onChange={this.onChangeDescription}/>
+                            <TextField type="text" label="description" onChange={this.onChangeDescription}/>
+                            {/*<TextField type="text" label="description" value={this.props.item.description} onChange={this.onChangeDescription}/>*/}
                         </FormControl>
                     </div>
                     {
@@ -103,6 +106,12 @@ class ResourceRecordUpdate extends Component {
                                                   columnName={element.columnName}
                                                   value={this.props.item.parameters[element.columnName]}
                                                   setData={this.setData}/>)
+                            } else if (element.parameterType === 'POINT_REFERENCE') {
+                                e = (<PointReference key={element.name}
+                                                     label={element.name}
+                                                     columnName={element.columnName}
+                                                     relatedResourceTableName={element['relatedResourceTemplateTableName']}
+                                                     setData={this.setData}/>)
                             }
                             return e;
                         })
