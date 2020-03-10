@@ -11,49 +11,73 @@ import ResourceRecordItem from "./ResourceRecordItem";
 class ResourceRecordList extends Component {
     state = {
         headers: [],
-        data: this.props.records
+        data: this.props.records,
+        relatedResourceTableName: ''
     }
 
     componentDidMount() {
+        let relatedResourceTableName = '';
         let headers = [
             {name: "Name", columnName: "name"},
-            {name: "Description", columnName: "description"}];
+            {name: "Description", columnName: "description",}];
+        // {relatedResourceTableName: "", columnName: ""}];
         this.props.resourceTemplate.resourceParameters.forEach(element => {
-            if (element.parameterType === "RANGE_DOUBLE") {
-                // headers.push({
-                //     name: element.name,
-                //     columnName: [element.columnName+"_from", element.columnName+"_to"]
-                // });
-
-
-                headers.push({name: element.name+"_from", columnName: element.columnName+"_from"});
-                headers.push({name: element.name+"_to", columnName: element.columnName+"_to"})
-            } else if (element.parameterType === "POINT_REFERENCE") {
-                headers.push({name: element.name, columnName: element.columnName + "_ref"})
-            } else {
-                headers.push({name: element.name, columnName: element.columnName})
+            if (element.parameterType !== "COORDINATES_STRING") {
+                if (element.parameterType === "RANGE_DOUBLE") {
+                    headers.push({name: element.name + "_from", columnName: element.columnName + "_from"});
+                    headers.push({name: element.name + "_to", columnName: element.columnName + "_to"})
+                }
+                    // else if (element.parameterType === "COORDINATES_STRING") {
+                    //     headers.push({name: element.name + " Coordinate", columnName: element.columnName + "_coordinate"})
+                // }
+                else if (element.parameterType === "POINT_REFERENCE") {
+                    relatedResourceTableName = element['relatedResourceTemplateTableName'];
+                    headers.push({
+                        name: element.name,
+                        columnName: element.columnName + "_ref_name",
+                        // relatedResourceTemplateTableName: element['relatedResourceTemplateTableName']
+                    });
+                    // headers.push({name: element.name, columnName: element.columnName + "_ref"});
+                    // console.log(element.name)
+                } else {
+                    headers.push({name: element.name, columnName: element.columnName})
+                }
             }
         });
-        this.setState({headers: headers});
+
+        this.setState({
+            headers: headers,
+            relatedResourceTableName: relatedResourceTableName,
+        });
     }
 
     render() {
         return (
             <>
                 <TableContainer component={Paper}>
-                    <Table aria-label="caption table">
-                        <caption>A basic table example with a caption</caption>
+                    <Table>
                         <TableHead>
                             <TableRow>
-                                {this.state.headers.map(element => <TableCell align="right">{element.name}</TableCell>)}
+                                {this.state.headers.map(element => <TableCell key={element.name}
+                                                                              align="right">{element.name}</TableCell>)}
                             </TableRow>
                         </TableHead>
                         <TableBody>
+
                             {this.props.records.map((item) =>
+
                                 (<ResourceRecordItem key={item.id}
                                                      item={item}
-                                                     headers={this.state.headers}/>)
+                                                     tableName={this.props.tableName}
+                                                     relatedResourceTableName={this.state.relatedResourceTableName}
+                                                     headers={this.state.headers}
+                                                     getRecordsData={this.props.getRecordsData}
+                                                     resourceTemplate={this.props.resourceTemplate}/>
+
+                                )
                             )}
+
+
                             {/*{rows.map(row => (*/}
                             {/*    <TableRow key={row.name}>*/}
                             {/*        <TableCell component="th" scope="row">*/}

@@ -5,7 +5,6 @@ import MaterialTable from 'material-table';
 import Alert from '@material-ui/lab/Alert';
 import { getUserRole } from '../../service/authService';
 import axios from '../../utils/axios';
-import Auth from '../../hoc/auth';
 
 const formStyles = {
     marginBottom: 30
@@ -104,7 +103,7 @@ class PermissionResourceTemplateChangeOwner extends Component {
 
     render() {
         return (
-            <Auth>
+            <div>
                 <Grid container spacing={3}>
                     <Grid item xs={2}>
                         <Box mx="auto">
@@ -181,7 +180,7 @@ class PermissionResourceTemplateChangeOwner extends Component {
                     </Grid>
 
                 </Grid>
-            </Auth>
+            </div>
         );
     }
 }

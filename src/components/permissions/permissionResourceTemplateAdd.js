@@ -10,9 +10,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {getUserRole} from '../../service/authService';
+import { getUserRole } from '../../service/authService';
 import axios from '../../utils/axios';
-import Auth from '../../hoc/auth';
 import CustomPagination from "../pagination/customPagination";
 
 const formStyles = {
@@ -71,9 +70,9 @@ class PermissionResourceTemplateAdd extends Component {
                     name: data.name
                 })
             }).catch(error => {
-            console.dir(error.response.data);
+                console.dir(error.response.data);
 
-        })
+            })
 
     }
 
@@ -86,8 +85,9 @@ class PermissionResourceTemplateAdd extends Component {
                     users: data
                 })
             }).catch(error => {
-            console.log(error.response.data);
-        })
+                console.log(error.response.data);
+
+            })
     }
 
     getGroups = (pageNumber) => {
@@ -108,7 +108,7 @@ class PermissionResourceTemplateAdd extends Component {
 
     onChangeRecipient = (event) => {
         let recipient = event.target.value;
-        this.setState({recipient});
+        this.setState({ recipient });
     }
 
     handleChangePermission = permission => event => {
@@ -136,14 +136,9 @@ class PermissionResourceTemplateAdd extends Component {
             && this.state.permission !== "" && this.state.principal !== "";
     };
 
-    verifyUser = () => {
-        if (getUserRole() !== "ROLE_MANAGER") {
-            this.props.history.push("/home");
-        }
-    };
 
     goBack = () => {
-        this.props.history.push("/home");
+        this.props.history.goBack();
     };
 
     goToEditGroup(name) {
@@ -160,7 +155,6 @@ class PermissionResourceTemplateAdd extends Component {
     };
 
     componentDidMount = () => {
-        this.verifyUser();
         this.getData();
         this.getUsers();
         this.getGroups(this.state.activePageGroup);
@@ -179,7 +173,7 @@ class PermissionResourceTemplateAdd extends Component {
             {title: 'Description', field: 'description'},
         ];
         return (
-            <Auth>
+            <div>
                 <Grid container spacing={3}>
                     <Grid item xs={2}>
                         <Box mx="auto">
@@ -377,8 +371,7 @@ class PermissionResourceTemplateAdd extends Component {
                         </Container>
                     </Grid>
                 </Grid>
-
-            </Auth>
+            </div>
         );
     }
 }
