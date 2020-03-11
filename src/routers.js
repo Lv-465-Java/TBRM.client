@@ -25,6 +25,8 @@ import EditGroup from "./components/permissions/group/editGroup";
 import AddPermission from "./components/permissions/group/addPermission";
 import FullOAuthRegister from "./components/oauth2/FullOAuthRegister";
 import ResourceRecordView from "./components/resourceRecord/ResourceRecordView";
+import Testing from "./components/resourceRecord/Testing";
+import UsersList from "./components/adminPage/usersList";
 
 
 
@@ -39,6 +41,8 @@ class Routers extends Component {
                     <Route path="/registration" component={RegistrationForm}/>
                     <Route path="/reset_password" component={ResetPassword} />
                     <Route path="/profile" component={ProfileForm} />
+                    <Route path="/test" component={Testing} />
+                    <Route path="/deleted_accounts" component={UsersList} />
                     <Route path="/forgot_password" exact component={ForgotPassword} />
                     <Route path="/resource-template/create" component={ResourceTemplateCreate} />
                     <Route path="/resource-template/update/:id" component={ResourceTemplateUpdate} />
