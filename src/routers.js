@@ -32,6 +32,7 @@ import ResourceTemplateItem from "./components/resourceTemplate/resourceTemplate
 import ResourceRecordItemView from "./components/resourceRecord/ResourceRecordItemView";
 import ResourceRecordCreate from "./components/resourceRecord/ResourceRecordCreate";
 import ResourceRecordUpdate from "./components/resourceRecord/ResourceRecordUpdate";
+import GroupChangeOwner from "./components/permissions/group/groupChangeOwner";
 
 
 const ProtectedRoute
@@ -92,6 +93,7 @@ class Routers extends Component {
                     <Route path="/forgot_password/:email" component={ForgotPasswordMessage} />
                     <ManagerRoute path="/group/edit/:name" component={EditGroup} />
                     <ManagerRoute path="/group/view/:name" component={GroupItem} />
+                    <ManagerRoute path="/group/permission/owner/:name" component={GroupChangeOwner} />
                     <ManagerRoute path="/group/permission/:id" component={AddPermission} />
                     <Route path="/oauth2/redirect" component={OAuth2RedirectHandler} />
                     <Route path="/oauth2/fullRegister" component={FullOAuthRegister} />

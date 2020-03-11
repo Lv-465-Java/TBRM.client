@@ -2,12 +2,16 @@ import React, {Component} from "react";
 import axios from "../../../utils/axios";
 import MaterialTable from "material-table";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import {Button} from "@material-ui/core";
+import {Button, Hidden} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import EditIcon from "@material-ui/icons/Edit";
 import Box from "@material-ui/core/Box";
 import Alert from "@material-ui/lab/Alert";
 import CustomPagination from "../../pagination/customPagination";
+import PopupState, {bindMenu, bindTrigger} from "material-ui-popup-state";
+import Menu from "@material-ui/core/Menu";
+import {Link} from "react-router-dom";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const columns = [
     {title: "First name", field: 'firstName', editable: 'never'},
@@ -17,6 +21,10 @@ const columns = [
 
 const paginationStyle = {
     padding: 20
+};
+
+const linkStyle = {
+    textDecoration: 'none'
 };
 
 const itemsNumber = 5;
@@ -47,8 +55,24 @@ class GroupItem extends Component {
                 description: data.description,
                 oldName: data.name,
                 oldDescription: data.description,
-                users: data.users,
-            })
+            });
+            this.getMembers(this.state.activePage);
+        })
+    };
+
+    getMembers = (pageNumber) => {
+        axios.get(`group/member?groupId=${this.state.id}&page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
+            let users = response.data.content;
+            let totalPages = response.data.totalPages;
+            let itemsCountPerPage = response.data.numberOfElements;
+            let totalItemsCount = response.data.totalElements;
+            this.setState({
+                users: users,
+                totalPages: totalPages,
+                itemsCountPerPage: itemsCountPerPage,
+                totalItemsCount: totalItemsCount
+            });
+            console.log(response.data);
         })
     };
 
@@ -57,17 +81,13 @@ class GroupItem extends Component {
         this.props.history.push(`/group/edit/${this.state.name}`);
     };
 
-    goToAddPermission = () => {
-        this.props.history.push(`/group/permission/${this.state.id}`);
-    };
-
     goBack = () => {
         this.props.history.push(`/resource-template/permission/add/${this.state.id}`);
     };
 
     handlePageChange = (event, pageNumber) => {
         this.setState({activePage: pageNumber});
-        this.getData(pageNumber)
+        this.getMembers(pageNumber)
     };
 
     handleDeleteItem = () => {
@@ -76,7 +96,7 @@ class GroupItem extends Component {
 
     componentDidMount() {
         this.getData();
-    }
+    };
 
     render() {
         return (
@@ -110,18 +130,38 @@ class GroupItem extends Component {
                     </Grid>
                     <Grid item xs={3}>
                         <Box mt={3}>
-                            <Button variant="contained"
-                                    color="primary"
-                                    startIcon={<EditIcon/>}
-                                    onClick={this.goToAddPermission}
-                            >Edit Permissions</Button>
+                            <Box>
+                                <PopupState variant="popover" popupId="demo-popup-menu">
+                                    {popupState => (
+                                        <React.Fragment>
+                                            <Button variant="contained"
+                                                    color="primary" {...bindTrigger(popupState)}>
+                                                Permissions
+                                            </Button>
+                                            <Menu {...bindMenu(popupState)}>
+                                                <Link
+                                                    to={`/group/permission/${this.state.id}`}
+                                                    style={linkStyle}>
+                                                    <MenuItem onClick={popupState.close}>Add/Update
+                                                        Permission</MenuItem>
+                                                </Link>
+                                                <Link
+                                                    to={`/group/permission/owner/${this.state.name}`}
+                                                    style={linkStyle}>
+                                                    <MenuItem onClick={popupState.close}>Change Owner</MenuItem>
+                                                </Link>
+                                            </Menu>
+                                        </React.Fragment>
+                                    )}
+                                </PopupState>
+                            </Box>
                         </Box>
                     </Grid>
                 </Grid>
                 <Grid container spacing={3}>
-                    {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
                     <Grid item xs={2}/>
                     <Grid item xs={8}>
+                        {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
                         <MaterialTable
                             title="Members"
                             columns={columns}
@@ -137,7 +177,7 @@ class GroupItem extends Component {
                                     });
                                     return new Promise(resolve => {
                                         setTimeout(() => {
-                                            this.getData(this.state.activePage);
+                                            this.getMembers(this.state.activePage);
                                             resolve();
                                         }, 600);
                                     })
@@ -153,7 +193,11 @@ class GroupItem extends Component {
                                             this.setState({errorMessage: noError});
                                             if (this.handleDeleteItem()) {
                                                 let newActivePage = (this.state.activePage - 1);
-                                                this.setState({activePage: newActivePage})
+                                                let totalItemsCount = (this.state.totalItemsCount - 1);
+                                                this.setState({
+                                                    activePage: newActivePage,
+                                                    totalItemsCount: totalItemsCount
+                                                })
                                             }
                                         },
                                         error => {
@@ -162,7 +206,7 @@ class GroupItem extends Component {
                                     );
                                     return new Promise(resolve => {
                                         setTimeout(() => {
-                                            this.getData(this.state.activePage);
+                                            this.getMembers(this.state.activePage);
                                             resolve();
                                         }, 600);
                                     })
