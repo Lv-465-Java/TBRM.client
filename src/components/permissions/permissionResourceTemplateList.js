@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import axios from '../../utils/axios';
-import { Button, Grid, Box } from '@material-ui/core';
+import {Button, Grid, Box} from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -10,8 +10,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { getUserRole } from '../../service/authService';
-import Auth from '../../hoc/auth';
+import {getUserRole} from '../../service/authService';
+import CustomPagination from "../pagination/customPagination";
 
 const StyledTableCell = withStyles(theme => ({
     head: {
@@ -33,22 +33,40 @@ const StyledTableRow = withStyles(theme => ({
 
 const gridStyle = {
     marginTop: 40
-}
+};
+
+const itemsNumber = 5;
+
+const paginationStyle = {
+    padding: 20
+};
 
 class PermissionResourceTemplateList extends Component {
 
     state = {
         id: this.props.match.params.id,
         name: undefined,
-        permissions: []
-    }
+        permissions: [],
+        activePage: 1,
+        totalPages: 0,
+        itemsCountPerPage: 0,
+        totalItemsCount: 0,
+    };
 
-    getData = () => {
-        axios.get(`/resource-template/permission/${this.state.id}`).then(response => {
-            let permissions = response.data;
-            this.setState({ permissions });
+    getData = (pageNumber) => {
+        axios.get(`/resource-template/permission/${this.state.id}?page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
+            let permissions = response.data.content;
+            let totalPages = response.data.totalPages;
+            let itemsCountPerPage = response.data.numberOfElements;
+            let totalItemsCount = response.data.totalElements;
+            this.setState({
+                permissions: permissions,
+                totalPages: totalPages,
+                itemsCountPerPage: itemsCountPerPage,
+                totalItemsCount: totalItemsCount
+            });
         })
-    }
+    };
 
     getResourceTemplate = () => {
         axios.get(`/resource-template/${this.state.id}`).then(response => {
@@ -60,75 +78,88 @@ class PermissionResourceTemplateList extends Component {
             console.dir(error.response.data);
 
         })
-    }
+    };
 
     verifyUser = () => {
-        if(getUserRole() !== "ROLE_MANAGER"){
+        if (getUserRole() !== "ROLE_MANAGER") {
             this.props.history.push("/home");
         }
-    }
+    };
 
     goBack = () => {
         this.props.history.goBack();
-    }
+    };
 
     componentDidMount() {
         this.verifyUser();
-        this.getData();
+        this.getData(this.state.activePage);
         this.getResourceTemplate();
     }
+
+    handlePageChange = (event, pageNumber) => {
+        this.setState({activePage: pageNumber});
+        this.getData(pageNumber);
+    };
 
     render() {
         return (
             <div>
-                <Auth>
-                    <Grid container spacing={3} style={gridStyle}>
-                        <Grid item xs>
-                            <Grid
-                                container
-                                direction="column"
-                                justify="center"
-                                alignItems="center"
-                            >
-                                <Box mx="auto">
-                                    <Box>
-                                        <Button
-                                            variant="contained"
-                                            startIcon={<ArrowBackIosIcon />}
-                                            onClick={this.goBack}
-                                        >Go Back</Button>
-                                    </Box>
+                <Grid container spacing={3} style={gridStyle}>
+                    <Grid item xs>
+                        <Grid
+                            container
+                            direction="column"
+                            justify="center"
+                            alignItems="center"
+                        >
+                            <Box mx="auto">
+                                <Box>
+                                    <Button
+                                        variant="contained"
+                                        startIcon={<ArrowBackIosIcon/>}
+                                        onClick={this.goBack}
+                                    >Go Back</Button>
                                 </Box>
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <h2>Users/Groups with access to {this.state.name}</h2>
-                            <TableContainer component={Paper}>
-                                <Table>
-                                    <TableHead>
-                                        <TableRow>
-                                            <StyledTableCell>User/Group</StyledTableCell>
-                                            <StyledTableCell>Permission</StyledTableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {this.state.permissions.map(item => (
-                                            <StyledTableRow key={item.principal + item.permission}>
-                                                <StyledTableCell component="th" scope="row">
-                                                    {item.principal}
-                                                </StyledTableCell>
-                                                <StyledTableCell>{item.permission}</StyledTableCell>
-                                            </StyledTableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </Grid>
-                        <Grid item xs>
-
+                            </Box>
                         </Grid>
                     </Grid>
-                </Auth>
+                    <Grid item xs={6}>
+                        <h2>Users/Groups with access to {this.state.name}</h2>
+                        <TableContainer component={Paper}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <StyledTableCell>User/Group</StyledTableCell>
+                                        <StyledTableCell>Permission</StyledTableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {this.state.permissions.map(item => (
+                                        <StyledTableRow key={item.principal + item.permission}>
+                                            <StyledTableCell component="th" scope="row">
+                                                {item.principal}
+                                            </StyledTableCell>
+                                            <StyledTableCell>{item.permission}</StyledTableCell>
+                                        </StyledTableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                        <Grid container
+                              style={paginationStyle}
+                              justify="center">
+                            <CustomPagination
+                                activepage={this.state.activePage}
+                                totalPages={this.state.totalPages}
+                                itemsCountPerPage={this.state.itemsCountPerPage}
+                                totalItemsCount={this.state.totalItemsCount}
+                                onChange={this.handlePageChange}
+                            />
+                        </Grid>
+
+                    </Grid>
+                    <Grid item xs/>
+                </Grid>
             </div>
         );
     }

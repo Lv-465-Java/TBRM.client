@@ -3,8 +3,6 @@ import {TextField, Button, FormControl, Grid, Box} from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import axios from '../../utils/axios';
-import {getUserRole} from '../../service/authService';
-import Auth from '../../hoc/auth';
 
 const gridStyles = {
     marginTop: 30
@@ -48,23 +46,13 @@ class ResourceTemplateCreate extends Component {
         this.setState({description});
     }
 
-    verifyUser = () => {
-        if (getUserRole() !== "ROLE_MANAGER") {
-            this.props.history.push("/home");
-        }
-    }
-
     goBack = () => {
         this.props.history.goBack();
     }
 
-    componentDidMount() {
-        this.verifyUser();
-    }
-
     render() {
         return (
-            <Auth>
+            <div>
                 <Grid container spacing={3}
                       style={gridStyles}>
                     <Grid item xs={4}>
@@ -105,7 +93,7 @@ class ResourceTemplateCreate extends Component {
                     </Grid>
                     <Grid item xs={4}/>
                 </Grid>
-            </Auth>
+            </div>
         );
     }
 }

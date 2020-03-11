@@ -4,16 +4,15 @@ import EditIcon from '@material-ui/icons/Edit';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import axios from '../../utils/axios';
 import {getUserRole} from '../../service/authService';
-import Auth from '../../hoc/auth';
 
 
 const gridStyles = {
     marginTop: 30
-}
+};
 
 const formControlStyles = {
     marginBottom: 20
-}
+};
 
 class ResourceTemplateUpdate extends Component {
 
@@ -23,7 +22,7 @@ class ResourceTemplateUpdate extends Component {
         name: "",
         oldDescription: "",
         description: ""
-    }
+    };
 
     getData = () => {
         axios.get(`/resource-template/${this.state.resTempId}`).then(
@@ -40,7 +39,7 @@ class ResourceTemplateUpdate extends Component {
 
         })
 
-    }
+    };
 
     updateData = () => {
         let data = {};
@@ -58,13 +57,13 @@ class ResourceTemplateUpdate extends Component {
                 console.log(error.response.data.message);
             }
         )
-    }
+    };
 
     verifyUser = () => {
         if (getUserRole() !== "ROLE_MANAGER") {
             this.props.history.push("/home");
         }
-    }
+    };
 
 
     componentDidMount() {
@@ -76,68 +75,66 @@ class ResourceTemplateUpdate extends Component {
         return this.state.name !== "" &&
             (this.state.name !== this.state.oldName ||
                 this.state.description !== this.state.oldDescription);
-    }
+    };
 
     onChangeName = (event) => {
         let name = event.target.value.trim();
         this.setState({name});
-    }
+    };
 
     onChangeDescription = (event) => {
         let description = event.target.value;
         this.setState({description});
-    }
+    };
 
     goBack = () => {
         this.props.history.push(`/resource-template/view/${this.state.resTempId}`);
-    }
+    };
 
     render() {
         return (
-            <Auth>
-                <Grid container spacing={3}
-                      style={gridStyles}>
-                    <Grid item xs={4}>
-                        <Box mx="auto">
-                            <Box mt={4}>
-                                <Button
-                                    variant="contained"
-                                    startIcon={<ArrowBackIosIcon/>}
-                                    onClick={this.goBack}
-                                >Go Back</Button>
-                            </Box>
+            <Grid container spacing={3}
+                  style={gridStyles}>
+                <Grid item xs={4}>
+                    <Box mx="auto">
+                        <Box mt={4}>
+                            <Button
+                                variant="contained"
+                                startIcon={<ArrowBackIosIcon/>}
+                                onClick={this.goBack}
+                            >Go Back</Button>
                         </Box>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Box mx="auto">
-                            <Box
-                                display="flex"
-                                flexDirection="column">
-                                <h1>Update Resource Template</h1>
-                                <FormControl style={formControlStyles}>
-                                    <TextField type="text" label="name" onChange={this.onChangeName}
-                                               value={this.state.name} helperText={this.state.errorMessage}
-                                               error={!!this.state.errorMessage}/>
-                                </FormControl>
-                                <FormControl style={formControlStyles}>
-                                    <TextField type="text" label="description" onChange={this.onChangeDescription}
-                                               value={this.state.description}/>
-                                </FormControl>
-                                <FormControl>
-                                    <Button variant="contained"
-                                            color="primary"
-                                            size="large"
-                                            startIcon={<EditIcon/>}
-                                            disabled={!this.isValid()}
-                                            onClick={this.updateData}
-                                    >Update</Button>
-                                </FormControl>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    <Grid item xs={4}></Grid>
+                    </Box>
                 </Grid>
-            </Auth>
+                <Grid item xs={4}>
+                    <Box mx="auto">
+                        <Box
+                            display="flex"
+                            flexDirection="column">
+                            <h1>Update Resource Template</h1>
+                            <FormControl style={formControlStyles}>
+                                <TextField type="text" label="name" onChange={this.onChangeName}
+                                           value={this.state.name} helperText={this.state.errorMessage}
+                                           error={!!this.state.errorMessage}/>
+                            </FormControl>
+                            <FormControl style={formControlStyles}>
+                                <TextField type="text" label="description" onChange={this.onChangeDescription}
+                                           value={this.state.description}/>
+                            </FormControl>
+                            <FormControl>
+                                <Button variant="contained"
+                                        color="primary"
+                                        size="large"
+                                        startIcon={<EditIcon/>}
+                                        disabled={!this.isValid()}
+                                        onClick={this.updateData}
+                                >Update</Button>
+                            </FormControl>
+                        </Box>
+                    </Box>
+                </Grid>
+                <Grid item xs={4}/>
+            </Grid>
         );
     }
 }

@@ -60,15 +60,14 @@ class ResourceParameterItem extends Component {
             <TableCell align="right">{this.state.parameterType}</TableCell>
             {/*<TableCell align="right">{this.state.pattern}</TableCell>*/}
             <TableCell align="right">{this.state.resourceRelation}</TableCell>
-
-            <Tooltip title="Delete">
-                <IconButton aria-label="delete" color="primary" onClick={this.delete}>
-                    <DeleteIcon/>
-                </IconButton>
-            </Tooltip>
             <Tooltip title="Edit">
                 <IconButton aria-label="edit" color="secondary" onClick={this.onChangeEdit}>
                     <EditIcon/>
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete">
+                <IconButton aria-label="delete" color="primary" onClick={this.delete}>
+                    <DeleteIcon/>
                 </IconButton>
             </Tooltip></>) : (<UpdateParameter getData={this.props.getData}
                                                resTempId={this.props.resTempId}

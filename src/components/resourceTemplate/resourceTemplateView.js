@@ -21,7 +21,7 @@ import axios from '../../utils/axios';
 import CreateParameter from "../resourceParameters/CreateParameter";
 import ResourceParametersList from "../resourceParameters/ResourceParametersList";
 import MyDialog from "./popUp"
-import Auth from '../../hoc/auth';
+import CustomPagination from "../pagination/customPagination";
 
 const style = {
     maxWidth: 800,
@@ -48,7 +48,13 @@ const useStyles = makeStyles(theme => ({
 
 const linkStyle = {
     textDecoration: 'none'
-}
+};
+
+const itemsNumber = 5;
+
+const paginationStyle = {
+    padding: 20
+};
 
 class ResourceTemplateView extends Component {
 
@@ -60,7 +66,11 @@ class ResourceTemplateView extends Component {
         isPublished: "",
         userId: "",
         open: false,
-        resourceParameters: []
+        resourceParameters: [],
+        activePage: 1,
+        totalPages: 0,
+        itemsCountPerPage: 0,
+        totalItemsCount: 0,
     }
 
     classes = () => {
@@ -75,14 +85,30 @@ class ResourceTemplateView extends Component {
                     name: data.name,
                     description: data.description,
                     isPublished: data.isPublished,
-                    resourceParameters: data.resourceParameters
                 })
             }).catch(error => {
             console.dir(error.response.data);
-
         })
+    };
 
-    }
+    getParameters = (pageNumber) => {
+        axios.get(`/resource-template/${this.state.resTempId}/resource-parameter?page=${pageNumber}&pageSize=${itemsNumber}`).then(
+            response => {
+                let parameters = response.data.content;
+                let totalPages = response.data.totalPages;
+                let itemsCountPerPage = response.data.numberOfElements;
+                let totalItemsCount = response.data.totalElements;
+                this.setState({
+                    resourceParameters: parameters,
+                    totalPages: totalPages,
+                    itemsCountPerPage: itemsCountPerPage,
+                    totalItemsCount: totalItemsCount
+                });
+            }).catch(error => {
+            console.dir(error.response.data);
+        })
+    };
+
 
     publish = () => {
         let body = {'isPublished': true};
@@ -140,6 +166,7 @@ class ResourceTemplateView extends Component {
 
     componentDidMount() {
         this.getData();
+        this.getParameters(this.state.activePage);
     }
 
     handleClickOpen = () => {
@@ -149,6 +176,11 @@ class ResourceTemplateView extends Component {
 
     handleClose = () => {
         this.setState({open: false});
+    };
+
+    handlePageChange = (event, pageNumber) => {
+        this.setState({activePage: pageNumber});
+        this.getParameters(pageNumber);
     };
 
     render() {
@@ -174,142 +206,150 @@ class ResourceTemplateView extends Component {
             </Box>)
 
         return (
-            <Auth>
-                <Grid container spacing={3}>
-                    <Grid item xs={2}>
-                        <Grid
-                            container
-                            direction="column"
-                            justify="center"
-                            alignItems="center"
-                            style={gridStyle}>
-                            <Box mx="auto">
-                                <Box>
-                                    <Button
-                                        variant="contained"
-                                        startIcon={<ArrowBackIosIcon/>}
-                                        onClick={this.goBack}
-                                    >Go Back</Button>
-                                </Box>
+            <Grid container spacing={3}>
+                <Grid item xs={2}>
+                    <Grid
+                        container
+                        direction="column"
+                        justify="center"
+                        alignItems="center"
+                        style={gridStyle}>
+                        <Box mx="auto">
+                            <Box>
+                                <Button
+                                    variant="contained"
+                                    startIcon={<ArrowBackIosIcon/>}
+                                    onClick={this.goBack}
+                                >Go Back</Button>
                             </Box>
-                        </Grid>
+                        </Box>
                     </Grid>
+                </Grid>
 
-                    <Grid item xs={7}>
-                        <Card style={style}>
-                            <CardActionArea>
-                                <CardContent>
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                        {this.state.name}
-                                    </Typography>
-                                    <Typography variant="body2" color="textSecondary" component="p">
-                                        {this.state.description}
-                                    </Typography>
-                                </CardContent>
-                            </CardActionArea>
+                <Grid item xs={7}>
+                    <Card style={style}>
+                        <CardActionArea>
                             <CardContent>
-                                <Typography variant="body2" color="textSecondary" component="h2">
-                                    {this.isPublished()}
-                                    {this.state.errorMessage &&
-                                    <Alert severity="error">{this.state.errorMessage}</Alert>}
+                                <Typography gutterBottom variant="h5" component="h2">
+                                    {this.state.name}
+                                </Typography>
+                                <Typography variant="body2" color="textSecondary" component="p">
+                                    {this.state.description}
                                 </Typography>
                             </CardContent>
-                        </Card>
-                        {/*<CreateParameter getData={this.getData}*/}
-                        {/*    resTempId={this.state.resTempId} />*/}
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Grid container
-                              direction="column"
-                              justify="center"
-                              alignItems="center"
-                              style={gridStyle}
-                        ><Hidden mdUp={this.showLinks()}>
-                            <Box mx="auto">
-                                <Box>
-                                    <PopupState variant="popover" popupId="demo-popup-menu">
-                                        {popupState => (
-                                            <React.Fragment>
-                                                <Button variant="contained"
-                                                        color="primary" {...bindTrigger(popupState)}>
-                                                    Permissions
-                                                </Button>
-                                                <Menu {...bindMenu(popupState)}>
-                                                    <Link to={`/resource-template/permission/${this.state.resTempId}`}
-                                                          style={linkStyle}>
-                                                        <MenuItem onClick={popupState.close}>View Permissions</MenuItem>
-                                                    </Link>
-                                                    <Link
-                                                        to={`/resource-template/permission/add/${this.state.resTempId}`}
-                                                        style={linkStyle}>
-                                                        <MenuItem onClick={popupState.close}>Add/Update
-                                                            Permission</MenuItem>
-                                                    </Link>
-                                                    <Link
-                                                        to={`/resource-template/permission/owner/${this.state.resTempId}`}
-                                                        style={linkStyle}>
-                                                        <MenuItem onClick={popupState.close}>Change Owner</MenuItem>
-                                                    </Link>
-                                                    <Link
-                                                        to={`/resource-template/permission/remove/${this.state.resTempId}`}
-                                                        style={linkStyle}>
-                                                        <MenuItem onClick={popupState.close}>Delete
-                                                            Permission</MenuItem>
-                                                    </Link>
-                                                </Menu>
-                                            </React.Fragment>
-                                        )}
-                                    </PopupState>
-                                </Box>
-                                <Box mt={5}>
-                                    <Link to={`/resource-template/update/${this.state.resTempId}`}>
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            startIcon={<EditIcon/>}
-                                        >Update</Button>
-                                    </Link>
-                                </Box>
-                                <Box mt={5}>
+                        </CardActionArea>
+                        <CardContent>
+                            <Typography variant="body2" color="textSecondary" component="h2">
+                                {this.isPublished()}
+                                {this.state.errorMessage &&
+                                <Alert severity="error">{this.state.errorMessage}</Alert>}
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                    {/*<CreateParameter getData={this.getData}*/}
+                    {/*    resTempId={this.state.resTempId} />*/}
+                </Grid>
+                <Grid item xs={3}>
+                    <Grid container
+                          direction="column"
+                          justify="center"
+                          alignItems="center"
+                          style={gridStyle}
+                    ><Hidden mdUp={this.showLinks()}>
+                        <Box mx="auto">
+                            <Box>
+                                <PopupState variant="popover" popupId="demo-popup-menu">
+                                    {popupState => (
+                                        <React.Fragment>
+                                            <Button variant="contained"
+                                                    color="primary" {...bindTrigger(popupState)}>
+                                                Permissions
+                                            </Button>
+                                            <Menu {...bindMenu(popupState)}>
+                                                <Link to={`/resource-template/permission/${this.state.resTempId}`}
+                                                      style={linkStyle}>
+                                                    <MenuItem onClick={popupState.close}>View Permissions</MenuItem>
+                                                </Link>
+                                                <Link
+                                                    to={`/resource-template/permission/add/${this.state.resTempId}`}
+                                                    style={linkStyle}>
+                                                    <MenuItem onClick={popupState.close}>Add/Update
+                                                        Permission</MenuItem>
+                                                </Link>
+                                                <Link
+                                                    to={`/resource-template/permission/owner/${this.state.resTempId}`}
+                                                    style={linkStyle}>
+                                                    <MenuItem onClick={popupState.close}>Change Owner</MenuItem>
+                                                </Link>
+                                                <Link
+                                                    to={`/resource-template/permission/remove/${this.state.resTempId}`}
+                                                    style={linkStyle}>
+                                                    <MenuItem onClick={popupState.close}>Delete
+                                                        Permission</MenuItem>
+                                                </Link>
+                                            </Menu>
+                                        </React.Fragment>
+                                    )}
+                                </PopupState>
+                            </Box>
+                            <Box mt={5}>
+                                <Link to={`/resource-template/update/${this.state.resTempId}`}>
                                     <Button
                                         variant="contained"
-                                        color="secondary"
-                                        startIcon={<DeleteIcon/>}
-                                        style={useStyles.button}
-                                        onClick={this.delete}
-                                    >
-                                        Delete
-                                    </Button>
-                                </Box>
-                                {publishButton}
+                                        color="primary"
+                                        startIcon={<EditIcon/>}
+                                    >Update</Button>
+                                </Link>
                             </Box>
-                        </Hidden>
-                        </Grid>
+                            <Box mt={5}>
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    startIcon={<DeleteIcon/>}
+                                    style={useStyles.button}
+                                    onClick={this.delete}
+                                >
+                                    Delete
+                                </Button>
+                            </Box>
+                            {publishButton}
+                        </Box>
+                    </Hidden>
                     </Grid>
-                    <Grid item xs={12}>
-                        <h3>Resource Parameters</h3>
-                        <Card style={cardStyle}>
-                            <CardContent>
-                                <CreateParameter getData={this.getData}
-                                                 resTempId={this.state.resTempId}/>
-                            </CardContent>
-                            <CardContent>
-                                <ResourceParametersList resourceParameters={this.state.resourceParameters}
-                                                        resTempId={this.state.resTempId}
-                                                        getData={this.getData}/>
-                            </CardContent>
-                        </Card>
-
-                    </Grid>
-                    <MyDialog
-                        delete={this.delete}
-                        open={this.state.open}
-                        handleClickOpen={this.handleClickOpen}
-                        handleClose={this.handleClose}
-                        title="Delete resource template"
-                        msg="Are you sure you want to delete this resource template?"/>
                 </Grid>
-            </Auth>
+                <Grid item xs={12}>
+                    <h3>Resource Parameters</h3>
+                    <Card style={cardStyle}>
+                        <CardContent>
+                            <CreateParameter getData={this.getData}
+                                             resTempId={this.state.resTempId}/>
+                        </CardContent>
+                        <CardContent>
+                            <ResourceParametersList resourceParameters={this.state.resourceParameters}
+                                                    resTempId={this.state.resTempId}
+                                                    getData={this.getData}/>
+                        </CardContent>
+                    </Card>
+                    <Grid container
+                          style={paginationStyle}
+                          justify="center">
+                        <CustomPagination
+                            activepage={this.state.activePage}
+                            totalPages={this.state.totalPages}
+                            itemsCountPerPage={this.state.itemsCountPerPage}
+                            totalItemsCount={this.state.totalItemsCount}
+                            onChange={this.handlePageChange}
+                        />
+                    </Grid>
+                </Grid>
+                <MyDialog
+                    delete={this.delete}
+                    open={this.state.open}
+                    handleClickOpen={this.handleClickOpen}
+                    handleClose={this.handleClose}
+                    title="Delete resource template"
+                    msg="Are you sure you want to delete this resource template?"/>
+            </Grid>
         );
     }
 }

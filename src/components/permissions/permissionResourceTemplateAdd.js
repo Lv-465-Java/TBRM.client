@@ -12,7 +12,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {getUserRole} from '../../service/authService';
 import axios from '../../utils/axios';
-import Auth from '../../hoc/auth';
 import CustomPagination from "../pagination/customPagination";
 
 const formStyles = {
@@ -44,6 +43,10 @@ class PermissionResourceTemplateAdd extends Component {
         totalPagesGroup: 0,
         itemsCountPerPageGroup: 0,
         totalItemsCountGroup: 0,
+        activePageUser: 1,
+        totalPagesUser: 0,
+        itemsCountPerPageUser: 0,
+        totalItemsCountUser: 0,
         successMessage: "",
         errorMessage: ""
     }
@@ -77,21 +80,26 @@ class PermissionResourceTemplateAdd extends Component {
 
     }
 
-    getUsers = () => {
-        axios.get("/user").then(
+    getUsers = (pageNumber) => {
+        axios.get(`/user?page=${pageNumber}&pageSize=${itemsNumber}`).then(
             response => {
-                let data = response.data;
-                console.log(data);
+                let users = response.data.content;
+                let totalPages = response.data.totalPages;
+                let itemsCountPerPage = response.data.numberOfElements;
+                let totalItemsCount = response.data.totalElements;
                 this.setState({
-                    users: data
-                })
+                    users: users,
+                    totalPagesUser: totalPages,
+                    itemsCountPerPageUser: itemsCountPerPage,
+                    totalItemsCountUser: totalItemsCount
+                });
             }).catch(error => {
             console.log(error.response.data);
         })
     }
 
     getGroups = (pageNumber) => {
-        axios.get(`group?page=${pageNumber}&size=${itemsNumber}`).then(response => {
+        axios.get(`group?page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
             let groups = response.data.content;
             let totalPages = response.data.totalPages;
             let itemsCountPerPage = response.data.numberOfElements;
@@ -136,23 +144,23 @@ class PermissionResourceTemplateAdd extends Component {
             && this.state.permission !== "" && this.state.principal !== "";
     };
 
-    verifyUser = () => {
-        if (getUserRole() !== "ROLE_MANAGER") {
-            this.props.history.push("/home");
-        }
-    };
 
     goBack = () => {
-        this.props.history.push("/home");
+        this.props.history.goBack();
     };
 
     goToEditGroup(name) {
         this.props.history.push(`/group/view/${name}`);
     }
 
-    handlePageChange = (event, pageNumber) => {
+    handlePageChangeGroup = (event, pageNumber) => {
         this.setState({activePageGroup: pageNumber});
         this.getGroups(pageNumber)
+    };
+
+    handlePageChangeUser = (event, pageNumber) => {
+        this.setState({activePageUser: pageNumber});
+        this.getUsers(pageNumber)
     };
 
     handleDeleteItem = () => {
@@ -160,9 +168,8 @@ class PermissionResourceTemplateAdd extends Component {
     };
 
     componentDidMount = () => {
-        this.verifyUser();
         this.getData();
-        this.getUsers();
+        this.getUsers(this.state.activePageUser);
         this.getGroups(this.state.activePageGroup);
     };
 
@@ -179,7 +186,7 @@ class PermissionResourceTemplateAdd extends Component {
             {title: 'Description', field: 'description'},
         ];
         return (
-            <Auth>
+            <div>
                 <Grid container spacing={3}>
                     <Grid item xs={2}>
                         <Box mx="auto">
@@ -301,6 +308,17 @@ class PermissionResourceTemplateAdd extends Component {
                                     search: false
                                 }}
                             />
+                            <Grid container
+                                  style={paginationStyle}
+                                  justify="center">
+                                <CustomPagination
+                                    activepage={this.state.activePageUser}
+                                    totalPages={this.state.totalPagesUser}
+                                    itemsCountPerPage={this.state.itemsCountPerPageUser}
+                                    totalItemsCount={this.state.totalItemsCountUser}
+                                    onChange={this.handlePageChangeUser}
+                                />
+                            </Grid>
                         </Container>
                     </Grid>
                     <Grid item xs={6}>
@@ -310,6 +328,16 @@ class PermissionResourceTemplateAdd extends Component {
                                 columns={groupColumns}
                                 data={this.state.groups}
                                 actions={[
+                                    {
+                                        icon: 'add',
+                                        tooltip: 'Choose',
+                                        onClick: (event, data) => {
+                                            this.setState({
+                                                recipient: data.email
+                                            });
+                                            this.handleClickOpen();
+                                        }
+                                    },
                                     {
                                         icon: 'visibility',
                                         tooltip: 'View Group',
@@ -322,12 +350,13 @@ class PermissionResourceTemplateAdd extends Component {
                                     onRowAdd: newData => {
                                         axios.post("group", newData).then(response => {
                                             this.setState({errorMessage: noError});
+                                            this.getGroups(this.state.activePageGroup);
                                         }, error => {
                                             this.setState({errorMessage: error.response.data.message});
                                         });
                                         return new Promise(resolve => {
                                             setTimeout(() => {
-                                                this.getData(this.state.activePage);
+                                                this.getGroups(this.state.activePageGroup);
                                                 resolve();
                                             }, 600);
                                         })
@@ -337,11 +366,11 @@ class PermissionResourceTemplateAdd extends Component {
                                             response => {
                                                 this.setState({
                                                     errorMessage: noError,
-                                                    totalItemsCount: (this.state.totalItemsCount - 1)
+                                                    totalItemsCountGroup: (this.state.totalItemsCountGroup - 1)
                                                 });
                                                 if (this.handleDeleteItem()) {
-                                                    let newActivePage = (this.state.activePage - 1);
-                                                    this.setState({activePage: newActivePage})
+                                                    let newActivePage = (this.state.activePageGroup - 1);
+                                                    this.setState({activePageGroup: newActivePage})
                                                 }
                                             },
                                             error => {
@@ -350,7 +379,7 @@ class PermissionResourceTemplateAdd extends Component {
                                         );
                                         return new Promise(resolve => {
                                             setTimeout(() => {
-                                                this.getData(this.state.activePage);
+                                                this.getGroups(this.state.activePageGroup);
                                                 resolve();
                                             }, 600);
                                         })
@@ -370,15 +399,14 @@ class PermissionResourceTemplateAdd extends Component {
                                     totalPages={this.state.totalPagesGroup}
                                     itemsCountPerPage={this.state.itemsCountPerPageGroup}
                                     totalItemsCount={this.state.totalItemsCountGroup}
-                                    onChange={this.handlePageChange}
+                                    onChange={this.handlePageChangeGroup}
                                 />
                             </Grid>
 
                         </Container>
                     </Grid>
                 </Grid>
-
-            </Auth>
+            </div>
         );
     }
 }
