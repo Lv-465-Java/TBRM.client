@@ -1,63 +1,57 @@
 import React, {Component} from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import {TextField} from "@material-ui/core";
 
 class FilterPointNumberField extends Component {
     state = {
-        label: this.props.name,
         value: "",
         operation: ""
-
     };
 
     onChangeOperation = (event) => {
         let operation = event.target.value;
         this.setState({operation}, () => {
-            this.props.setFilter(this.state.label, this.buildFilter());
+            this.props.setFilter(this.props.columnName, this.buildFilter());
         });
     };
+
     onChangeValue = (event) => {
         let value = event.target.value;
         this.setState({value}, () => {
-            this.props.setFilter(this.state.label, this.buildFilter());
+            this.props.setFilter(this.props.columnName, this.buildFilter());
         });
     };
 
     buildFilter = () => {
-        let {label, value, operation} = this.state;
-        if (this.state.value !== "" && this.state.operation !== ""){
-            return `${label}${operation}'${value}'`
+        let {value, operation} = this.state;
+        if (this.state.value !== "" && this.state.operation !== "") {
+            return `${this.props.columnName}${operation}'${value}'`
         }
         return ""
     };
 
-
     render() {
-
-        console.log(this.state.label)
         return (
             <>
-                {this.state.label}
-                <FormControl >
-                    <Select
-                        value={this.state.operation}
-                        onChange={this.onChangeOperation}
+                <div className={"filterCells"}>
+                    {this.props.name}
 
-                    >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
+                    <Select value={this.state.operation}
+                            onChange={this.onChangeOperation}
+                            displayEmpty>
+                        <MenuItem value={'!='}>{'≠'}</MenuItem>
                         <MenuItem value={'='}>{'='}</MenuItem>
                         <MenuItem value={'<'}>{'<'}</MenuItem>
                         <MenuItem value={'>'}>{'>'}</MenuItem>
                     </Select>
-                </FormControl>
-                <TextField type="text" label={this.state.label} onChange={this.onChangeValue}
-                           helperText={this.state.errorMessage} error={!!this.state.errorMessage}/>
 
+                    <TextField type="number"
+                               onChange={this.onChangeValue}
+                               style={{minWidth: "30px"}}
+                               helperText={this.state.errorMessage}
+                               error={!!this.state.errorMessage}/>
+                </div>
 
             </>
         );

@@ -28,13 +28,10 @@ import Forbidden from "./hoc/forbidden";
 import GuestPage from "./components/guest";
 import ResourceRecordView from "./components/resourceRecord/ResourceRecordView";
 import TestMaps from "./components/resourceParameters/GoogleMap";
-import ResourceTemplateItem from "./components/resourceTemplate/resourceTemplateItem";
 import ResourceRecordItemView from "./components/resourceRecord/ResourceRecordItemView";
 import ResourceRecordCreate from "./components/resourceRecord/ResourceRecordCreate";
 import ResourceRecordUpdate from "./components/resourceRecord/ResourceRecordUpdate";
 import FilterView from "./components/resourceRecord/filters/filterView";
-// import ResourceRecordView from "./components/resourceRecord/ResourceRecordView";
-
 
 const ProtectedRoute
     = ({ isAllowed, ...props }) =>
