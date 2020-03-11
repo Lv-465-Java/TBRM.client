@@ -2,10 +2,29 @@ import React, {Component} from 'react';
 import {ACCESS_TOKEN, REFRESH_TOKEN} from '../../constants';
 import {Redirect} from 'react-router-dom'
 import LocalSessionStorageService from "../../services/LocalStorageService";
+import { verifyUser } from '../../service/authService';
+import axios from '../../utils/axios';
 
 const localStorageService = LocalSessionStorageService.getService();
 
 class OAuth2RedirectHandler extends Component {
+
+    state = {
+        userrole: '',
+        errorMessage: ''
+    }
+
+    getRole() {
+        axios.get("/user/role").then(response => {
+            sessionStorage.setItem('userrole', response.data.role.name)
+            this.setState({ 'userrole': response.data.role.name });
+            verifyUser();
+
+        }, error => {
+            console.log(error.response.data.message);
+        })
+    }
+
     getUrlParameter(name) {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
         const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -33,7 +52,8 @@ class OAuth2RedirectHandler extends Component {
                     state: {from: this.props.location}
                 }}/>;
             } else {
-                return window.location.href = "/home"
+                this.getRole();
+                verifyUser();
             }
 
 

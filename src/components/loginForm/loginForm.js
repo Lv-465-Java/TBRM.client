@@ -12,6 +12,8 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import googleLogo from "../../img/google-logo.png";
 import Alert from "@material-ui/lab/Alert";
+import { getUserRole, verifyUser } from '../../service/authService';
+
 // import Alert  from 'react-s-alert';
 // import 'react-s-alert/dist/s-alert-default.css';
 // import 'react-s-alert/dist/s-alert-css-effects/slide.css';
@@ -34,20 +36,34 @@ class LoginForm extends Component {
     state = {
         email: undefined,
         password: undefined,
+        userrole: '',
+        errorMessage: '',
         tenant: undefined
     }
+
+    getRole() {
+        axios.get("/user/role").then(response => {
+            sessionStorage.setItem('userrole', response.data.role.name)
+            this.setState({ 'userrole': response.data.role.name });
+            verifyUser();
+
+        }, error => {
+            console.log(error.response.data.message);
+        })
+    }
+
+
 
     getData = () => {
         axios.post("/authentication", this.state).then(response => {
                 if (response !== undefined) {
-                    window.location.href = "/home";
+                    this.getRole();
                 }
             }, error => {
            this.setState({ errorMessage: error.response.data.message });
             console.log(error.response.data.message);
         })
     }
-        
 
     onChangeEmail = (event) => {
         this.setState({
@@ -67,7 +83,7 @@ class LoginForm extends Component {
             [name]: event.target.value,
         });
     };
-    
+
 
     render() {
 
