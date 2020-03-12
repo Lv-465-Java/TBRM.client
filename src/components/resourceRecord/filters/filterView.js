@@ -29,7 +29,7 @@ class FilterView extends Component {
         console.log(searchUrl);
 
         axios.get(searchUrl).then(response => {
-            this.props.setRecordsData(response.data)
+            this.props.setRecordsData(response.data.content)
         })
 
     };
