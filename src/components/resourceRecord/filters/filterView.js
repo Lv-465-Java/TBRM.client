@@ -49,10 +49,6 @@ class FilterView extends Component {
 
                     switch (element["parameterType"]) {
                         case "POINT_REFERENCE":
-                            // return <FilterPointReferenceField setFilter={this.setFilter}
-                            //                                   name={element["name"]}
-                            //                                   columnName={element["columnName"]}/>;
-
                             return <FilterPointReferenceField key={index}
                                                               setFilter={this.setFilter}
                                                               name={element["name"]}
