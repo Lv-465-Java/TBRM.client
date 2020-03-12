@@ -67,7 +67,7 @@ class PermissionResourceTemplateRemove extends Component {
                 successMessage: ""
             });
         })
-        console.log(this.state);
+
     }
 
     getData = () => {

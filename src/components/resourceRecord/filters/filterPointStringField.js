@@ -24,8 +24,9 @@ class FilterPointStringField extends Component {
     };
 
     reset = () => {
-        console.log("aa");
-        this.setState({value: ""})
+        this.setState({value: ""}, () => {
+            this.props.setFilter(this.props.columnName, this.buildFilter());
+        })
     };
 
     render() {
@@ -34,12 +35,13 @@ class FilterPointStringField extends Component {
 
                 <div className={"filterCells"}>
                     {this.props.name}
-                    <TextField id={"clear"} type="text"
+                    <TextField id={"clear"}
+                               type="text"
+                               value={this.state.value}
                                style={{minWidth: "30px"}}
                                onChange={this.onChange}
                                helperText={this.state.errorMessage}
                                error={!!this.state.errorMessage}/>
-
                     <IconButton aria-label="delete"
                                 color="primary"
                                 onClick={this.reset}>

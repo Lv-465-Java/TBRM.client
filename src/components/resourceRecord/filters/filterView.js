@@ -45,33 +45,47 @@ class FilterView extends Component {
                 <FilterPointStringField setFilter={this.setFilter}
                                         name="Description"
                                         columnName={"description"}/>
-                {parameters.map(element => {
+                {parameters.map((element, index) => {
 
                     switch (element["parameterType"]) {
                         case "POINT_REFERENCE":
-                            return <FilterPointReferenceField setFilter={this.setFilter}
+                            // return <FilterPointReferenceField setFilter={this.setFilter}
+                            //                                   name={element["name"]}
+                            //                                   columnName={element["columnName"]}/>;
+
+                            return <FilterPointReferenceField key={index}
+                                                              setFilter={this.setFilter}
                                                               name={element["name"]}
-                                                              columnName={element["columnName"]}/>;
+                                                              columnName={element["columnName"]}
+                                                              relatedResourceTableName={element["relatedResourceTemplateTableName"]}
+                                                              setData={this.setData}/>;
                         case "POINT_STRING":
-                            return <FilterPointStringField setFilter={this.setFilter}
+                            return <FilterPointStringField key={index}
+                                                           setFilter={this.setFilter}
                                                            name={element["name"]}
                                                            columnName={element["columnName"]}/>;
                         case "POINT_DOUBLE":
-                            return <FilterPointNumberField setFilter={this.setFilter}
+                            return <FilterPointNumberField key={index}
+                                                           setFilter={this.setFilter}
                                                            name={element["name"]}
                                                            columnName={element["columnName"]}/>;
                         case "POINT_INT":
-                            return <FilterPointNumberField setFilter={this.setFilter}
+                            return <FilterPointNumberField key={index}
+                                                           setFilter={this.setFilter}
                                                            name={element["name"]}
                                                            columnName={element["columnName"]}/>;
                         case "RANGE_DOUBLE":
-                            return <FilterRangeNumberField setFilter={this.setFilter}
+                            return <FilterRangeNumberField key={index}
+                                                           setFilter={this.setFilter}
                                                            name={element["name"]}
                                                            columnName={element["columnName"]}/>;
                         case "RANGE_INT":
-                            return <FilterRangeNumberField setFilter={this.setFilter}
+                            return <FilterRangeNumberField key={index}
+                                                           setFilter={this.setFilter}
                                                            name={element["name"]}
                                                            columnName={element["columnName"]}/>
+                        default:
+                            return undefined;
                     }
                 })}
                 <IconButton aria-label="delete"

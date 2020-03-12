@@ -42,7 +42,7 @@ class PermissionResourceTemplateChangeOwner extends Component {
                 successMessage: ""
              });
         })
-        console.log(this.state);
+
     }
 
     getData = () => {
@@ -63,12 +63,12 @@ class PermissionResourceTemplateChangeOwner extends Component {
         axios.get("/user").then(
             response => {
                 let data = response.data;
-                console.log(data);
+
                 this.setState({
                     data: data
                 })
             }).catch(error => {
-                console.dir(error.response.data);
+
 
             })
 

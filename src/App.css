@@ -14,7 +14,14 @@
 .filterCells {
     display: flex;
     flex-direction: row;
-    align-items: center
+    align-items: center;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.filterDropdown {
+    margin-left: 5px;
+    width: 200px;
 }
 
 .App-logo {

@@ -59,7 +59,6 @@ class PermissionResourceTemplateAdd extends Component {
                 successMessage: ""
             });
         })
-        console.log(this.state);
     }
 
     getData = () => {
@@ -80,12 +79,12 @@ class PermissionResourceTemplateAdd extends Component {
         axios.get("/user").then(
             response => {
                 let data = response.data;
-                console.log(data);
+
                 this.setState({
                     users: data
                 })
             }).catch(error => {
-                console.log(error.response.data);
+
 
             })
     }

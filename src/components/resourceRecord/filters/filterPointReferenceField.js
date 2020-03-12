@@ -1,37 +1,36 @@
 import React, {Component} from 'react';
-import {TextField} from "@material-ui/core";
+import ResourceRecordDropdown from "../ResourceRecordDropdown";
 
 class FilterPointReferenceField extends Component {
     state = {
         value: "",
-        operation: "="
+        operation: "=",
+        refName: undefined
     };
 
-    onChangeValue = (event) => {
-        let value = event.target.value;
-        this.setState({value}, () => {
+    onChangeValue = (key, value, id) => {
+        this.setState({value: id, refName: key.substring(0, key.length - 5)}, () => {
             this.props.setFilter(this.props.columnName, this.buildFilter());
         });
     };
 
     buildFilter = () => {
         let {value, operation} = this.state;
-        if (this.state.value !== "") {
-            return `${this.props.columnName}${operation}'${value}'`
+        if (this.state.value === "" || this.state.value === undefined) {
+            return ""
         }
-        return ""
+        return `${this.state.refName}${operation}'${value}'`
     };
 
     render() {
         return (
             <>
                 <div className={"filterCells"}>
-                    {this.props.name}
-                    <TextField type="text"
-                               style={{minWidth: "30px"}}
-                               onChange={this.onChangeValue}
-                               helperText={this.state.errorMessage}
-                               error={!!this.state.errorMessage}/>
+                    <ResourceRecordDropdown className={"filterDropdown"}
+                                            relatedResourceTableName={this.props.relatedResourceTableName}
+                                            onChangePointReference={this.onChangeValue}
+                                            columnName={this.props.columnName}
+                                            label={this.props.name}/>
                 </div>
             </>
         );
