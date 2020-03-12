@@ -17,6 +17,8 @@ const paginationStyle = {
     padding: 20
 };
 
+const itemsNumber = 5;
+
 const noError = '';
 
 class AddPermission extends Component {
@@ -31,11 +33,19 @@ class AddPermission extends Component {
         errorMessage: "",
     };
 
-    getData = () => {
-        axios.get(`/group/permission/${this.state.id}`).then(
+    getData = (pageNumber) => {
+        axios.get(`/group/permission/${this.state.id}?page=${pageNumber}&pageSize=${itemsNumber}`).then(
             response => {
-                let users = response.data;
-                this.setState({users})
+                let users = response.data.content;
+                let totalPages = response.data.totalPages;
+                let itemsCountPerPage = response.data.numberOfElements;
+                let totalItemsCount = response.data.totalElements;
+                this.setState({
+                    users: users,
+                    totalPages: totalPages,
+                    itemsCountPerPage: itemsCountPerPage,
+                    totalItemsCount: totalItemsCount
+                });
             },
             error => {
                 this.setState({errorMessage: error.response.data.message});
@@ -43,11 +53,20 @@ class AddPermission extends Component {
     };
 
     componentDidMount() {
-        this.getData();
+        this.getData(this.state.activePage);
     }
 
     goBack = () => {
         this.props.history.goBack();
+    };
+
+    handlePageChange = (event, pageNumber) => {
+        this.setState({activePage: pageNumber});
+        this.getData(pageNumber);
+    };
+
+    handleDeleteItem = () => {
+        return this.state.totalItemsCount % 5 === 0;
     };
 
     render() {
@@ -86,7 +105,7 @@ class AddPermission extends Component {
                                         })
                                     return new Promise(resolve => {
                                         setTimeout(() => {
-                                            this.getData();
+                                            this.getData(this.state.activePage);
                                             resolve();
                                         }, 600);
                                     })
@@ -99,6 +118,14 @@ class AddPermission extends Component {
                                         }
                                     }).then(
                                         response => {
+                                            this.setState({
+                                                errorMessage: noError,
+                                                totalItemsCount: (this.state.totalItemsCount - 1)
+                                            });
+                                            if (this.handleDeleteItem()) {
+                                                let newActivePage = (this.state.activePage - 1);
+                                                this.setState({activePage: newActivePage})
+                                            }
                                         },
                                         error => {
                                             this.setState({errorMessage: error.response.data.message});
@@ -106,7 +133,7 @@ class AddPermission extends Component {
                                     );
                                     return new Promise(resolve => {
                                         setTimeout(() => {
-                                            this.getData();
+                                            this.getData(this.state.activePage);
                                             resolve();
                                         }, 600);
                                     })

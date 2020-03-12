@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import axios from '../../utils/axios';
-import { Button, Grid, Box } from '@material-ui/core';
+import {Button, Grid, Box} from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -10,7 +10,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { getUserRole } from '../../service/authService';
+import {getUserRole} from '../../service/authService';
+import CustomPagination from "../pagination/customPagination";
 
 const StyledTableCell = withStyles(theme => ({
     head: {
@@ -32,22 +33,40 @@ const StyledTableRow = withStyles(theme => ({
 
 const gridStyle = {
     marginTop: 40
-}
+};
+
+const itemsNumber = 5;
+
+const paginationStyle = {
+    padding: 20
+};
 
 class PermissionResourceTemplateList extends Component {
 
     state = {
         id: this.props.match.params.id,
         name: undefined,
-        permissions: []
-    }
+        permissions: [],
+        activePage: 1,
+        totalPages: 0,
+        itemsCountPerPage: 0,
+        totalItemsCount: 0,
+    };
 
-    getData = () => {
-        axios.get(`/resource-template/permission/${this.state.id}`).then(response => {
-            let permissions = response.data;
-            this.setState({ permissions });
+    getData = (pageNumber) => {
+        axios.get(`/resource-template/permission/${this.state.id}?page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
+            let permissions = response.data.content;
+            let totalPages = response.data.totalPages;
+            let itemsCountPerPage = response.data.numberOfElements;
+            let totalItemsCount = response.data.totalElements;
+            this.setState({
+                permissions: permissions,
+                totalPages: totalPages,
+                itemsCountPerPage: itemsCountPerPage,
+                totalItemsCount: totalItemsCount
+            });
         })
-    }
+    };
 
     getResourceTemplate = () => {
         axios.get(`/resource-template/${this.state.id}`).then(response => {
@@ -59,23 +78,28 @@ class PermissionResourceTemplateList extends Component {
             console.dir(error.response.data);
 
         })
-    }
+    };
 
     verifyUser = () => {
         if (getUserRole() !== "ROLE_MANAGER") {
             this.props.history.push("/home");
         }
-    }
+    };
 
     goBack = () => {
         this.props.history.goBack();
-    }
+    };
 
     componentDidMount() {
         this.verifyUser();
-        this.getData();
+        this.getData(this.state.activePage);
         this.getResourceTemplate();
     }
+
+    handlePageChange = (event, pageNumber) => {
+        this.setState({activePage: pageNumber});
+        this.getData(pageNumber);
+    };
 
     render() {
         return (
@@ -92,7 +116,7 @@ class PermissionResourceTemplateList extends Component {
                                 <Box>
                                     <Button
                                         variant="contained"
-                                        startIcon={<ArrowBackIosIcon />}
+                                        startIcon={<ArrowBackIosIcon/>}
                                         onClick={this.goBack}
                                     >Go Back</Button>
                                 </Box>
@@ -121,8 +145,20 @@ class PermissionResourceTemplateList extends Component {
                                 </TableBody>
                             </Table>
                         </TableContainer>
+                        <Grid container
+                              style={paginationStyle}
+                              justify="center">
+                            <CustomPagination
+                                activepage={this.state.activePage}
+                                totalPages={this.state.totalPages}
+                                itemsCountPerPage={this.state.itemsCountPerPage}
+                                totalItemsCount={this.state.totalItemsCount}
+                                onChange={this.handlePageChange}
+                            />
+                        </Grid>
+
                     </Grid>
-                    <Grid item xs></Grid>
+                    <Grid item xs/>
                 </Grid>
             </div>
         );
