@@ -26,7 +26,6 @@ const Header = (props) => {
         },
         link: {
             flexGrow: 1,
-            
         },
     }));
 
@@ -52,7 +51,6 @@ const Header = (props) => {
     }
 
     const userLoggedIn = (
-
         <div>
             <IconButton
                 aria-label="account of current user"
@@ -86,7 +84,7 @@ const Header = (props) => {
         </div>
     );
 
-    const userNotLoggedIn = ( 
+    const userNotLoggedIn = (
         <div>
             <Link to="/"><Button style={{ color: '#FFF' }}>Sign In</Button></Link>
             <Link to="/registration"><Button style={{ color: '#FFF' }}>Sign Up</Button></Link>

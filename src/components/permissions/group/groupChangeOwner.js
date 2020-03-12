@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {TextField, Button, Grid, Box, FormControl, Container} from '@material-ui/core';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import MaterialTable from 'material-table';
-import Alert from '@material-ui/lab/Alert';
-import {getUserRole} from '../../service/authService';
-import axios from '../../utils/axios';
-import CustomPagination from "../pagination/customPagination";
+import React, {Component} from "react";
+import axios from "../../../utils/axios";
+import {getUserRole} from "../../../service/authService";
+import {Box, Button, Container, FormControl, Grid, TextField} from "@material-ui/core";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import Alert from "@material-ui/lab/Alert";
+import MaterialTable from "material-table";
+import CustomPagination from "../../pagination/customPagination";
 
 const formStyles = {
     marginBottom: 30
@@ -26,11 +26,11 @@ const columns = [
 
 const successMessage = "owner was successfully changed";
 
-class PermissionResourceTemplateChangeOwner extends Component {
 
+class GroupChangeOwner extends Component {
     state = {
-        id: this.props.match.params.id,
-        name: undefined,
+        id: 0,
+        name: this.props.match.params.name,
         recipient: "",
         data: [],
         activePage: 1,
@@ -42,7 +42,8 @@ class PermissionResourceTemplateChangeOwner extends Component {
     };
 
     changeOwner = () => {
-        axios.post("/resource-template/permission/owner", this.state).then(response => {
+        axios.put("/group/owner", this.state
+        ).then(response => {
             this.setState({
                 successMessage: successMessage,
                 errorMessage: ""
@@ -57,16 +58,16 @@ class PermissionResourceTemplateChangeOwner extends Component {
     };
 
     getData = () => {
-        axios.get(`/resource-template/${this.state.id}`).then(
+        axios.get(`/group/${this.state.name}`).then(
             response => {
                 let data = response.data;
                 this.setState({
+                    id: data.id,
                     name: data.name
                 })
             }).catch(error => {
-
-            })
-
+            console.dir(error.response.data);
+        })
     };
 
     getUsers = (pageNumber) => {
@@ -83,8 +84,8 @@ class PermissionResourceTemplateChangeOwner extends Component {
                     totalItemsCount: totalItemsCount
                 });
             }).catch(error => {
-
-            })
+            console.dir(error.response.data);
+        })
 
     };
 
@@ -222,4 +223,4 @@ class PermissionResourceTemplateChangeOwner extends Component {
     }
 }
 
-export default PermissionResourceTemplateChangeOwner;
+export default GroupChangeOwner;
