@@ -70,7 +70,7 @@ class ResourceRecordView extends Component {
     };
 
     componentDidMount() {
-        this.getRecordsData();
+        //this.getRecordsData();
         this.getResourceTemplateData();
         this.getRecordsData(this.state.activePage);
     }
