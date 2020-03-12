@@ -19,30 +19,31 @@ class ResourceRecordList extends Component {
         let relatedResourceTableName = '';
         let headers = [
             {name: "Name", columnName: "name"},
-            {name: "Description", columnName: "description",}];
+            {name: "Description", columnName: "description",},
+            {name: "Photo", columnName: "photos",}];
         // {relatedResourceTableName: "", columnName: ""}];
         this.props.resourceTemplate.resourceParameters.forEach(element => {
-            if (element.parameterType !== "COORDINATES_STRING") {
-                if (element.parameterType === "RANGE_DOUBLE") {
-                    headers.push({name: element.name + "_from", columnName: element.columnName + "_from"});
-                    headers.push({name: element.name + "_to", columnName: element.columnName + "_to"})
-                }
-                    // else if (element.parameterType === "COORDINATES_STRING") {
-                    //     headers.push({name: element.name + " Coordinate", columnName: element.columnName + "_coordinate"})
-                // }
-                else if (element.parameterType === "POINT_REFERENCE") {
-                    relatedResourceTableName = element['relatedResourceTemplateTableName'];
-                    headers.push({
-                        name: element.name,
-                        columnName: element.columnName + "_ref_name",
-                        // relatedResourceTemplateTableName: element['relatedResourceTemplateTableName']
-                    });
-                    // headers.push({name: element.name, columnName: element.columnName + "_ref"});
-                    // console.log(element.name)
-                } else {
-                    headers.push({name: element.name, columnName: element.columnName})
-                }
+            // if (element.parameterType !== "COORDINATES_STRING") {
+            if (element.parameterType === "RANGE_DOUBLE" || element.parameterType === "RANGE_INT") {
+                headers.push({name: element.name + "_from", columnName: element.columnName + "_from"});
+                headers.push({name: element.name + "_to", columnName: element.columnName + "_to"})
             }
+            else if (element.parameterType === "COORDINATES_STRING") {
+                headers.push({name: element.name + " Coordinates", columnName: element.columnName + "_coordinate"})
+            }
+            else if (element.parameterType === "POINT_REFERENCE") {
+                relatedResourceTableName = element['relatedResourceTemplateTableName'];
+                headers.push({
+                    name: element.name,
+                    columnName: element.columnName + "_ref_name",
+                    // relatedResourceTemplateTableName: element['relatedResourceTemplateTableName']
+                });
+                // headers.push({name: element.name, columnName: element.columnName + "_ref"});
+                // console.log(element.name)
+            } else {
+                headers.push({name: element.name, columnName: element.columnName})
+            }
+            // }
         });
 
         this.setState({
@@ -65,7 +66,6 @@ class ResourceRecordList extends Component {
                         <TableBody>
 
                             {this.props.records.map((item) =>
-
                                 (<ResourceRecordItem key={item.id}
                                                      item={item}
                                                      tableName={this.props.tableName}
@@ -76,19 +76,6 @@ class ResourceRecordList extends Component {
 
                                 )
                             )}
-
-
-                            {/*{rows.map(row => (*/}
-                            {/*    <TableRow key={row.name}>*/}
-                            {/*        <TableCell component="th" scope="row">*/}
-                            {/*            {row.name}*/}
-                            {/*        </TableCell>*/}
-                            {/*        <TableCell align="right">{row.calories}</TableCell>*/}
-                            {/*        <TableCell align="right">{row.fat}</TableCell>*/}
-                            {/*        <TableCell align="right">{row.carbs}</TableCell>*/}
-                            {/*        <TableCell align="right">{row.protein}</TableCell>*/}
-                            {/*    </TableRow>*/}
-                            {/*))}*/}
                         </TableBody>
                     </Table>
                 </TableContainer>

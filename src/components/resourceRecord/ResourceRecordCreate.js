@@ -41,7 +41,8 @@ class ResourceRecordCreate extends Component {
                     parameters: {},
                     // data: {}
                 })
-                this.props.getRecordsData()
+                this.props.getRecordsData();
+                this.props.handleClose();
             }).catch(error => {
             console.dir(error.response.data);
         })
@@ -76,30 +77,12 @@ class ResourceRecordCreate extends Component {
 
 
     render() {
-
-        // console.log(this.state.resourceParameters.relatedResourceTemplateName);
-        // let elements = this.state.resourceParameters.map(element =>
-        //
-        //     (<div>
-        //         <FormControl>
-        //
-        //
-        //             {(element.parameterType === 'POINT_INT')}?
-        //             <TextField key={element.name}
-        //                        type="text"
-        //                        label={element.name}
-        //                        setData={this.setData}/>:
-        //             <div/>
-        //
-        //         </FormControl>
-        //     </div>)
-        // )
         return (
             <div>
                 <DialogContent dividers>
                     <div>
                         <FormControl>
-                            <TextField required type="text" label="name" onChange={this.onChangeName}/>
+                            <TextField required type="text" label="name"  onChange={this.onChangeName}/>
                             {/*// helperText={this.state.errorMessage} error={!!this.state.errorMessage}/>*/}
 
                         </FormControl>
@@ -128,7 +111,7 @@ class ResourceRecordCreate extends Component {
                                                   label={element.name}
                                                   columnName={element.columnName}
                                                   setData={this.setData}/>)
-                            } else if (element.parameterType === 'RANGE_INTEGER') {
+                            } else if (element.parameterType === 'RANGE_INT') {
                                 e = (<RangeInteger key={element.name}
                                                    label={element.name}
                                                    columnName={element.columnName}

@@ -46,7 +46,6 @@ class ResourceRecordView extends Component {
     }
 
 
-
     render() {
         // function relatedResourceTableName() {
         //     this.state.resourceTemplate.resourceParameters.map(key => {
@@ -60,11 +59,11 @@ class ResourceRecordView extends Component {
                 <div>
                     <h1>{this.state.resourceTemplate.name}</h1>
                 </div>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<CheckCircleIcon/>}
-                    onClick={this.handleOpen}>
+                <Button style={{marginBottom: 40}}
+                        variant="contained"
+                        color="primary"
+                        startIcon={<CheckCircleIcon/>}
+                        onClick={this.handleOpen}>
                     Add record
                 </Button>
 
@@ -81,13 +80,16 @@ class ResourceRecordView extends Component {
                     </Grid>
                     <Grid item xs={3}></Grid>
                 </Grid>
-                <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.state.openDialog}>
+                <Dialog fullWidth
+                        onClose={this.handleClose}
+                        aria-labelledby="simple-dialog-title"
+                        open={this.state.openDialog}>
                     <DialogTitle id="simple-dialog-title">Create new {this.state.resourceTemplate.name}</DialogTitle>
 
                     <ResourceRecordCreate handleClose={this.handleClose}
                                           tableName={this.state.tableName}
                                           resourceTemplate={this.state.resourceTemplate}
-                                          // relatedResourceTableName={relatedResourceTableName}
+                        // relatedResourceTableName={relatedResourceTableName}
                                           getRecordsData={this.getRecordsData}
                     />
 

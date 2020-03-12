@@ -14,10 +14,10 @@ import PointReference from "./parametersTypes/PointReference";
 class ResourceRecordUpdate extends Component {
 
     state = {
-        name: undefined,
-        description: undefined,
+        name: this.props.item.name,
+        description: this.props.item.description,
         resourceParameters: this.props.resourceTemplate.resourceParameters,
-        parameters: {}
+        parameters: this.props.item.parameters
     }
 
     update = () => {
@@ -29,7 +29,8 @@ class ResourceRecordUpdate extends Component {
                     parameters: {},
                     // data: {}
                 })
-                this.props.getRecordsData()
+                this.props.getRecordsData();
+                this.props.handleClose();
             }).catch(error => {
             console.dir(error.response.data);
         })
@@ -37,6 +38,7 @@ class ResourceRecordUpdate extends Component {
 
     onChangeName = (event) => {
         let name = event.target.value;
+        console.log(name);
         if (name.trim().length === 0) {
             name = undefined;
         }
@@ -60,51 +62,54 @@ class ResourceRecordUpdate extends Component {
                 <DialogContent dividers>
                     <div>
                         <FormControl>
-                            <TextField required type="text" label="name" onChange={this.onChangeName}/>
-                            {/*<TextField required type="text" label="name" value={this.props.item.name} onChange={this.onChangeName}/>*/}
+                            {/*<TextField required type="text" label="name" onChange={this.onChangeName}/>*/}
+                            <TextField required type="text" label="name" onChange={this.onChangeName} value={this.state.name} />
                             {/*// helperText={this.state.errorMessage} error={!!this.state.errorMessage}/>*/}
 
                         </FormControl>
                     </div>
                     <div>
                         <FormControl>
-                            <TextField type="text" label="description" onChange={this.onChangeDescription}/>
-                            {/*<TextField type="text" label="description" value={this.props.item.description} onChange={this.onChangeDescription}/>*/}
+                            {/*<TextField type="text" label="description" onChange={this.onChangeDescription}/>*/}
+                            <TextField type="text" label="description" onChange={this.onChangeDescription} value={this.state.description} />
                         </FormControl>
                     </div>
                     {
                         // elements
                         this.state.resourceParameters.map(element => {
                             let e;
+                            console.log(element)
                             if (element.parameterType === 'POINT_INT') {
                                 e = (<PointInteger key={element.name}
                                                    label={element.name}
                                                    columnName={element.columnName}
-                                                   value={this.props.item.parameters[element.columnName]}
+                                                   value={this.state.parameters[element.columnName]}
                                                    setData={this.setData}/>)
                             } else if (element.parameterType === 'POINT_STRING') {
                                 e = (<PointString key={element.name}
                                                   label={element.name}
                                                   columnName={element.columnName}
-                                                  value={this.props.item.parameters[element.columnName]}
+                                                  value={this.state.parameters[element.columnName]}
                                                   setData={this.setData}/>)
                             } else if (element.parameterType === 'POINT_DOUBLE') {
                                 e = (<PointDouble key={element.name}
                                                   label={element.name}
                                                   columnName={element.columnName}
-                                                  value={this.props.item.parameters[element.columnName]}
+                                                  value={this.state.parameters[element.columnName]}
                                                   setData={this.setData}/>)
                             } else if (element.parameterType === 'RANGE_INTEGER') {
                                 e = (<RangeInteger key={element.name}
                                                    label={element.name}
                                                    columnName={element.columnName}
-                                                   value={this.props.item.parameters[element.columnName]}
+                                                   valueFrom={this.state.parameters[element.columnName.concat('_from')]}
+                                                   valueTo={this.state.parameters[element.columnName.concat('_to')]}
                                                    setData={this.setData}/>)
                             } else if (element.parameterType === 'RANGE_DOUBLE') {
                                 e = (<RangeDouble key={element.name}
                                                   label={element.name}
                                                   columnName={element.columnName}
-                                                  value={this.props.item.parameters[element.columnName]}
+                                                  valueFrom={this.state.parameters[element.columnName.concat('_from')]}
+                                                  valueTo={this.state.parameters[element.columnName.concat('_to')]}
                                                   setData={this.setData}/>)
                             } else if (element.parameterType === 'POINT_REFERENCE') {
                                 e = (<PointReference key={element.name}

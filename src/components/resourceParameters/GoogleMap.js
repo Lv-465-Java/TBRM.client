@@ -49,12 +49,12 @@ class GoogleMap extends Component {
         // ];
 
         let element = undefined;
-        if (this.props.parameters !== undefined){
-            if (this.props.parameters["coordinates"].length > 1) {
-                element = (<Polygon paths={this.props.parameters["coordinates"]}/>);
+        if (this.props.coordinates !== undefined){
+            if (this.props.coordinates.length > 1) {
+                element = (<Polygon paths={this.props.coordinates}/>);
             }  else {
                 element = (<Marker
-                    position={this.props.parameters["coordinates"][0]}/>)
+                    position={this.props.coordinates[0]}/>)
             }
         }
 
@@ -69,7 +69,7 @@ class GoogleMap extends Component {
                     google={this.props.google}
                     zoom={14}
                     style={mapStyles}
-                    initialCenter={this.props.parameters["coordinates"][0]}
+                    initialCenter={this.props.coordinates[0]}
                     // initialCenter={{lat: 49.822182, lng: 23.984633}}
                     // initialCenter={initialCenter}
                 >

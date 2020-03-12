@@ -12,7 +12,7 @@ class PointInteger extends Component {
         return (
             <div>
                 <FormControl>
-                <TextField required pattern="^\d+$" type="number" label={this.props.label}
+                <TextField required type="number" label={this.props.label} value={this.props.value}
                            onChange={this.onChangePointInteger}/>
                 </FormControl>
             </div>
