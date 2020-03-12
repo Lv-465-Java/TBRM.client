@@ -13,7 +13,7 @@ class ResourceRecordList extends Component {
         headers: [],
         data: this.props.records,
         relatedResourceTableName: ''
-    }
+    };
 
     componentDidMount() {
         let relatedResourceTableName = '';

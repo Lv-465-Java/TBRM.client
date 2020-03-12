@@ -1,52 +1,90 @@
 import React, {Component} from 'react';
 import axios from '../../utils/axios';
 import ResourceTemplateItem from './resourceTemplateItem';
-import {Box, Button, Grid} from '@material-ui/core';
+import {Box, Button, Container, Grid} from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import {getUserRole} from '../../service/authService';
+import CustomPagination from "../pagination/customPagination";
 
 const style = {
 
     display: "flex",
     flexWrap: "wrap",
-}
+};
 
 const gridStyle = {
     marginTop: 40
-}
+};
 const buttonStyle = {
     backgroundColor: '#4caf50',
-    color: '#fff'
-}
+    color: '#fff',
+    marginTop: 40
+};
+
+const itemsNumber = 9;
+
+const paginationStyle = {
+    padding: 20
+};
 
 class ResourceTemplateList extends Component {
 
     state = {
-        resourceTemplates: []
+        resourceTemplates: [],
+        activePage: 1,
+        totalPages: 0,
+        itemsCountPerPage: 0,
+        totalItemsCount: 0,
     };
 
-    getData = () => {
-        axios.get('resource-template').then(response => {
-            let resourceTemplates = response.data;
-            this.setState({resourceTemplates});
+    getData = (pageNumber) => {
+        axios.get(`resource-template?page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
+            let resourceTemplates = response.data.content;
+            let totalPages = response.data.totalPages;
+            let itemsCountPerPage = response.data.numberOfElements;
+            let totalItemsCount = response.data.totalElements;
+            this.setState({
+                resourceTemplates: resourceTemplates,
+                totalPages: totalPages,
+                itemsCountPerPage: itemsCountPerPage,
+                totalItemsCount: totalItemsCount
+            });
             console.log(response.data);
         })
     };
 
-    getAllPublishedTemplates = () => {
-        axios.get('resource-template/published').then(response => {
-            let resourceTemplates = response.data;
+    getAllPublishedTemplates = (pageNumber) => {
+        axios.get(`resource-template/published?page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
+            let resourceTemplates = response.data.content;
+            let totalPages = response.data.totalPages;
+            let itemsCountPerPage = response.data.numberOfElements;
+            let totalItemsCount = response.data.totalElements;
+            this.setState({
+                resourceTemplates: resourceTemplates,
+                totalPages: totalPages,
+                itemsCountPerPage: itemsCountPerPage,
+                totalItemsCount: totalItemsCount
+            });
             this.setState({resourceTemplates});
         })
     };
 
     componentDidMount() {
         if (getUserRole() === "ROLE_MANAGER") {
-            this.getData();
+            this.getData(this.state.activePage);
         } else {
-            this.getAllPublishedTemplates();
+            this.getAllPublishedTemplates(this.state.activePage);
         }
     }
+
+    handlePageChange = (event, pageNumber) => {
+        this.setState({activePage: pageNumber});
+        if (getUserRole() === "ROLE_MANAGER") {
+            this.getData(pageNumber);
+        } else {
+            this.getAllPublishedTemplates(pageNumber);
+        }
+    };
 
     goToCreateResource = () => {
         this.props.history.push("/resource-template/create");
@@ -65,10 +103,11 @@ class ResourceTemplateList extends Component {
             )
 
         return (
+            <div>
+                {userLinks}
                 <Grid container spacing={3} style={gridStyle}>
-                    <Grid item xs>
-                    </Grid>
-                    <Grid item xs={8}>
+                    <Grid item xs/>
+                    <Grid item xs={10}>
                         <div style={style}>
                             {this.state.resourceTemplates.map((item) =>
                                 (<ResourceTemplateItem key={item.id}
@@ -76,10 +115,19 @@ class ResourceTemplateList extends Component {
                             )}
                         </div>
                     </Grid>
-                    <Grid item xs>
-                        {userLinks}
+                    <Grid container
+                          style={paginationStyle}
+                          justify="center">
+                        <CustomPagination
+                            activepage={this.state.activePage}
+                            totalPages={this.state.totalPages}
+                            itemsCountPerPage={this.state.itemsCountPerPage}
+                            totalItemsCount={this.state.totalItemsCount}
+                            onChange={this.handlePageChange}
+                        />
                     </Grid>
                 </Grid>
+            </div>
         );
     }
 }
