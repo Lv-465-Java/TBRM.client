@@ -57,6 +57,7 @@ class FilterPointNumberField extends Component {
                     </Select>
                     <TextField type="number"
                                onChange={this.onChangeValue}
+                               value={this.state.value}
                                style={{minWidth: "30px"}}
                                helperText={this.state.errorMessage}
                                error={!!this.state.errorMessage}/>

@@ -3,6 +3,15 @@ import FilterPointNumberField from "./filterPointNumberField";
 
 class FilterRangeNumberField extends Component {
 
+    // reset = () => {
+    //     this.setState({value: ""}, () => {
+    //         this.props.setFilter(this.props.columnName, this.buildFilter());
+    //     });
+    //     this.setState({operation: ""}, () => {
+    //         this.props.setFilter(this.props.columnName, this.buildFilter());
+    //     });
+    // };
+
     render() {
         return (
             <>
