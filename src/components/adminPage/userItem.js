@@ -96,7 +96,7 @@ class UserItem extends Component {
                     open={this.state.open}
                     onClose={this.handleClose}
                     aria-labelledby="max-width-dialog-title">
-                    <DialogTitle id="max-width-dialog-title">User history </DialogTitle>
+                    <DialogTitle id="max-width-dialog-title">{this.state.firstName} {this.state.lastName} </DialogTitle>
                     <DialogContent>
                         <TableContainer component={Paper}
                                         style={{weight: 600}}>

@@ -26,7 +26,8 @@ class UserHistoryList extends Component {
             let url = `/${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
             axios.get(url).then(response => {
                 let users = response.data;
-                this.setState({user:users});
+                this.setState({users:[]});
+                this.setState({users:users});
             })
         })
 
@@ -38,11 +39,13 @@ class UserHistoryList extends Component {
                     <Grid container justify="space-around">
                         <KeyboardDatePicker
                             disableToolbar
+                            disableFuture
+                            autoOk
                             variant="inline"
                             format="MM/dd/yyyy"
                             margin="normal"
                             id="date-picker-inline"
-                            label="Date picker inline"
+                            label="choose history by date"
                             value={this.state.selectedDate}
                             onChange={this.handleDateChange}
                             KeyboardButtonProps={{
@@ -51,12 +54,12 @@ class UserHistoryList extends Component {
                         />
                     </Grid>
                 </MuiPickersUtilsProvider>
-                <TableContainer component={Paper}>
-                    <Table>
-                        {this.state.user.map((item) =>
-                            (<UserItem key={item}
-                                       item={item}/>)
-                        )}
+                        <TableContainer component={Paper}>
+                            <Table>
+                                {this.state.user.map((item) =>
+                                    (<UserItem key={item}
+                                               item={item}/>)
+                                )}
                     </Table>
                 </TableContainer>
             </Grid>

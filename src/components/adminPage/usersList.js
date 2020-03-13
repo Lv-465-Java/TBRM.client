@@ -78,38 +78,31 @@ class UsersList extends Component {
             // {title: 'Role', field: 'role.name'}
         ];
         return (
-            <Grid>
-                <Grid container spacing={3} style={gridStyle}>
+            <Grid container>
+                <Grid  spacing={3} xs={12} style={gridStyle} alignContent={"center"}>
                     <ButtonGroup color="primary" aria-label="small outlined button group">
                         <Button onClick={this.getAllAccounts}>All accounts</Button>
                         <Button>Disable accounts</Button>
                         <Button onClick={this.getDeletedAccounts}>Deleted accounts</Button>
                         <Button onClick={this.getAllHistory}>All history</Button>
-                    </ButtonGroup>
 
-                    <Grid item xs={12}>
-                        {/*alignContent={"center"} justify={"center"}>*/}
-                        <div style={style}>
-                            <Grid>
-                                <TableContainer component={Paper}>
-                                    <Table>
-                                        {/*<List >*/}
-                                        {/*dense={this.dense}>*/}
-                                        {this.state.users.map((item) =>
-                                            (<UserItem key={item}
-                                                       item={item}/>)
-                                        )}
-                                    </Table>
-                                </TableContainer>
-                                {/*<UserHistoryList key={this.state.users} item={this.state.users}/>*/}
-                                {/*</List>*/}
-                            </Grid>
-                        </div>
-                    </Grid>
-                    <Grid item xs>
-                    </Grid>
+                    </ButtonGroup>
                 </Grid>
+                <Grid item xs={1}/>
+                <Grid item xs={10}>
+                    <TableContainer component={Paper}>
+                        <Table>
+                            {this.state.users.map((item) =>
+                                (<UserItem key={item}
+                                           item={item}/>)
+                            )}
+                        </Table>
+                    </TableContainer>
+
+                </Grid>
+                <Grid item xs={1}/>
             </Grid>
+
         )
     }
 }
