@@ -10,6 +10,7 @@ import RangeDouble from "./parametersTypes/RangeDouble";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import PointReference from "./parametersTypes/PointReference";
+import CoordinateString from "./parametersTypes/CoordinateString";
 
 class ResourceRecordUpdate extends Component {
 
@@ -63,7 +64,8 @@ class ResourceRecordUpdate extends Component {
                     <div>
                         <FormControl>
                             {/*<TextField required type="text" label="name" onChange={this.onChangeName}/>*/}
-                            <TextField required type="text" label="name" onChange={this.onChangeName} value={this.state.name} />
+                            <TextField required type="text" label="name" onChange={this.onChangeName}
+                                       value={this.state.name}/>
                             {/*// helperText={this.state.errorMessage} error={!!this.state.errorMessage}/>*/}
 
                         </FormControl>
@@ -71,14 +73,14 @@ class ResourceRecordUpdate extends Component {
                     <div>
                         <FormControl>
                             {/*<TextField type="text" label="description" onChange={this.onChangeDescription}/>*/}
-                            <TextField type="text" label="description" onChange={this.onChangeDescription} value={this.state.description} />
+                            <TextField type="text" label="description" onChange={this.onChangeDescription}
+                                       value={this.state.description}/>
                         </FormControl>
                     </div>
                     {
                         // elements
                         this.state.resourceParameters.map(element => {
                             let e;
-                            console.log(element)
                             if (element.parameterType === 'POINT_INT') {
                                 e = (<PointInteger key={element.name}
                                                    label={element.name}
@@ -117,22 +119,16 @@ class ResourceRecordUpdate extends Component {
                                                      columnName={element.columnName}
                                                      relatedResourceTableName={element['relatedResourceTemplateTableName']}
                                                      setData={this.setData}/>)
+                            } else if (element.parameterType === 'COORDINATES_STRING') {
+                                e = (<CoordinateString key={element.name}
+                                                       label={element.name}
+                                                       columnName={element.columnName.concat('_coordinate')}
+                                                       value={this.state.parameters[element.columnName.concat('_coordinate')]}
+                                                       setData={this.setData}/>)
                             }
                             return e;
                         })
                     }
-                    {/*//     (<FormControl>*/}
-                    {/*//*/}
-                    {/*//             {*/}
-                    {/*//                 if(element.parameterType === 'POINT_INT'){*/}
-                    {/*//                 <TextField key={element.name}*/}
-                    {/*//                 type="text"*/}
-                    {/*//                 label={element.name}*/}
-                    {/*//                 setData={this.setData}/>}*/}
-                    {/*//             }*/}
-                    {/*//         </FormControl>)*/}
-                    {/*//*/}
-                    {/*// )}*/}
                 </DialogContent>
                 <DialogActions>
                     <Button autoFocus onClick={this.update} color="primary">

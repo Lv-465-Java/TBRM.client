@@ -39,8 +39,6 @@ class CreateParameter extends Component {
     };
 
     create = () => {
-        // let body = { 'isPublished': false };
-
         let data = {
             "name": this.state.name,
             "parameterType": `${this.state.parameter.toUpperCase()}_${this.state.parameterType.toUpperCase()}`

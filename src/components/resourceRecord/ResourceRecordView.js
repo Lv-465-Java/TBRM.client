@@ -47,13 +47,6 @@ class ResourceRecordView extends Component {
 
 
     render() {
-        // function relatedResourceTableName() {
-        //     this.state.resourceTemplate.resourceParameters.map(key => {
-        //         if (key.parameterType === "POINT_REFERENCE") {
-        //             return key['relatedResourceTemplateTableName'];
-        //         }
-        //     })
-        // }
         return (
             <div>
                 <div>
@@ -80,7 +73,7 @@ class ResourceRecordView extends Component {
                     </Grid>
                     <Grid item xs={3}></Grid>
                 </Grid>
-                <Dialog fullWidth
+                <Dialog fullWidth={true}
                         onClose={this.handleClose}
                         aria-labelledby="simple-dialog-title"
                         open={this.state.openDialog}>

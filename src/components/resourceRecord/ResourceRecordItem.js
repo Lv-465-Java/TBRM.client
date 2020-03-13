@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import {Link} from "react-router-dom";
 import {blue} from "@material-ui/core/colors";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -13,6 +12,7 @@ import Dialog from "@material-ui/core/Dialog";
 import ResourceRecordUpdate from "./ResourceRecordUpdate";
 import ResourceRecordItemView from "./ResourceRecordItemView";
 import {Image} from "@material-ui/icons";
+import MyDialog from "../resourceTemplate/popUp";
 
 
 const linkStyle = {
@@ -33,17 +33,29 @@ class resourceRecordItem extends Component {
         headers: this.props.headers,
         data: {},
         openDialogEdit: false,
-        openDialogView: false
+        openDialogView: false,
+        open: false
     };
 
 
     delete = () => {
         axios.delete(`/resource-template/resource/${this.props.tableName}/${this.props.item.id}`).then(
             response => {
+
                 this.props.getRecordsData();
+
             }).catch(error => {
+
             console.dir(error.response.data);
         })
+    };
+
+    handleClickOpen = () => {
+        this.setState({ open: true })
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
     };
 
     handleCloseView = () => {
@@ -64,7 +76,6 @@ class resourceRecordItem extends Component {
         this.state.data['photos'] = this.props.item['photos'];
         Object.keys(this.props.item['parameters']).forEach(key => {
             this.state.data[key] = this.props.item['parameters'][key]
-            console.log(this.state.data[key])
         });
     };
 
@@ -129,20 +140,16 @@ class resourceRecordItem extends Component {
                                                                        style={{color: blue['A400']}}
                                                                        align="right">{this.state.data[element.columnName]}
                             </TableCell></Tooltip>)
-                            // if (element.columnName === 'name') {
-                            //     e = (<TableCell component={Link} key={index}
-                            //                     to={`/resource/view/${this.props.tableName}/${this.props.item['id']}`}
-                            //                     style={linkStyle} align="right">{data[element.columnName]}
-                            //     </TableCell>)
                         } else if (element.columnName.endsWith('_ref_name')) {
                             let id = this.state.data[element.columnName.substring(0, element.columnName.length - 5)];
-                            e = (<TableCell component={Link} key={index}
-                                            to={`/resource/view/${this.props.relatedResourceTableName}/${id}`}
+                            e = (<TableCell key={index}
+                                // component={Link}
+                                // to={`/resource/view/${this.props.relatedResourceTableName}/${id}`}
                                 // to={`/resource/view/${this.props.tableName}/${this.props.item['id']}`}
-                                            style={linkStyle} align="right">{this.state.data[element.columnName]}
+                                //             style={linkStyle}
+                                            align="right">{this.state.data[element.columnName]}
                             </TableCell>)
                         } else if (element.columnName === 'photos') {
-                            console.log(this.state.data[element.columnName])
                             e = (<TableCell align="right"><Image
                                 src={this.state.data[element.columnName]}
                             />
@@ -155,24 +162,13 @@ class resourceRecordItem extends Component {
 
                                 ))}>
                                     <div>{`lat:${this.state.data[element.columnName][0]['lat']} lng:${this.state.data[element.columnName][0]['lng']}`}</div>
-                                    {/*{*/}
-
-                                    {/*this.state.data[element.columnName].map(key => (*/}
-
-                                    {/*        `lat:${key['lat']} lng:${key['lng']}`*/}
-
-                                    {/*))*/}
-
-                                    {/*}*/}
                                 </Tooltip>
                             </TableCell>)
 
                         } else {
-                            // console.log(this.state.data);
                             e = (<TableCell key={index} align="right">{this.state.data[element.columnName]}
                             </TableCell>)
                         }
-                        // console.log(this.state.data['point_a_coordinate']);
                         return e;
                     })
                     }
@@ -182,7 +178,7 @@ class resourceRecordItem extends Component {
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete">
-                        <IconButton aria-label="delete" color="primary" onClick={this.delete}>
+                        <IconButton aria-label="delete" color="primary" onClick={this.handleClickOpen}>
                             <DeleteIcon/>
                         </IconButton>
                     </Tooltip>
@@ -206,8 +202,6 @@ class resourceRecordItem extends Component {
                         open={this.state.openDialogView}
                         onClose={this.handleCloseView}
                 >
-                    <DialogTitle>{this.props.resourceTemplate.name}</DialogTitle>
-
                     <ResourceRecordItemView handleClose={this.handleCloseView}
                                             tableName={this.props.tableName}
                                             item={this.props.item}
@@ -216,6 +210,12 @@ class resourceRecordItem extends Component {
                                             data={this.state.data}
                     />
                 </Dialog>
+                <MyDialog delete={this.delete}
+                          open={this.state.open}
+                          handleClickOpen={this.handleClickOpen}
+                          handleClose={this.handleClose}
+                          title="Delete resource"
+                          msg="Are you sure you want to delete this resource?" />
             </>
         );
     }

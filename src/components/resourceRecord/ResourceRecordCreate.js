@@ -10,6 +10,9 @@ import PointString from "./parametersTypes/PointString";
 import PointDouble from "./parametersTypes/PointDouble";
 import RangeInteger from "./parametersTypes/RangeInteger";
 import PointReference from "./parametersTypes/PointReference";
+import CoordinateString from "./parametersTypes/CoordinateString";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 const formControlStyles = {
     marginBottom: 20
@@ -22,31 +25,32 @@ class ResourceRecordCreate extends Component {
         name: undefined,
         description: undefined,
         resourceParameters: this.props.resourceTemplate.resourceParameters,
-        parameters: {}
+        parameters: undefined,
+        // parameters: {},
+        open: false
     }
 
     create = () => {
-        // let data = {
-        //     "name": this.props.name,
-        //     "parameterType": `${this.state.parameter.toUpperCase()}_${this.state.parameterType.toUpperCase()}`
-        // }
-        // if (this.state.parameterType === "reference") {
-        //     data["relatedResourceTemplateId"] = this.state.relatedResourceTemplateId
-        // }
         axios.post(`/resource-template/resource/${this.props.tableName}`, this.state).then(
             response => {
                 this.setState({
                     name: "",
                     description: "",
                     parameters: {},
+                    open: true
                     // data: {}
                 })
                 this.props.getRecordsData();
-                this.props.handleClose();
+                // this.props.handleClose();
+
             }).catch(error => {
             console.dir(error.response.data);
         })
     };
+
+    isCreateNotValid = () => {
+        return (this.state.parameters)
+    }
 
     onChangeName = (event) => {
         let name = event.target.value;
@@ -56,11 +60,18 @@ class ResourceRecordCreate extends Component {
         this.setState({name});
     }
 
+    handleOpen = () => {
+        this.setState({open: true})
+    }
+
+    handleClose = () => {
+        this.setState({open: false});
+        this.props.handleClose();
+    }
+
     onChangeDescription = (event) => {
         let description = event.target.value;
         this.setState({description});
-
-        // this.props.setData(this.props.columnName, event.target.value)
     }
 
     setData = (columnName, value) => {
@@ -82,7 +93,7 @@ class ResourceRecordCreate extends Component {
                 <DialogContent dividers>
                     <div>
                         <FormControl>
-                            <TextField required type="text" label="name"  onChange={this.onChangeName}/>
+                            <TextField required type="text" label="name" onChange={this.onChangeName}/>
                             {/*// helperText={this.state.errorMessage} error={!!this.state.errorMessage}/>*/}
 
                         </FormControl>
@@ -127,22 +138,15 @@ class ResourceRecordCreate extends Component {
                                                      columnName={element.columnName}
                                                      relatedResourceTableName={element['relatedResourceTemplateTableName']}
                                                      setData={this.setData}/>)
+                            } else if (element.parameterType === 'COORDINATES_STRING') {
+                                e = (<CoordinateString key={element.name}
+                                                       label={element.name}
+                                                       columnName={element.columnName.concat('_coordinate')}
+                                                       setData={this.setData}/>)
                             }
                             return e;
                         })
                     }
-                    {/*//     (<FormControl>*/}
-                    {/*//*/}
-                    {/*//             {*/}
-                    {/*//                 if(element.parameterType === 'POINT_INT'){*/}
-                    {/*//                 <TextField key={element.name}*/}
-                    {/*//                 type="text"*/}
-                    {/*//                 label={element.name}*/}
-                    {/*//                 setData={this.setData}/>}*/}
-                    {/*//             }*/}
-                    {/*//         </FormControl>)*/}
-                    {/*//*/}
-                    {/*// )}*/}
                 </DialogContent>
                 <DialogActions>
                     <Button autoFocus onClick={this.create} color="primary">
@@ -152,6 +156,11 @@ class ResourceRecordCreate extends Component {
                         Close
                     </Button>
                 </DialogActions>
+                <Snackbar open={this.state.open} autoHideDuration={1500} onClose={this.handleClose}>
+                    <Alert onClose={this.handleClose} severity="success">
+                        Resource successfully added
+                    </Alert>
+                </Snackbar>
             </div>
         );
     }

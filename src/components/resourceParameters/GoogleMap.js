@@ -1,41 +1,13 @@
 import React, {Component} from 'react';
 import {GoogleApiWrapper, Map, Marker, Polygon} from 'google-maps-react';
-import axios from "../../utils/axios";
 
 
 const mapStyles = {
-    width: '50%',
-    height: '50%',
+    width: '35%',
+    height: '35%',
 };
 
 class GoogleMap extends Component {
-
-    // state = {
-    //     name: "",
-    //     description: "",
-    //     parameters: []
-    // }
-
-    // getData = () => {
-    //     axios.get(`/resource-template/resource/building/2`).then(
-    //         // axios.get(`/resource-template/resource/${this.state.tableName}/${this.state.id}`).then(
-    //         response => {
-    //             let data = response.data;
-    //             this.setState({
-    //                 name: data.name,
-    //                 description: data.description,
-    //                 parameters: data.parameters
-    //             })
-    //         }).catch(error => {
-    //         console.dir(error.response.data);
-    //
-    //     })
-    //
-    // };
-
-    // componentDidMount() {
-    //     this.getData();
-    // }
 
     render() {
         // const triangleCoords = [
@@ -58,20 +30,16 @@ class GoogleMap extends Component {
             }
         }
 
-        // let initialCenter = undefined;
-        // if (this.props.parameters !== undefined){
-        //     initialCenter = this.props.parameters["coordinates"][0];
-        // }
-
+        // alert(JSON.stringify(this.props.coordinates[0]));
         return (
+
             <div>
                 <Map
                     google={this.props.google}
                     zoom={14}
                     style={mapStyles}
                     initialCenter={this.props.coordinates[0]}
-                    // initialCenter={{lat: 49.822182, lng: 23.984633}}
-                    // initialCenter={initialCenter}
+                    center={this.props.coordinates[0]}
                 >
                     {element}
                 </Map>
