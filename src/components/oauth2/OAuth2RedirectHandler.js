@@ -21,7 +21,7 @@ class OAuth2RedirectHandler extends Component {
             verifyUser();
 
         }, error => {
-            console.log(error.response.data.message);
+
         })
     }
 
@@ -37,11 +37,8 @@ class OAuth2RedirectHandler extends Component {
         const accessToken = this.getUrlParameter(ACCESS_TOKEN);
         const refreshToken = this.getUrlParameter(REFRESH_TOKEN);
         const isNewUser = this.getUrlParameter("isNewUser");
-        console.log(accessToken);
-        console.log(refreshToken);
-        console.log(isNewUser);
+
         const error = this.getUrlParameter('error');
-        console.log(error);
 
         if (accessToken) {
             localStorageService.setAccessToken(accessToken);
