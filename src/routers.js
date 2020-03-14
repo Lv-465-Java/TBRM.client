@@ -28,6 +28,12 @@ import Forbidden from "./hoc/forbidden";
 import GuestPage from "./components/guest";
 import ResourceRecordView from "./components/resourceRecord/ResourceRecordView";
 import AddTenant from "./components/home/AddTenant";
+import TestMaps from "./components/resourceParameters/GoogleMap";
+import ResourceRecordItemView from "./components/resourceRecord/ResourceRecordItemView";
+import ResourceRecordCreate from "./components/resourceRecord/ResourceRecordCreate";
+import ResourceRecordUpdate from "./components/resourceRecord/ResourceRecordUpdate";
+import GroupChangeOwner from "./components/permissions/group/groupChangeOwner";
+import UserList from "./components/user/userList";
 
 
 const ProtectedRoute
@@ -80,15 +86,21 @@ class Routers extends Component {
                     <ManagerRoute path="/resource-template/permission/owner/:id" component={PermissionResourceTemplateChangeOwner} />
                     <ManagerRoute path="/resource-template/permission/:id" component={PermissionResourceTemplateList} />
                     <ResourceRoute path="/resource-template" component={ResourceTemplateList} />
-                    <ResourceRoute path="/resource/:tableName" component={ResourceRecordView}/>
+                    <RegisterRoute path="/resource/update/:tableName/:id" component={ResourceRecordUpdate} />
+                    <RegisterRoute path="/resource/view/:tableName/:recordId" component={ResourceRecordItemView} />
+                    <RegisterRoute path="/resource/:tableName" component={ResourceRecordView}/>
+                    <RegisterRoute path="/resource/create" component={ResourceRecordCreate} />
+                    <Route path="/test-maps" component={TestMaps} />
                     <Route path="/forgot_password/:email" component={ForgotPasswordMessage} />
                     <ManagerRoute path="/group/edit/:name" component={EditGroup} />
                     <ManagerRoute path="/group/view/:name" component={GroupItem} />
+                    <ManagerRoute path="/group/permission/owner/:name" component={GroupChangeOwner} />
                     <ManagerRoute path="/group/permission/:id" component={AddPermission} />
                     <Route path="/oauth2/redirect" component={OAuth2RedirectHandler} />
                     <Route path="/oauth2/fullRegister" component={FullOAuthRegister} />
                     <Route path="/welcome" component={GuestPage} />
-                    <Route path="/add_tenant" component={AddTenant}/>
+                    <Route path="/tenant/create" component={AddTenant}/>
+                    <AdminRoute path="/admin-panel" component={UserList}/>
                     <Route path="/" exact component={LoginForm} />
                 </Switch>
                 <Footer/>

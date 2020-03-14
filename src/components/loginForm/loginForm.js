@@ -14,9 +14,6 @@ import googleLogo from "../../img/google-logo.png";
 import Alert from "@material-ui/lab/Alert";
 import { getUserRole, verifyUser } from '../../service/authService';
 
-// import Alert  from 'react-s-alert';
-// import 'react-s-alert/dist/s-alert-default.css';
-// import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";

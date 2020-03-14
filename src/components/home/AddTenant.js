@@ -32,7 +32,7 @@ class AddTenant extends Component {
     }
 
     getData = () => {
-        axios.post("", this.state).then(response => {
+        axios.post("/tenant", this.state).then(response => {
             if (response !== undefined) {
                 window.location.href = "/";
             }

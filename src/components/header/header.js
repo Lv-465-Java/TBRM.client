@@ -95,13 +95,12 @@ const Header = (props) => {
 
     const adminLinks = (
         <Link to="/admin-panel"><Button style={{ color: '#FFF' }}>Admin Panel</Button></Link>
-
     );
 
     const managarLinks = (
         <div>
-            <Link to="/resource-template"><Button style={{ color: '#FFF' }}>Resource Templates</Button></Link>
-            <Link to="/resource"><Button style={{ color: '#FFF' }}>Resources</Button></Link>
+            <Link to="/resource-template" style={linkStyle}><Button style={{ color: '#FFF' }}>Resource Templates</Button></Link>
+            <Link to="/resource" style={linkStyle}><Button style={{ color: '#FFF' }}>Resources</Button></Link>
         </div>
     );
 
