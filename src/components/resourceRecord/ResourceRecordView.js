@@ -10,6 +10,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import ResourceRecordCreate from "./ResourceRecordCreate";
 import CustomPagination from "../pagination/customPagination";
 import {getUserRole} from "../../service/authService";
+import FilterView from "./filters/filterView";
 
 // const gridStyles = {
 //     marginLeft: 300
@@ -32,7 +33,7 @@ class ResourceRecordView extends Component {
         resourceTemplate: "",
         tableName: this.props.match.params.tableName,
         openDialog: false
-    }
+    };
 
     getRecordsData = (pageNumber) => {
         axios.get(`/resource-template/resource/${this.state.tableName}?page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
@@ -48,7 +49,9 @@ class ResourceRecordView extends Component {
             });
         })
     };
-
+    setRecordsData = (records) => {
+        this.setState({records})
+    };
     getResourceTemplateData = () => {
         axios.get(`/resource-template/table/${this.state.tableName}`).then(response => {
             this.setState({resourceTemplate: response.data})
@@ -67,10 +70,10 @@ class ResourceRecordView extends Component {
     };
 
     componentDidMount() {
+        //this.getRecordsData();
         this.getResourceTemplateData();
         this.getRecordsData(this.state.activePage);
     }
-
 
     render() {
         // function relatedResourceTableName() {
@@ -94,8 +97,11 @@ class ResourceRecordView extends Component {
                 </Button>
 
                 <Grid container spacing={3}>
-                    <Grid item xs={2}/>
-                    <Grid item xs={8}>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={10}>
+                        <FilterView label="Filter"
+                                    resourceTemplate={this.state.resourceTemplate}
+                                    setRecordsData={this.setRecordsData}/>
                         {this.state.resourceTemplate &&
                         <ResourceRecordList
                             tableName={this.state.tableName}
@@ -123,7 +129,6 @@ class ResourceRecordView extends Component {
                     <ResourceRecordCreate handleClose={this.handleClose}
                                           tableName={this.state.tableName}
                                           resourceTemplate={this.state.resourceTemplate}
-                        // relatedResourceTableName={relatedResourceTableName}
                                           getRecordsData={this.getRecordsData}
                     />
 

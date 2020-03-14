@@ -45,7 +45,7 @@ class LoginForm extends Component {
             verifyUser();
 
         }, error => {
-            console.log(error.response.data.message);
+
         })
     }
 
@@ -58,7 +58,6 @@ class LoginForm extends Component {
                 }
             }, error => {
            this.setState({ errorMessage: error.response.data.message });
-            console.log(error.response.data.message);
         })
     }
 
