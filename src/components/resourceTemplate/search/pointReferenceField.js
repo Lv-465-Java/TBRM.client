@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
-import ResourceRecordDropdown from "../ResourceRecordDropdown";
+import UserDropdown from "./userDropdown";
 
-class FilterPointReferenceField extends Component {
+class PointReferenceField extends Component {
     state = {
-        value: "",
-        operation: "=",
-        refName: undefined
+        userId: "",
     };
 
     onChangeValue = (key, value, id) => {
@@ -26,15 +24,16 @@ class FilterPointReferenceField extends Component {
         return (
             <>
                 <div className={"filterDropdown"}>
-                    <ResourceRecordDropdown
-                        relatedResourceTableName={this.props.relatedResourceTableName}
+                    <UserDropdown
+                        userId={this.props.userId}
                         onChangePointReference={this.onChangeValue}
                         columnName={this.props.columnName}
                         label={this.props.name}/>
+
                 </div>
             </>
         );
     }
 }
 
-export default FilterPointReferenceField;
+export default PointReferenceField;

@@ -87,6 +87,7 @@ class ResourceRecordView extends Component {
             <div>
                 <div>
                     <h1>{this.state.resourceTemplate.name}</h1>
+                    <h3>{this.state.resourceTemplate.description}</h3>
                 </div>
                 <Button
                     variant="contained"

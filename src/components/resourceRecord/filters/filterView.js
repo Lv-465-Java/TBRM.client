@@ -9,7 +9,6 @@ import axios from "../../../utils/axios";
 
 class FilterView extends Component {
     state = {
-        type: "",
         filters: {},
     };
 

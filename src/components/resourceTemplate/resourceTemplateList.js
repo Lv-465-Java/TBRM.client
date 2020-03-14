@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import axios from '../../utils/axios';
 import ResourceTemplateItem from './resourceTemplateItem';
-import {Box, Button, Container, Grid} from '@material-ui/core';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import {Button, Grid} from '@material-ui/core';
 import {getUserRole} from '../../service/authService';
 import CustomPagination from "../pagination/customPagination";
+import SearchView from "./search/searchView";
 
 const style = {
 
@@ -90,6 +90,10 @@ class ResourceTemplateList extends Component {
         this.props.history.push("/resource-template/create");
     };
 
+    setRecordsData = (resourceTemplates) => {
+        this.setState({resourceTemplates})
+    };
+
     render() {
 
         let userLinks = (getUserRole() === "ROLE_MANAGER") ?
@@ -97,7 +101,7 @@ class ResourceTemplateList extends Component {
                 <Button
                     variant="contained"
                     style={buttonStyle}
-                    onClick={this.goToCreateResource}>Create Resource</Button>
+                    onClick={this.goToCreateResource}>Create template</Button>
             ) : (
                 <div></div>
             )
@@ -105,9 +109,12 @@ class ResourceTemplateList extends Component {
         return (
             <div>
                 {userLinks}
-                <Grid container spacing={3} style={gridStyle}>
+                <Grid container spacing={1} style={gridStyle}>
                     <Grid item xs/>
                     <Grid item xs={10}>
+                        <SearchView label="Search"
+                                    resourceTemplate={this.state.resourceTemplate}
+                                    setRecordsData={this.setRecordsData}/>
                         <div style={style}>
                             {this.state.resourceTemplates.map((item) =>
                                 (<ResourceTemplateItem key={item.id}
