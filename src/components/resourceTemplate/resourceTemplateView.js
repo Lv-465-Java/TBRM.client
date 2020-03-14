@@ -87,7 +87,6 @@ class ResourceTemplateView extends Component {
                     isPublished: data.isPublished,
                 })
             }).catch(error => {
-            console.dir(error.response.data);
         })
     };
 
@@ -105,7 +104,6 @@ class ResourceTemplateView extends Component {
                     totalItemsCount: totalItemsCount
                 });
             }).catch(error => {
-            console.dir(error.response.data);
         })
     };
 
@@ -258,39 +256,12 @@ class ResourceTemplateView extends Component {
                     ><Hidden mdUp={this.showLinks()}>
                         <Box mx="auto">
                             <Box>
-                                <PopupState variant="popover" popupId="demo-popup-menu">
-                                    {popupState => (
-                                        <React.Fragment>
-                                            <Button variant="contained"
-                                                    color="primary" {...bindTrigger(popupState)}>
-                                                Permissions
-                                            </Button>
-                                            <Menu {...bindMenu(popupState)}>
-                                                <Link to={`/resource-template/permission/${this.state.resTempId}`}
-                                                      style={linkStyle}>
-                                                    <MenuItem onClick={popupState.close}>View Permissions</MenuItem>
-                                                </Link>
-                                                <Link
-                                                    to={`/resource-template/permission/add/${this.state.resTempId}`}
-                                                    style={linkStyle}>
-                                                    <MenuItem onClick={popupState.close}>Add/Update
-                                                        Permission</MenuItem>
-                                                </Link>
-                                                <Link
-                                                    to={`/resource-template/permission/owner/${this.state.resTempId}`}
-                                                    style={linkStyle}>
-                                                    <MenuItem onClick={popupState.close}>Change Owner</MenuItem>
-                                                </Link>
-                                                <Link
-                                                    to={`/resource-template/permission/remove/${this.state.resTempId}`}
-                                                    style={linkStyle}>
-                                                    <MenuItem onClick={popupState.close}>Delete
-                                                        Permission</MenuItem>
-                                                </Link>
-                                            </Menu>
-                                        </React.Fragment>
-                                    )}
-                                </PopupState>
+                            <Link to={`/resource-template/permission/${this.state.resTempId}`}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                    >Permissions</Button>
+                                </Link>
                             </Box>
                             <Box mt={5}>
                                 <Link to={`/resource-template/update/${this.state.resTempId}`}>
@@ -321,13 +292,13 @@ class ResourceTemplateView extends Component {
                     <h3>Resource Parameters</h3>
                     <Card style={cardStyle}>
                         <CardContent>
-                            <CreateParameter getData={this.getData}
+                            <CreateParameter getData={() => this.getParameters(this.state.activePage)}
                                              resTempId={this.state.resTempId}/>
                         </CardContent>
                         <CardContent>
                             <ResourceParametersList resourceParameters={this.state.resourceParameters}
                                                     resTempId={this.state.resTempId}
-                                                    getData={this.getData}/>
+                                                    getData={() => this.getParameters(this.state.activePage)}/>
                         </CardContent>
                     </Card>
                     <Grid container
