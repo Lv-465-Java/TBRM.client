@@ -61,7 +61,7 @@ class UserList extends Component {
     };
 
     componentDidMount() {
-         this.getAllAccounts(this.state.activePage);
+         ///this.getAllAccounts(this.state.activePage);
     }
 
 
@@ -106,7 +106,7 @@ class UserList extends Component {
 
     handlePageChange = (event, pageNumber) => {
         this.setState({activePage: pageNumber});
-        this.getData(pageNumber);
+        this.getAllAccounts(pageNumber);
     };
 
     goBack = () => {
@@ -138,7 +138,7 @@ class UserList extends Component {
                 <ButtonGroup color="primary" aria-label="small outlined button group">
                     <Button onClick={this.getAllAccounts}>All accounts</Button>
                     <Button onClick={()=>this.getAllDisableUser(this.state.activePage)}>Disable accounts</Button>
-                    <Button onClick={this.getDeletedAccounts}>Deleted accounts</Button>
+                    <Button onClick={()=>this.getDeletedAccounts(this.state.activePage)}>Deleted accounts</Button>
                     <Button onClick={()=>this.getNonApprovedUsers(this.state.activePage)}>Non approved users</Button>
                 </ButtonGroup>
                 </Grid>
