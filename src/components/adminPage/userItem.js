@@ -1,23 +1,7 @@
 import axios from "../../utils/axios";
 import React, {Component} from "react";
-import {Link} from "react-router-dom";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-
-import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import FolderIcon from '@material-ui/icons/Folder';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
@@ -25,17 +9,10 @@ import Paper from '@material-ui/core/Paper';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Switch from '@material-ui/core/Switch';
-import DeleteIcon from '@material-ui/icons/Delete';
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
-import {Container} from "@material-ui/core";
-import MaterialTable from "material-table";
-import {Image} from "@material-ui/icons";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import UserHistoryItem from "./userHistoryItem";
 
 
@@ -108,7 +85,7 @@ class UserItem extends Component {
                             <Table>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Data</TableCell>
+                                        <TableCell>Date</TableCell>
                                         <TableCell align="right">Avatar</TableCell>
                                         <TableCell align="right"/>
                                         <TableCell align="right">Name</TableCell>
@@ -146,8 +123,6 @@ class UserItem extends Component {
                 <TableCell align="right">{this.state.email}</TableCell>
                 <TableCell align="right">{this.state.phone}</TableCell>
                 <TableCell align="right">{this.state.role.substring(5).toLowerCase()}</TableCell>
-                <TableCell align="right">  {this.state.reset_token}</TableCell>
-                <TableCell align="right">  {this.state.password}</TableCell>
                 {/*<TableCell align="right">*/}
                 {/*    <FormControlLabel*/}
                 {/*        control={*/}
