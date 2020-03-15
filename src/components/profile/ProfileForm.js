@@ -278,6 +278,8 @@ class ProfileForm extends Component {
     delete = () => {
         axios.delete(`/delete`).then(
             response => {
+                this.reLogin();
+                window.location.href = "/";
             }).catch(error => {
             this.setState({
                 errorMessage: error.response.data.message,

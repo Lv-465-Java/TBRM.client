@@ -2,14 +2,6 @@ import React, {Component} from "react";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Avatar from "@material-ui/core/Avatar";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import TableContainer from "@material-ui/core/TableContainer";
-import Paper from "@material-ui/core/Paper";
-import Table from "@material-ui/core/Table";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "@material-ui/core/Button";
 
 class UserHistoryItem extends Component{
     state = {
@@ -41,14 +33,6 @@ class UserHistoryItem extends Component{
                 <TableCell align="right">{this.state.role.substring(5).toLowerCase()}</TableCell>
                 <TableCell align="right"> {this.state.reset_token}</TableCell>
                 <TableCell align="right"> {this.state.password}</TableCell>
-                {/*<TableCell align="right">*/}
-                {/*    <FormControlLabel*/}
-                {/*        control={*/}
-                {/*            <Switch checked={this.state.enabled} onChange={this.handleChange} value="enabled"/>*/}
-                {/*        }*/}
-                {/*        label="Enable"*/}
-                {/*    />*/}
-                {/*</TableCell>*/}
             </TableRow>
         )
     }
