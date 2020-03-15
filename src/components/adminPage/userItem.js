@@ -7,6 +7,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 
+import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -21,14 +22,12 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
-
+import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
@@ -36,6 +35,8 @@ import TableBody from "@material-ui/core/TableBody";
 import {Container} from "@material-ui/core";
 import MaterialTable from "material-table";
 import {Image} from "@material-ui/icons";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import UserHistoryItem from "./userHistoryItem";
 
 
 const cardStyle = {
@@ -64,6 +65,7 @@ class UserItem extends Component {
     }
 
     handleClickOpen = () => {
+
         this.setState({open: true});
         this.getHistoryData();
     }
@@ -77,16 +79,19 @@ class UserItem extends Component {
             console.log(this.state.userHistory)
         })
     }
+    // handleChange = (event) => {
+    //     this.setState({enabled: event.target.checked},()=>{
+    //         axios.put(`/admin/user/${this.state.id}`).then()
+    //     })
+    // }
 
     render() {
         return (
 
             <TableRow>
-
                 <TableCell align="right">  {this.state.to_timestamp.replace("T", " ").substring(0, 19)}</TableCell>
                 <TableCell align="right">
-                    {/* eslint-disable-next-line react/jsx-no-undef */}
-                    <div onClick={this.handleClickOpen}>
+                    <div onClick={this.handleClickOpen} style={{cursor: "pointer"}}>
                         <Avatar src={this.state.imageUrl}/>
                     </div>
                 </TableCell>
@@ -101,10 +106,26 @@ class UserItem extends Component {
                         <TableContainer component={Paper}
                                         style={{weight: 600}}>
                             <Table>
-                                {this.state.userHistory.map((item) =>
-                                    (<UserItem key={item}
-                                               item={item}/>)
-                                )}
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Data</TableCell>
+                                        <TableCell align="right">Avatar</TableCell>
+                                        <TableCell align="right"/>
+                                        <TableCell align="right">Name</TableCell>
+                                        <TableCell align="right">Last name</TableCell>
+                                        <TableCell align="right">Email</TableCell>
+                                        <TableCell align="right">Phone</TableCell>
+                                        <TableCell align="right">Role</TableCell>
+                                        <TableCell align="right"/>
+                                        <TableCell align="right"/>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {this.state.userHistory.map((item) =>
+                                        (<UserHistoryItem key={item}
+                                                          item={item}/>)
+                                    )}
+                                </TableBody>
                             </Table>
                         </TableContainer>
                     </DialogContent>
@@ -114,13 +135,27 @@ class UserItem extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-                <TableCell align="right">  {this.state.revtype}</TableCell>
-                <TableCell align="right">  {this.state.reset_token}</TableCell>
-                <TableCell align="right"> {this.state.firstName}</TableCell>
+                {
+                    this.state.revtype &&
+                    <TableCell align="right">{this.state.revtype}</TableCell>
+                }
+                < TableCell
+                    align="right"> {this.state.firstName}
+                </TableCell>
                 <TableCell align="right">{this.state.lastName}</TableCell>
                 <TableCell align="right">{this.state.email}</TableCell>
                 <TableCell align="right">{this.state.phone}</TableCell>
-
+                <TableCell align="right">{this.state.role.substring(5).toLowerCase()}</TableCell>
+                <TableCell align="right">  {this.state.reset_token}</TableCell>
+                <TableCell align="right">  {this.state.password}</TableCell>
+                {/*<TableCell align="right">*/}
+                {/*    <FormControlLabel*/}
+                {/*        control={*/}
+                {/*            <Switch checked={this.state.enabled} onChange={this.handleChange} value="enabled"/>*/}
+                {/*        }*/}
+                {/*        label="Enable"*/}
+                {/*    />*/}
+                {/*</TableCell>*/}
             </TableRow>
         )
     }

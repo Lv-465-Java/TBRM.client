@@ -39,6 +39,19 @@ class UsersList extends Component {
         totalItemsCount: 0,
         selectedDate: undefined
     };
+    handleDateChange = date => {
+        console.dir(date);
+        this.setState({selectedDate: date}, ()=>{
+            let date = this.state.selectedDate;
+            let url = `/${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+            axios.get(url).then(response => {
+                let users = response.data;
+                this.setState({users:[]});
+                this.setState({users:users});
+            })
+        })
+
+    }
 
     getDeletedAccounts = () => {
         axios.get('/deleted_accounts').then(response => {
@@ -55,7 +68,7 @@ class UsersList extends Component {
         })
     }
     getAllHistory = () => {
-        axios.get(`/all_accounts`).then(response => {
+        axios.get(`/all_history`).then(response => {
             let users = response.data;
             this.setState({users});
         })
@@ -85,13 +98,31 @@ class UsersList extends Component {
                         <Button>Disable accounts</Button>
                         <Button onClick={this.getDeletedAccounts}>Deleted accounts</Button>
                         <Button onClick={this.getAllHistory}>All history</Button>
-
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <Grid container justify="space-around">
+                                <KeyboardDatePicker
+                                    disableToolbar
+                                    disableFuture
+                                    autoOk
+                                    variant="inline"
+                                    format="MM/dd/yyyy"
+                                    margin="normal"
+                                    id="date-picker-inline"
+                                    label="choose history by date"
+                                    value={this.state.selectedDate}
+                                    onChange={this.handleDateChange}
+                                    KeyboardButtonProps={{
+                                        'aria-label': 'change date',
+                                    }}
+                                />
+                            </Grid>
+                        </MuiPickersUtilsProvider>
                     </ButtonGroup>
                 </Grid>
                 <Grid item xs={1}/>
-                <Grid item xs={10}>
+                <Grid item xs={11}>
                     <TableContainer component={Paper}>
-                        <Table>
+                        <Table >
                             {this.state.users.map((item) =>
                                 (<UserItem key={item}
                                            item={item}/>)
