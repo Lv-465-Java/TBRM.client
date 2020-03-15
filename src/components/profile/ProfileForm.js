@@ -112,10 +112,10 @@ class ProfileForm extends Component {
                 ["newPassword"]: "Password must contain at least eight characters and at least one character of "
                 + " uppercase letter, lowercase letter, digit, special character"
             };
-            this.setState({errorMessages: errors}, () => console.log(this.state));
+            this.setState({errorMessages: errors});
         } else {
             let errors = {...this.state.errorMessages, ["newPassword"]: undefined};
-            this.setState({errorMessages: errors}, () => console.log(this.state));
+            this.setState({errorMessages: errors});
         }
     };
     onChangeOldPassword = (event) => {

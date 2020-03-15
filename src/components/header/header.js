@@ -95,7 +95,6 @@ const Header = (props) => {
 
     const adminLinks = (
         <Link to="/admin-panel"><Button style={{ color: '#FFF' }}>Admin Panel</Button></Link>
-
     );
 
     const managarLinks = (

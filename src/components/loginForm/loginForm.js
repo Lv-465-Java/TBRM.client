@@ -14,12 +14,19 @@ import googleLogo from "../../img/google-logo.png";
 import Alert from "@material-ui/lab/Alert";
 import { getUserRole, verifyUser } from '../../service/authService';
 
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
 
 const localStorageService = LocalSessionStorageService.getService();
 
 const style={
     marginTop:40
 }
+const formControl= {
+        marginTop: 15,
+        minWidth: 395,
+    }
 
 class LoginForm extends Component {
 
@@ -27,7 +34,8 @@ class LoginForm extends Component {
         email: undefined,
         password: undefined,
         userrole: '',
-        errorMessage: ''
+        errorMessage: '',
+        tenant: undefined
     }
 
     getRole() {
@@ -37,11 +45,11 @@ class LoginForm extends Component {
             verifyUser();
 
         }, error => {
-            console.log(error.response.data.message);
+
         })
     }
 
-    
+
 
     getData = () => {
         axios.post("/authentication", this.state).then(response => {
@@ -50,7 +58,6 @@ class LoginForm extends Component {
                 }
             }, error => {
            this.setState({ errorMessage: error.response.data.message });
-            console.log(error.response.data.message);
         })
     }
 
@@ -66,11 +73,18 @@ class LoginForm extends Component {
         })
     }
 
+    handleChange = name => event => {
+        this.setState({
+            ...this.state,
+            [name]: event.target.value,
+        });
+    };
+
+
     render() {
 
         return (
             <Container component="main" maxWidth="xs" style={style}>
-                {this.logout && <Alert severity="success">You're safely logged out!</Alert>}
                 <CssBaseline/>
                 {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
                 <div>
@@ -98,6 +112,42 @@ class LoginForm extends Component {
                         id="password"
                         autoComplete="current-password"
                     />
+
+                    <Grid>
+                    <FormControl variant="outlined" style={formControl}>
+                        <InputLabel ref="" htmlFor="outlined-age-native-simple">
+                            Choose Tenant
+                        </InputLabel>
+                        <Select
+                            native
+                            value={this.state.tenant}
+                            onChange={this.handleChange('tenant')}
+                            labelWidth={110}
+                            inputProps={{
+                                name: 'tenant',
+                                id: 'outlined-age-native-simple',
+                            }}
+                        >
+                            <option value="" />
+                            <option value={10}>Ten</option>
+                            <option value={20}>Twenty</option>
+                            <option value={30}>Thirty</option>
+                        </Select>
+                    </FormControl>
+                    </Grid>
+                    {/*<PopupState variant="popover" popupId="demo-popup-menu">*/}
+                    {/*    {popupState => (*/}
+                    {/*        <React.Fragment>*/}
+                    {/*            <Button variant="contained" color="primary" {...bindTrigger(popupState)}>*/}
+                    {/*                Choose tenant*/}
+                    {/*            </Button>*/}
+                    {/*            <Menu {...bindMenu(popupState)}>*/}
+                    {/*                <MenuItem onClick={popupState.close}>Cake</MenuItem>*/}
+                    {/*                <MenuItem onClick={popupState.close}>Death</MenuItem>*/}
+                    {/*            </Menu>*/}
+                    {/*        </React.Fragment>*/}
+                    {/*    )}*/}
+                    {/*</PopupState>*/}
 
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary"/>}
