@@ -36,6 +36,7 @@ import ResourceRecordCreate from "./components/resourceRecord/ResourceRecordCrea
 import ResourceRecordUpdate from "./components/resourceRecord/ResourceRecordUpdate";
 import GroupChangeOwner from "./components/permissions/group/groupChangeOwner";
 import UserProfile from "./components/adminPage/userProfile";
+import AdminPage from "./components/adminPage/adminPage";
 
 
 const ProtectedRoute
@@ -81,7 +82,7 @@ class Routers extends Component {
                     <ProtectedRoute path="/profile" component={ProfileForm} />
                     <Route path="/profile" component={ProfileForm} />
                     <Route path="/test" component={Testing} />
-                    <Route path="/admin-panel" component={UsersList} />
+                    <Route path="/admin-panel" component={AdminPage} />
                     <Route path="/user/:id" component={UserProfile} />
                     <Route path="/forgot_password" exact component={ForgotPassword} />
                     <ManagerRoute path="/resource-template/create" component={ResourceTemplateCreate} />
