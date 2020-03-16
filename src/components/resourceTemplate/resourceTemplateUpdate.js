@@ -3,7 +3,7 @@ import {TextField, Button, FormControl, Grid, Box} from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import axios from '../../utils/axios';
-import {getUserRole} from '../../service/authService';
+import { getUserRole } from '../../service/authService';
 
 
 const gridStyles = {
@@ -35,7 +35,6 @@ class ResourceTemplateUpdate extends Component {
                     oldDescription: data.description
                 })
             }).catch(error => {
-            console.dir(error.response.data);
 
         })
 
@@ -54,7 +53,6 @@ class ResourceTemplateUpdate extends Component {
                 this.props.history.push(`/resource-template/view/${this.state.resTempId}`);
             }, error => {
                 this.setState({errorMessage: error.response.data.message});
-                console.log(error.response.data.message);
             }
         )
     };
