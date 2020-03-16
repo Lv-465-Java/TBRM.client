@@ -1,188 +1,97 @@
-import React, {Component} from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import axios from "../../utils/axios";
-import UserItem from "./userItem";
-import CustomPagination from "../pagination/customPagination";
-import {Grid} from "@material-ui/core";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Button from "@material-ui/core/Button";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
+import React from 'react';
+import PropTypes from 'prop-types';
+import SwipeableViews from 'react-swipeable-views';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import AllUsersList from "./AllUsersList";
+import AllNonApprovedUsers from "./AllNonApprovedUsers";
+import AllDisableAccounts from "./AllDisableAccounts";
 
-const StyledTableCell = withStyles(theme => ({
-    head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    body: {
-        fontSize: 14,
-    },
-}))(TableCell);
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
 
-const StyledTableRow = withStyles(theme => ({
-    root: {
-        '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.background.default,
-        },
-    },
-}))(TableRow);
-
-
-const useStyles = makeStyles({
-    table: {
-        minWidth: 700,
-    },
-});
-
-const  style={
-    marginTop:40
+    return (
+        <Typography
+            component="div"
+            role="tabpanel"
+            hidden={value !== index}
+            id={`full-width-tabpanel-${index}`}
+            aria-labelledby={`full-width-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box p={3}>{children}</Box>}
+        </Typography>
+    );
 }
 
-const itemsNumber=5;
-
-const paginationStyle = {
-    padding: 20
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired,
 };
 
-class UserList extends Component {
-    state = {
-        users: [],
-        activePage: 1,
-        totalPages: 0,
-        itemsCountPerPage: 0,
-        totalItemsCount: 0,
+function a11yProps(index) {
+    return {
+        id: `full-width-tab-${index}`,
+        'aria-controls': `full-width-tabpanel-${index}`,
     };
-
-    componentDidMount() {
-         ///this.getAllAccounts(this.state.activePage);
-    }
-
-
-    getDeletedAccounts = () => {
-        axios.get('/deleted_accounts').then(response => {
-            let users = response.data;
-            this.setState({users});
-        })
-    };
-
-    getAllDisableUser= (pageNumber) => {
-        axios.get(`/admin/users?status=false&page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
-            let users = response.data.content;
-            let totalPages = response.data.totalPages;
-            let itemsCountPerPage = response.data.numberOfElements;
-            let totalItemsCount = response.data.totalElements;
-            this.setState({
-                users: users,
-                totalPages: totalPages,
-                itemsCountPerPage: itemsCountPerPage,
-                totalItemsCount: totalItemsCount
-            });
-            console.log(response.data);
-        })
-    };
-
-    getNonApprovedUsers = (pageNumber) => {
-        axios.get(`/users/role?role=guest&page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
-            let users = response.data.content;
-            let totalPages = response.data.totalPages;
-            let itemsCountPerPage = response.data.numberOfElements;
-            let totalItemsCount = response.data.totalElements;
-            this.setState({
-                users: users,
-                totalPages: totalPages,
-                itemsCountPerPage: itemsCountPerPage,
-                totalItemsCount: totalItemsCount
-            });
-            console.log(response.data);
-        })
-    };
-
-    handlePageChange = (event, pageNumber) => {
-        this.setState({activePage: pageNumber});
-        this.getAllAccounts(pageNumber);
-    };
-
-    goBack = () => {
-        this.props.history.goBack();
-    };
-
-    getAllAccounts = (pageNumber) => {
-        axios.get(`/admin/user?page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
-            let users = response.data.content;
-            let totalPages = response.data.totalPages;
-            let itemsCountPerPage = response.data.numberOfElements;
-            let totalItemsCount = response.data.totalElements;
-            this.setState({
-                users: users,
-                totalPages: totalPages,
-                itemsCountPerPage: itemsCountPerPage,
-                totalItemsCount: totalItemsCount
-            });
-            console.log(response.data);
-        })
-    };
-
-
-    render() {
-
-        return (
-            <Grid style={style}>
-                <Grid xs={12}>
-                <ButtonGroup color="primary" aria-label="small outlined button group">
-                    <Button onClick={this.getAllAccounts}>All accounts</Button>
-                    <Button onClick={()=>this.getAllDisableUser(this.state.activePage)}>Disable accounts</Button>
-                    <Button onClick={()=>this.getDeletedAccounts(this.state.activePage)}>Deleted accounts</Button>
-                    <Button onClick={()=>this.getNonApprovedUsers(this.state.activePage)}>Non approved users</Button>
-                </ButtonGroup>
-                </Grid>
-                <TableContainer component={Paper} style={style}>
-                    <Table aria-label="customized table">
-                        <TableHead>
-                            <TableRow>
-                                <StyledTableCell align="right">Avatar</StyledTableCell>
-                                <StyledTableCell align="right">Email</StyledTableCell>
-                                <StyledTableCell align="right">First Name</StyledTableCell>
-                                <StyledTableCell align="right">Last Name</StyledTableCell>
-                                <StyledTableCell align="right">Phone</StyledTableCell>
-                                <StyledTableCell align="right">Role</StyledTableCell>
-                                <StyledTableCell align="right">Drop Role</StyledTableCell>
-                                <StyledTableCell align="right">Enable/disable user</StyledTableCell>
-                                <StyledTableCell align="right">Change role</StyledTableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {this.state.users.map((item) => (
-
-                                    <UserItem key={item}
-                                              item={item}/>)
-                                )}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-
-            <Grid container
-        style={paginationStyle}
-        justify="center">
-            <CustomPagination
-        activepage={this.state.activePage}
-        totalPages={this.state.totalPages}
-        itemsCountPerPage={this.state.itemsCountPerPage}
-        totalItemsCount={this.state.totalItemsCount}
-        onChange={this.handlePageChange}
-        />
-    </Grid>
-            </Grid>
-        );
-    }
 }
 
-export default UserList;
+const useStyles = makeStyles(theme => ({
+    root: {
+        backgroundColor: theme.palette.background.paper,
+        width: 1270,
+    },
+}));
 
+export default function UserList() {
+    const classes = useStyles();
+    const theme = useTheme();
+    const [value, setValue] = React.useState(0);
 
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    const handleChangeIndex = index => {
+        setValue(index);
+    };
+
+    return (
+        <div className={classes.root}>
+            <AppBar position="static" color="default">
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    variant="fullWidth"
+                    aria-label="full width tabs example"
+                >
+                    <Tab label="All Users" {...a11yProps(0)} />
+                    <Tab label="Non Approved Users" {...a11yProps(1)} />
+                    <Tab label="All Disable Accounts" {...a11yProps(2)} />
+                </Tabs>
+            </AppBar>
+            <SwipeableViews
+                axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                index={value}
+                onChangeIndex={handleChangeIndex}
+            >
+                <TabPanel value={value} index={0} dir={theme.direction}>
+                    <AllUsersList/>
+                </TabPanel>
+                <TabPanel value={value} index={1} dir={theme.direction}>
+                    <AllNonApprovedUsers/>
+                </TabPanel>
+                <TabPanel value={value} index={2} dir={theme.direction}>
+                    <AllDisableAccounts/>
+                </TabPanel>
+            </SwipeableViews>
+        </div>
+    );
+}

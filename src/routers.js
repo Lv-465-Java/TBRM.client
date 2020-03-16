@@ -36,6 +36,7 @@ import GroupChangeOwner from "./components/permissions/group/groupChangeOwner";
 import UserList from "./components/user/userList";
 
 import FilterView from "./components/resourceRecord/filters/filterView";
+import TenantList from "./components/tenant/tenantList";
 
 const ProtectedRoute
     = ({ isAllowed, ...props }) =>
@@ -103,6 +104,7 @@ class Routers extends Component {
                     <Route path="/tenant/create" component={AddTenant}/>
                     <AdminRoute path="/admin-panel" component={UserList}/>
                     <Route path="/FilterView" component={FilterView} />
+                    <Route path="/super-admin" component={TenantList} />
                     <Route path="/" exact component={LoginForm} />
                 </Switch>
                 <Footer/>
