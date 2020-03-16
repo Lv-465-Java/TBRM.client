@@ -3,8 +3,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import IconButton from "@material-ui/core/IconButton";
 import axios from "../../../utils/axios";
 import PointStringField from "./pointStringField";
-import RadioButton from "./radioButton";
 import PointReferenceField from "./pointReferenceField";
+import RadioButton from "./radioButton";
 
 class SearchView extends Component {
     state = {
@@ -35,23 +35,24 @@ class SearchView extends Component {
     render() {
         return (
             <div className="filterField">
-                <PointStringField setFilter={this.setFilter}
-                                  name="Name"
-                                  columnName={"name"}/>
-                <PointStringField setFilter={this.setFilter}
-                                  name="Description"
-                                  columnName={"description"}/>
-                {/*<PointStringField setFilter={this.setFilter}*/}
-                {/*                  name="Is published"*/}
-                {/*                  columnName={"isPublished"}/>*/}
-                <RadioButton setFilter={this.setFilter}
-                             name="Is published"
-                             columnName={"isPublished"}/>
+                <div>
+                    <PointStringField setFilter={this.setFilter}
+                                      name="Name"
+                                      columnName={"name"}/>
+                    <RadioButton setFilter={this.setFilter}
+                                 name="Is published"
+                                 columnName={"isPublished"}/>
 
-                <PointReferenceField setFilter={this.setFilter}
-                                     name="User"
-                                     columnName={"user"}
-                                     setData={this.setData}/>
+                </div>
+                <div>
+                    <PointStringField setFilter={this.setFilter}
+                                      name="Description"
+                                      columnName={"description"}/>
+                    <PointReferenceField setFilter={this.setFilter}
+                                         name="User"
+                                         columnName={"user"}
+                                         setData={this.setData}/>
+                </div>
                 <IconButton aria-label="delete"
                             color="primary"
                             onClick={this.getData}>

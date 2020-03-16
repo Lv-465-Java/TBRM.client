@@ -23,6 +23,22 @@
     align-items: center;
 }
 
+label.MuiFormControlLabel-root{
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0px;
+    margin-right: 0px;
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.MuiFormGroup-root.radioGroup {
+    display: block;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
 .referenceDropdown {
     margin-top: 30px;
     width: 300px;
