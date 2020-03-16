@@ -61,6 +61,7 @@ class UserItem extends Component {
     delete = () => {
         axios.put(`/admin/user/${this.state.id}`).then(
             response => {
+
             }).catch(error => {
             this.setState({
                 errorMessage: error.response.data.message,

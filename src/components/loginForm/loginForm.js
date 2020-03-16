@@ -82,9 +82,9 @@ class LoginForm extends Component {
     getTenant = () => {
         axios.get("/tenant").then(response => {
             if (response !== undefined) {
-                let users = response.data.content;
+                let tenants = response.data.content;
                 this.setState({
-                    users: users,
+                    tenants: tenants,
                 });
             }
         }, error => {
@@ -92,9 +92,19 @@ class LoginForm extends Component {
         })
     }
 
+    // componentDidMount() {
+    //     this.getTenant();
+    // }
+
 
     render() {
-
+       let options = this.state.tenants.map((data) =>
+       <option
+    key={data.email}
+    value={data.firstName}>
+        {data.email}
+        </option>
+        );
         return (
             <Container component="main" maxWidth="xs" style={style}>
                 <CssBaseline/>
@@ -140,14 +150,8 @@ class LoginForm extends Component {
                                 id: 'outlined-age-native-simple',
                             }}
                         >
-                            {templates.map(msgTemplate => (
-                                <option key={msgTemplate.id} value={msgTemplate.text}>
-                                    {msgTemplate.text}
-                                </option>
-                            {/*<option value="" />*/}
-                            {/*<option value={10}>Ten</option>*/}
-                            {/*<option value={20}>Twenty</option>*/}
-                            {/*<option value={30}>Thirty</option>*/}
+                            <option>Select Tenant</option>
+                            {options}
                         </Select>
                     </FormControl>
                     </Grid>

@@ -26,7 +26,6 @@ import FullOAuthRegister from "./components/oauth2/FullOAuthRegister";
 import { getUserRole, isUserLoggedIn } from './service/authService';
 import Forbidden from "./hoc/forbidden";
 import Testing from "./components/resourceRecord/Testing";
-import UsersList from "./components/adminPage/usersList";
 import GuestPage from "./components/guest";
 import ResourceRecordView from "./components/resourceRecord/ResourceRecordView";
 import AddTenant from "./components/home/AddTenant";
@@ -107,7 +106,6 @@ class Routers extends Component {
                     <Route path="/oauth2/fullRegister" component={FullOAuthRegister} />
                     <Route path="/welcome" component={GuestPage} />
                     <Route path="/tenant/create" component={AddTenant}/>
-                    <AdminRoute path="/admin-panel" component={UserList}/>
                     <Route path="/FilterView" component={FilterView} />
                     <Route path="/super-admin" component={TenantList} />
                     <Route path="/" exact component={LoginForm} />
