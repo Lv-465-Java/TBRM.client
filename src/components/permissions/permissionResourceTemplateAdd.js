@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { TextField, Button, Grid, Box, FormControl, Container } from '@material-ui/core';
+import React, {Component} from 'react';
+import {TextField, Button, Grid, Box, FormControl, Container} from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -90,6 +90,8 @@ class PermissionResourceTemplateAdd extends Component {
                 let totalPages = response.data.totalPages;
                 let itemsCountPerPage = response.data.numberOfElements;
                 let totalItemsCount = response.data.totalElements;
+                let data = response.data;
+
                 this.setState({
                     users: users,
                     totalPagesUser: totalPages,
@@ -119,7 +121,7 @@ class PermissionResourceTemplateAdd extends Component {
 
     onChangeRecipient = (event) => {
         let recipient = event.target.value;
-        this.setState({ recipient });
+        this.setState({recipient});
     }
 
     handleChangePermission = permission => event => {
@@ -135,7 +137,7 @@ class PermissionResourceTemplateAdd extends Component {
     };
 
     handleClickOpen = () => {
-        this.setState({ open: true });
+        this.setState({open: true});
     };
 
     handleClose = () => {
@@ -168,12 +170,12 @@ class PermissionResourceTemplateAdd extends Component {
     }
 
     handlePageChangeGroup = (event, pageNumber) => {
-        this.setState({ activePageGroup: pageNumber });
+        this.setState({activePageGroup: pageNumber});
         this.getGroups(pageNumber)
     };
 
     handlePageChangeUser = (event, pageNumber) => {
-        this.setState({ activePageUser: pageNumber });
+        this.setState({activePageUser: pageNumber});
         this.getUsers(pageNumber)
     };
 
@@ -198,14 +200,14 @@ class PermissionResourceTemplateAdd extends Component {
 
     render() {
         const userColumns = [
-            { title: 'Email', field: 'email' },
-            { title: 'First Name', field: 'firstName' },
-            { title: 'Last Name', field: 'lastName' },
-            { title: 'Role', field: 'role.name' }
+            {title: 'Email', field: 'email'},
+            {title: 'First Name', field: 'firstName'},
+            {title: 'Last Name', field: 'lastName'},
+            {title: 'Role', field: 'role.name'}
         ];
         const groupColumns = [
-            { title: 'Name', field: 'name' },
-            { title: 'Description', field: 'description' },
+            {title: 'Name', field: 'name'},
+            {title: 'Description', field: 'description'},
         ];
         return (
             <div>
@@ -218,7 +220,7 @@ class PermissionResourceTemplateAdd extends Component {
                             <Box mt={1}>
                                 <Button
                                     variant="contained"
-                                    startIcon={<ArrowBackIosIcon />}
+                                    startIcon={<ArrowBackIosIcon/>}
                                     onClick={this.goBack}
                                 >Go Back</Button>
                             </Box>
@@ -257,15 +259,15 @@ class PermissionResourceTemplateAdd extends Component {
                                 </DialogContentText>
                                 <Box mx={1}>
                                     <Box mt={3}
-                                        display="flex"
-                                        flexDirection="column">
+                                         display="flex"
+                                         flexDirection="column">
                                         {this.state.errorMessage &&
-                                            <Alert severity="error">{this.state.errorMessage}</Alert>}
+                                        <Alert severity="error">{this.state.errorMessage}</Alert>}
                                         {this.state.successMessage &&
-                                            <Alert severity="success">{this.state.successMessage}</Alert>}
+                                        <Alert severity="success">{this.state.successMessage}</Alert>}
                                         <FormControl style={formStyles}>
                                             <TextField type="text" label="recipient" value={this.state.recipient}
-                                                onChange={this.onChangeRecipient} />
+                                                       onChange={this.onChangeRecipient}/>
                                         </FormControl>
                                         <FormControl style={formStyles}>
                                             <InputLabel htmlFor="permission">Permission</InputLabel>
@@ -277,7 +279,7 @@ class PermissionResourceTemplateAdd extends Component {
                                                     id: 'permission',
                                                 }}
                                             >
-                                                <option value="" />
+                                                <option value=""/>
                                                 <option value="read">READ</option>
                                                 <option value="write">WRITE</option>
                                             </Select>
@@ -292,16 +294,16 @@ class PermissionResourceTemplateAdd extends Component {
                                                     id: 'principal',
                                                 }}
                                             >
-                                                <option value="" />
+                                                <option value=""/>
                                                 <option value="true">User</option>
                                                 <option value="false">Group</option>
                                             </Select>
                                         </FormControl>
                                         <Button variant="contained"
-                                            color="primary"
-                                            size="large"
-                                            disabled={!this.isValid()}
-                                            onClick={this.save}
+                                                color="primary"
+                                                size="large"
+                                                disabled={!this.isValid()}
+                                                onClick={this.save}
                                         >Add Permission</Button>
                                     </Box>
                                 </Box>
@@ -313,7 +315,7 @@ class PermissionResourceTemplateAdd extends Component {
                             </DialogActions>
                         </Dialog>
                     </Grid>
-                    <Grid item xs={2} />
+                    <Grid item xs={2}/>
                 </Grid>
                 <Grid container
                     direction="row"
@@ -346,7 +348,7 @@ class PermissionResourceTemplateAdd extends Component {
                                                     this.setState(prevState => {
                                                         const data = [...prevState.data];
                                                         data[data.indexOf(oldData)] = newData;
-                                                        return { ...prevState, data };
+                                                        return {...prevState, data};
                                                     });
                                                 }
                                             }, 600);
@@ -359,8 +361,8 @@ class PermissionResourceTemplateAdd extends Component {
                                 }}
                             />
                             <Grid container
-                                style={paginationStyle}
-                                justify="center">
+                                  style={paginationStyle}
+                                  justify="center">
                                 <CustomPagination
                                     activepage={this.state.activePageUser}
                                     totalPages={this.state.totalPagesUser}
@@ -399,10 +401,10 @@ class PermissionResourceTemplateAdd extends Component {
                                 editable={{
                                     onRowAdd: newData => {
                                         axios.post("group", newData).then(response => {
-                                            this.setState({ errorMessage: noError });
+                                            this.setState({errorMessage: noError});
                                             this.getGroups(this.state.activePageGroup);
                                         }, error => {
-                                            this.setState({ errorMessage: error.response.data.message });
+                                            this.setState({errorMessage: error.response.data.message});
                                         });
                                         return new Promise(resolve => {
                                             setTimeout(() => {
@@ -420,11 +422,11 @@ class PermissionResourceTemplateAdd extends Component {
                                                 });
                                                 if (this.handleDeleteItem()) {
                                                     let newActivePage = (this.state.activePageGroup - 1);
-                                                    this.setState({ activePageGroup: newActivePage })
+                                                    this.setState({activePageGroup: newActivePage})
                                                 }
                                             },
                                             error => {
-                                                this.setState({ errorMessage: error.response.data.message });
+                                                this.setState({errorMessage: error.response.data.message});
                                             }
                                         );
                                         return new Promise(resolve => {
@@ -442,8 +444,8 @@ class PermissionResourceTemplateAdd extends Component {
                                 }}
                             />
                             <Grid container
-                                style={paginationStyle}
-                                justify="center">
+                                  style={paginationStyle}
+                                  justify="center">
                                 <CustomPagination
                                     activepage={this.state.activePageGroup}
                                     totalPages={this.state.totalPagesGroup}

@@ -31,6 +31,7 @@ import ResourceRecordUpdate from "./components/resourceRecord/ResourceRecordUpda
 import GroupChangeOwner from "./components/permissions/group/groupChangeOwner";
 import PermissionResourceTemplate from "./components/permissions/permissionResourceTemplate";
 
+import FilterView from "./components/resourceRecord/filters/filterView";
 
 const ProtectedRoute
     = ({ isAllowed, ...props }) =>
@@ -92,6 +93,7 @@ class Routers extends Component {
                     <Route path="/oauth2/redirect" component={OAuth2RedirectHandler} />
                     <Route path="/oauth2/fullRegister" component={FullOAuthRegister} />
                     <Route path="/welcome" component={GuestPage} />
+                    <Route path="/FilterView" component={FilterView} />
                     <Route path="/" exact component={LoginForm} />
                 </Switch>
                 <Footer/>

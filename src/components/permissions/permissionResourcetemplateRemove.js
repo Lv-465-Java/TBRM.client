@@ -250,7 +250,6 @@ class PermissionResourceTemplateRemove extends Component {
 
                     </Grid>
                     <Grid item xs={12}>
-                        <h3>Users/Groups with access to {this.state.name}</h3>
                         <TableContainer component={Paper}>
                             <Table>
                                 <TableHead>
