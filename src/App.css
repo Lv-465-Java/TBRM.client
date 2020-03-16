@@ -9,6 +9,7 @@
     margin-top: 30px;
     margin-bottom: 30px;
     background-color: #e3eeff;
+    padding: 10px;
 }
 
 .filterCells {
@@ -34,6 +35,7 @@ label.MuiFormControlLabel-root{
 }
 
 .MuiFormGroup-root.radioGroup {
+    margin-top: 10px;
     display: block;
     flex-wrap: wrap;
     flex-direction: column;
