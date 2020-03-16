@@ -42,7 +42,6 @@ class UserItem extends Component {
     }
 
     handleClickOpen = () => {
-
         this.setState({open: true});
         this.getHistoryData();
     }
@@ -61,6 +60,10 @@ class UserItem extends Component {
     //         axios.put(`/admin/user/${this.state.id}`).then()
     //     })
     // }
+
+    componentDidMount(){
+        console.log(this.props);
+    }
 
     render() {
         return (

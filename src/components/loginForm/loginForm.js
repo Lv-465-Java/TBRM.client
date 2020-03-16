@@ -35,7 +35,7 @@ class LoginForm extends Component {
         password: undefined,
         userrole: '',
         errorMessage: '',
-        tenant: undefined
+        tenants: []
     }
 
     getRole() {
@@ -48,7 +48,6 @@ class LoginForm extends Component {
 
         })
     }
-
 
 
     getData = () => {
@@ -80,9 +79,32 @@ class LoginForm extends Component {
         });
     };
 
+    getTenant = () => {
+        axios.get("/tenant").then(response => {
+            if (response !== undefined) {
+                let tenants = response.data.content;
+                this.setState({
+                    tenants: tenants,
+                });
+            }
+        }, error => {
+            this.setState({ errorMessage: error.response.data.message });
+        })
+    }
+
+    // componentDidMount() {
+    //     this.getTenant();
+    // }
+
 
     render() {
-
+       let options = this.state.tenants.map((data) =>
+       <option
+    key={data.email}
+    value={data.firstName}>
+        {data.email}
+        </option>
+        );
         return (
             <Container component="main" maxWidth="xs" style={style}>
                 <CssBaseline/>
@@ -128,26 +150,11 @@ class LoginForm extends Component {
                                 id: 'outlined-age-native-simple',
                             }}
                         >
-                            <option value="" />
-                            <option value={10}>Ten</option>
-                            <option value={20}>Twenty</option>
-                            <option value={30}>Thirty</option>
+                            <option>Select Tenant</option>
+                            {options}
                         </Select>
                     </FormControl>
                     </Grid>
-                    {/*<PopupState variant="popover" popupId="demo-popup-menu">*/}
-                    {/*    {popupState => (*/}
-                    {/*        <React.Fragment>*/}
-                    {/*            <Button variant="contained" color="primary" {...bindTrigger(popupState)}>*/}
-                    {/*                Choose tenant*/}
-                    {/*            </Button>*/}
-                    {/*            <Menu {...bindMenu(popupState)}>*/}
-                    {/*                <MenuItem onClick={popupState.close}>Cake</MenuItem>*/}
-                    {/*                <MenuItem onClick={popupState.close}>Death</MenuItem>*/}
-                    {/*            </Menu>*/}
-                    {/*        </React.Fragment>*/}
-                    {/*    )}*/}
-                    {/*</PopupState>*/}
 
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary"/>}

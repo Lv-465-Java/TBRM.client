@@ -12,11 +12,19 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 
+
 class UsersHistoryList extends Component {
     state = {
         user: [],
         selectedDate: undefined
     };
+
+    getAllHistory = () => {
+        axios.get(`/all_history`).then(response => {
+            let allUsers = response.data;
+            this.setState({user: allUsers});
+        })
+    }
     handleDateChange = date => {
         console.dir(date);
         this.setState({selectedDate: date}, () => {
@@ -29,6 +37,10 @@ class UsersHistoryList extends Component {
             })
         })
 
+    }
+
+    componentDidMount(){
+        this.getAllHistory();
     }
 
     render() {
