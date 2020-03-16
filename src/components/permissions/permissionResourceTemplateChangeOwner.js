@@ -98,18 +98,8 @@ class PermissionResourceTemplateChangeOwner extends Component {
         return this.state.recipient !== "";
     };
 
-    verifyUser = () => {
-        if (getUserRole() !== "ROLE_MANAGER") {
-            this.props.history.push("/home");
-        }
-    };
-
-    goBack = () => {
-        this.props.history.goBack();
-    };
 
     componentDidMount = () => {
-        this.verifyUser();
         this.getData();
         this.getUsers(this.state.activePage);
     };
@@ -137,29 +127,8 @@ class PermissionResourceTemplateChangeOwner extends Component {
                     </Grid>
                 </Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={5}>
-                        <Box mx={7}>
-                            <Box mt={5}
-                                display="flex"
-                                flexDirection="column">
-                                {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
-                                {this.state.successMessage &&
-                                    <Alert severity="success">{this.state.successMessage}</Alert>}
-                                <FormControl style={formStyles}>
-                                    <TextField type="text" label="recipient" value={this.state.recipient}
-                                        onChange={this.onChangeRecipient} />
-                                </FormControl>
-                                <Button variant="contained"
-                                    color="primary"
-                                    size="large"
-                                    disabled={!this.isValid()}
-                                    onClick={this.changeOwner}
-                                >Change Owner</Button>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    <Grid item xs={7}>
-                        <Container maxWidth="md">
+                    <Grid item xs={8}>
+                    <Container maxWidth="md">
                             <MaterialTable
                                 title="Users"
                                 columns={columns}
@@ -208,6 +177,27 @@ class PermissionResourceTemplateChangeOwner extends Component {
                                 />
                             </Grid>
                         </Container>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Box mx={7}>
+                            <Box mt={5}
+                                display="flex"
+                                flexDirection="column">
+                                {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
+                                {this.state.successMessage &&
+                                    <Alert severity="success">{this.state.successMessage}</Alert>}
+                                <FormControl style={formStyles}>
+                                    <TextField type="text" label="recipient" value={this.state.recipient}
+                                        onChange={this.onChangeRecipient} />
+                                </FormControl>
+                                <Button variant="contained"
+                                    color="primary"
+                                    size="large"
+                                    disabled={!this.isValid()}
+                                    onClick={this.changeOwner}
+                                >Change Owner</Button>
+                            </Box>
+                        </Box>
                     </Grid>
 
                 </Grid>

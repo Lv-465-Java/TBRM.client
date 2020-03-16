@@ -36,7 +36,7 @@ class PermissionResourceTemplateAdd extends Component {
 
     state = {
         id: this.props.id,
-        name: undefined,
+        name: "",
         permission: "",
         principal: "",
         recipient: "",
@@ -230,7 +230,7 @@ class PermissionResourceTemplateAdd extends Component {
                             variant="contained"
                             color="primary"
                             onClick={this.handleClickOpenPermissions}
-                        >View/Delete Permissions</Button>
+                        >View/Delete Permissions to {this.state.name}</Button>
                         <Dialog open={this.state.openPermissions} onClose={this.handleClosePermissions}
                             PaperComponent={this.PaperComponent}
                             aria-labelledby="draggable-dialog-title"
