@@ -9,6 +9,9 @@ class FilterPointReferenceField extends Component {
     };
 
     onChangeValue = (key, value, id) => {
+        console.log(key);
+        console.log(value);
+        console.log(id);
         this.setState({value: id, refName: key.substring(0, key.length - 5)}, () => {
             this.props.setFilter(this.props.columnName, this.buildFilter());
         });

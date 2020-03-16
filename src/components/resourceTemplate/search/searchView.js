@@ -42,7 +42,6 @@ class SearchView extends Component {
                     <RadioButton setFilter={this.setFilter}
                                  name="Is published"
                                  columnName={"isPublished"}/>
-
                 </div>
                 <div>
                     <PointStringField setFilter={this.setFilter}

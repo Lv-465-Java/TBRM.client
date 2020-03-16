@@ -111,7 +111,7 @@ class ResourceTemplateList extends Component {
                 {userLinks}
                 <Grid container spacing={1} style={gridStyle}>
                     <Grid item xs/>
-                    <Grid item xs={10}>
+                    <Grid item xs={9}>
                         <SearchView label="Search"
                                     resourceTemplate={this.state.resourceTemplate}
                                     setRecordsData={this.setRecordsData}/>
@@ -122,6 +122,7 @@ class ResourceTemplateList extends Component {
                             )}
                         </div>
                     </Grid>
+                    <Grid item xs/>
                     <Grid container
                           style={paginationStyle}
                           justify="center">

@@ -45,7 +45,6 @@ class FilterView extends Component {
                                         name="Description"
                                         columnName={"description"}/>
                 {parameters.map((element, index) => {
-
                     switch (element["parameterType"]) {
                         case "POINT_REFERENCE":
                             return <FilterPointReferenceField key={index}
@@ -88,7 +87,6 @@ class FilterView extends Component {
                             onClick={this.getData}>
                     <SearchIcon/>
                 </IconButton>
-
             </div>
         );
     }

@@ -5,7 +5,6 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 
 class ResourceRecordDropdown extends Component {
 
-
     state = {
         records: [],
         relatedResourceTableName: this.props.relatedResourceTableName,
@@ -14,7 +13,7 @@ class ResourceRecordDropdown extends Component {
 
     getRecordsData = () => {
         axios.get(`/resource-template/resource/${this.state.relatedResourceTableName}`).then(response => {
-            this.setState({records: response.data})
+            this.setState({records: response.data["content"]})
         })
     };
 

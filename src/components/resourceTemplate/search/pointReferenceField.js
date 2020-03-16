@@ -3,21 +3,24 @@ import UserDropdown from "./userDropdown";
 
 class PointReferenceField extends Component {
     state = {
-        userId: "",
+        value: ""
     };
 
-    onChangeValue = (key, value, id) => {
-        this.setState({value: id, refName: key.substring(0, key.length - 5)}, () => {
+    onChangeValue = (value, id) => {
+        console.log(value);
+        console.log(id);
+        this.setState({value: id}, () => {
             this.props.setFilter(this.props.columnName, this.buildFilter());
         });
     };
 
     buildFilter = () => {
-        let {value, operation} = this.state;
+        let {value} = this.state;
+        console.log(value);
         if (this.state.value === "" || this.state.value === undefined) {
             return ""
         }
-        return `${this.state.refName}${operation}'${value}'`
+        return `${this.props.columnName}='${value}'`
     };
 
     render() {
@@ -25,11 +28,10 @@ class PointReferenceField extends Component {
             <>
                 <div className={"filterDropdown"}>
                     <UserDropdown
-                        userId={this.props.userId}
                         onChangePointReference={this.onChangeValue}
                         columnName={this.props.columnName}
-                        label={this.props.name}/>
-
+                        label={this.props.name}
+                    />
                 </div>
             </>
         );
