@@ -11,21 +11,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
 import ResourceRecordUpdate from "./ResourceRecordUpdate";
 import ResourceRecordItemView from "./ResourceRecordItemView";
-import {Image} from "@material-ui/icons";
+import Image from 'material-ui-image'
 import MyDialog from "../resourceTemplate/popUp";
-
-
-const linkStyle = {
-    textDecoration: 'none',
-    color: blue['A400']
-
-}
-const dialogStyle = {
-    maxWidth: '80%',
-    maxHeight: '80%'
-
-}
-
 
 class resourceRecordItem extends Component {
 
@@ -81,54 +68,6 @@ class resourceRecordItem extends Component {
 
     render() {
         this.getRecordValues();
-        // this.appendSth();
-        // let appendSth = (parameters) => {
-        //     for (let value of Object.values(parameters)) {
-        //         (<><TableCell align="right">${value}</TableCell></>)
-        //     }
-        // };
-        // let list = this.state.parameters.map((parameter) => {
-        //     return (<TableCell  align="right">${parameter}</TableCell>)
-        // });
-        // let data = {};
-        //
-        // this.props.he
-        // data{name, description} = this.props.item
-        // console.log(this.props.item.parameters)
-        // let data = {};
-
-        // this.props.headers.map(element => {
-        //
-        //     if (element.columnName === 'name'){
-        //         data['name'] = this.props.item['name']
-        //     } else if (element.columnName === 'description'){
-        //         data['description'] = this.props.item['description']
-        //     } else if( typeof(element.columnName) === "object"){
-        //         data[element.columnName] = this.props.item['parameters'][element.columnName]
-        //
-        //     } else {
-        //         data[element.columnName]=this.props.item['parameters'][element.columnName]
-        //     }
-        //
-        //
-        // })
-        // this.state.data['description'] = this.props.item['description']
-        // this.state.data['name'] = this.props.item['name'];
-        // Object.keys(this.props.item['parameters']).forEach(key => {
-        //     this.state.data[key] = this.props.item['parameters'][key]
-        //     // console.log(data[key])
-        // });
-        // data[]
-        // this.props.resourceTemplate.resourceParameters.map(key => {
-        //     if (key.parameterType === "POINT_REFERENCE") {
-        //         console.log(key['relatedResourceTemplateTableName']);
-        //     }
-        // })
-
-        // console.log(this.props.item.parameters['point_a_coordinate']);
-        // this.props.item.parameters['point_a_coordinate'].map(key => {
-        //     console.log(key);
-        // })
         return (
             <>
                 <TableRow>

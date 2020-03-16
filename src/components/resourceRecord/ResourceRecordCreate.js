@@ -14,11 +14,6 @@ import CoordinateString from "./parametersTypes/CoordinateString";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 
-const formControlStyles = {
-    marginBottom: 20
-}
-
-
 class ResourceRecordCreate extends Component {
 
     state = {
@@ -26,7 +21,6 @@ class ResourceRecordCreate extends Component {
         description: undefined,
         resourceParameters: this.props.resourceTemplate.resourceParameters,
         parameters: undefined,
-        // parameters: {},
         open: false
     }
 
@@ -38,20 +32,27 @@ class ResourceRecordCreate extends Component {
                     description: "",
                     parameters: {},
                     open: true
-                    // data: {}
                 })
                 this.props.getRecordsData();
-                // this.props.handleClose();
 
             }).catch(error => {
             console.dir(error.response.data);
         })
     };
 
-    isCreateNotValid = () => {
-        return (this.state.parameters)
+    getParametersSize = (parameters) => {
+        let len = 0;
+        for (const count in parameters) {
+            len++;
+        }
+        return len;
     }
 
+    isCreateNotValid = () => {
+        return (this.state.name === undefined
+            || this.state.parameters === undefined
+            || ((this.getParametersSize(this.state.parameters) < this.state.resourceParameters.length)))
+    }
     onChangeName = (event) => {
         let name = event.target.value;
         if (name.trim().length === 0) {
@@ -78,15 +79,6 @@ class ResourceRecordCreate extends Component {
         this.setState({parameters: {...this.state.parameters, [columnName]: value}})
     }
 
-    // relatedResourceTableName() {
-    //     this.state.resourceParameters.map(key => {
-    //         if (key.parameterType === "POINT_REFERENCE") {
-    //             return  key['relatedResourceTemplateTableName'];
-    //         }
-    //     })
-    // }
-
-
     render() {
         return (
             <div>
@@ -94,8 +86,6 @@ class ResourceRecordCreate extends Component {
                     <div>
                         <FormControl>
                             <TextField required type="text" label="name" onChange={this.onChangeName}/>
-                            {/*// helperText={this.state.errorMessage} error={!!this.state.errorMessage}/>*/}
-
                         </FormControl>
                     </div>
                     <div>
@@ -149,7 +139,7 @@ class ResourceRecordCreate extends Component {
                     }
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={this.create} color="primary">
+                    <Button autoFocus disabled={this.isCreateNotValid()} onClick={this.create} color="primary">
                         Create
                     </Button>
                     <Button autoFocus onClick={this.props.handleClose} color="primary">

@@ -10,16 +10,6 @@ const mapStyles = {
 class GoogleMap extends Component {
 
     render() {
-        // const triangleCoords = [
-        //
-        //     {lat: 49.822182, lng: 23.984633},
-        //
-        //     {lat: 49.823013, lng: 23.984948},
-        //     {lat: 49.822846, lng: 23.986034},
-        //     {lat: 49.822022, lng: 23.985622},
-        //     // {lat: 49.822182, lng: 23.984633},
-        // ];
-
         let element = undefined;
         if (this.props.coordinates !== undefined){
             if (this.props.coordinates.length > 1) {
@@ -29,10 +19,7 @@ class GoogleMap extends Component {
                     position={this.props.coordinates[0]}/>)
             }
         }
-
-        // alert(JSON.stringify(this.props.coordinates[0]));
         return (
-
             <div>
                 <Map
                     google={this.props.google}

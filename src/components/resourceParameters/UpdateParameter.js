@@ -55,10 +55,8 @@ class UpdateParameter extends Component {
         }
         axios.put(`/resource-template/${this.state.resTempId}/resource-parameter/${this.state.id}`, data).then(
             response => {
-                console.log(this.props.getData)
                 this.props.getData()
             }).catch(error => {
-            // console.dir(error.response.data);
         })
     };
 

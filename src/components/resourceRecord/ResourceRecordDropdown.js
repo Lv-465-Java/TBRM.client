@@ -13,7 +13,7 @@ class ResourceRecordDropdown extends Component {
 
 
     state = {
-        // records: [],
+
         relatedResourceTableName: this.props.relatedResourceTableName
     };
 
@@ -27,26 +27,13 @@ class ResourceRecordDropdown extends Component {
         this.getRecordsData();
     }
 
-    // onChangeId = (ob, value) => {
-    //     if (value != null) {
-    //         this.props.onChangePointReference(this.props.columnName.concat("_ref"), value.id);
-    //     }
-    // };
-    // onChangeName = (ob, value) => {
-    //     if (value != null) {
-    //         this.props.onChangePointReference(this.props.columnName.concat("_ref_name"), value.name)
-    //     }
-    // };
-
     onChange = (ob, value) => {
         if (value != null) {
             this.props.onChangePointReference(this.props.columnName.concat("_ref_name"), value.name);
-            // this.props.onChangePointReferenceName(this.props.columnName.concat("_ref"), value.name)
         }
     };
 
     render() {
-            // console.log(this.props.columnName);
         return (
             <div>
                 <Autocomplete
@@ -55,7 +42,7 @@ class ResourceRecordDropdown extends Component {
                     getOptionLabel={option => option.name}
                     onChange={this.onChange}
                     style={style}
-                    renderInput={params => <TextField {...params} label="Related Resource Records" variant="outlined" />}
+                    renderInput={params => <TextField {...params} label="Related Resource Records" variant="outlined"/>}
                 />
             </div>
         );

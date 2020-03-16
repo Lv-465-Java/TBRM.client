@@ -21,29 +21,21 @@ class ResourceRecordList extends Component {
             {name: "Name", columnName: "name"},
             {name: "Description", columnName: "description",},
             {name: "Photo", columnName: "photos",}];
-        // {relatedResourceTableName: "", columnName: ""}];
         this.props.resourceTemplate.resourceParameters.forEach(element => {
-            // if (element.parameterType !== "COORDINATES_STRING") {
             if (element.parameterType === "RANGE_DOUBLE" || element.parameterType === "RANGE_INT") {
                 headers.push({name: element.name + "_from", columnName: element.columnName + "_from"});
                 headers.push({name: element.name + "_to", columnName: element.columnName + "_to"})
-            }
-            else if (element.parameterType === "COORDINATES_STRING") {
+            } else if (element.parameterType === "COORDINATES_STRING") {
                 headers.push({name: element.name + " Coordinates", columnName: element.columnName + "_coordinate"})
-            }
-            else if (element.parameterType === "POINT_REFERENCE") {
+            } else if (element.parameterType === "POINT_REFERENCE") {
                 relatedResourceTableName = element['relatedResourceTemplateTableName'];
                 headers.push({
                     name: element.name,
                     columnName: element.columnName + "_ref_name",
-                    // relatedResourceTemplateTableName: element['relatedResourceTemplateTableName']
                 });
-                // headers.push({name: element.name, columnName: element.columnName + "_ref"});
-                // console.log(element.name)
             } else {
                 headers.push({name: element.name, columnName: element.columnName})
             }
-            // }
         });
 
         this.setState({

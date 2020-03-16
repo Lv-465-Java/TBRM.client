@@ -63,16 +63,12 @@ class ResourceRecordUpdate extends Component {
                 <DialogContent dividers>
                     <div>
                         <FormControl>
-                            {/*<TextField required type="text" label="name" onChange={this.onChangeName}/>*/}
                             <TextField required type="text" label="name" onChange={this.onChangeName}
                                        value={this.state.name}/>
-                            {/*// helperText={this.state.errorMessage} error={!!this.state.errorMessage}/>*/}
-
                         </FormControl>
                     </div>
                     <div>
                         <FormControl>
-                            {/*<TextField type="text" label="description" onChange={this.onChangeDescription}/>*/}
                             <TextField type="text" label="description" onChange={this.onChangeDescription}
                                        value={this.state.description}/>
                         </FormControl>

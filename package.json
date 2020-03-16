@@ -12,6 +12,7 @@
     "axios": "^0.19.2",
     "google-maps-react": "latest",
     "material-table": "^1.57.2",
+    "material-ui-image": "^3.2.3",
     "material-ui-popup-state": "^1.5.3",
     "prop-types": "latest",
     "react": "^16.12.0",

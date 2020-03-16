@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import axios from "../../utils/axios";
-// import axios from "../../utils/axios";
 import ResourceRecordList from "./ResourceRecordList";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import Button from "@material-ui/core/Button";
@@ -9,9 +8,6 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import ResourceRecordCreate from "./ResourceRecordCreate";
 
-// const gridStyles = {
-//     marginLeft: 300
-// }
 
 class ResourceRecordView extends Component {
 
@@ -61,7 +57,7 @@ class ResourceRecordView extends Component {
                 </Button>
 
                 <Grid container spacing={3}>
-                    <Grid item xs={2}></Grid>
+                    <Grid item xs={2}/>
                     <Grid item xs={8}>
                         {this.state.resourceTemplate &&
                         <ResourceRecordList
@@ -71,7 +67,7 @@ class ResourceRecordView extends Component {
                             getRecordsData={this.getRecordsData}
                         />}
                     </Grid>
-                    <Grid item xs={3}></Grid>
+                    <Grid item xs={3}/>
                 </Grid>
                 <Dialog fullWidth={true}
                         onClose={this.handleClose}
@@ -82,12 +78,12 @@ class ResourceRecordView extends Component {
                     <ResourceRecordCreate handleClose={this.handleClose}
                                           tableName={this.state.tableName}
                                           resourceTemplate={this.state.resourceTemplate}
-                        // relatedResourceTableName={relatedResourceTableName}
                                           getRecordsData={this.getRecordsData}
                     />
 
                 </Dialog>
             </div>
+
         );
     }
 }

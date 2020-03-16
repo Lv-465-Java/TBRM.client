@@ -40,11 +40,8 @@ class ResourceParameterItem extends Component {
     delete = () => {
         axios.delete(`/resource-template/${this.props.resTempId}/resource-parameter/${this.state.id}`).then(
             response => {
-                // this.props.history.push("/resource-template");
                 this.props.getData();
-                // this.props.getData();
             }).catch(error => {
-            // console.dir(error.response.data);
 
         })
 
@@ -58,7 +55,6 @@ class ResourceParameterItem extends Component {
 
         let element = this.state.isNotEdit ? (<><TableCell align="right">{this.state.name}</TableCell>
             <TableCell align="right">{this.state.parameterType}</TableCell>
-            {/*<TableCell align="right">{this.state.pattern}</TableCell>*/}
             <TableCell align="right">{this.state.resourceRelation}</TableCell>
             <Tooltip title="Edit">
                 <IconButton aria-label="edit" color="secondary" onClick={this.onChangeEdit}>
@@ -76,29 +72,10 @@ class ResourceParameterItem extends Component {
                                                name={this.state.name}
                                                parameterType={this.state.parameterType}
         />);
-        console.log(this.state)
+
         return (
             <>
                 <TableRow>
-                    {/*<TableCell align="right">{this.state.id}</TableCell>*/}
-                    {/*<TableCell align="right">{this.state.columnName}</TableCell>*/}
-                    {/*<TableCell align="right">{this.state.name}</TableCell>*/}
-                    {/*<TableCell align="right">{this.state.parameterType}</TableCell>*/}
-                    {/*<TableCell align="right">{this.state.pattern}</TableCell>*/}
-                    {/*<TableCell align="right">{this.state.resourceRelation}</TableCell>*/}
-
-                    {/*    <Tooltip title="Delete">*/}
-                    {/*        <IconButton aria-label="delete" onClick={this.delete}>*/}
-                    {/*           <DeleteIcon/>*/}
-                    {/*        </IconButton>*/}
-                    {/*    </Tooltip>*/}
-                    {/*    <Tooltip title="Edit">*/}
-                    {/*        <IconButton aria-label="edit">*/}
-                    {/*            <EditIcon/>*/}
-                    {/*        </IconButton>*/}
-                    {/*    </Tooltip>*/}
-                    {/*<CreateParameter getData={this.getData}*/}
-                    {/*                 resTempId={this.state.resTempId}/>*/}
                     {element}
 
                 </TableRow>
