@@ -36,7 +36,6 @@ const StyledTableCell = withStyles(theme => ({
 
 class TenantItem extends Component {
 
-
     state = {
         id: this.props.item.id,
         name: this.props.item.name,
@@ -73,16 +72,35 @@ class TenantItem extends Component {
 
     }
 
+    handleOpenDialogDelete = () => {
+        this.setState({openDialogDelete: true})
+    };
+
+    handleCloseDialogDelete = () => {
+        this.setState({openDialogDelete: false});
+    };
+    delete = () => {
+        axios.put(`/tenant/${this.state.id}`).then(
+            response => {
+            }).catch(error => {
+            this.setState({
+                errorMessage: error.response.data.message,
+                openDialogDelete: false
+            });
+            console.log(error.response.data.message);
+        })
+        this.setState({
+            openDialogDelete: false
+        });
+
+    }
+
     render() {
         return (
             <TableRow>
-                <StyledTableCell scope="row">
-                    <Link to={`/tenant/${this.state.id}`}><Avatar src={this.state.imageUrl}/></Link>
-                </StyledTableCell>
                 <StyledTableCell align="right">{this.state.name}</StyledTableCell>
                 <StyledTableCell align="right">{this.state.url}</StyledTableCell>
                 <StyledTableCell align="right">{this.state.username}</StyledTableCell>
-                <StyledTableCell align="right">{this.state.password}</StyledTableCell>
                 <StyledTableCell align="right">
                     <StyledTableCell align="right">
                         <FormControl>
@@ -118,10 +136,6 @@ class TenantItem extends Component {
 
                 </StyledTableCell>
             </TableRow>
-
-
-
-
         );
     }
 }

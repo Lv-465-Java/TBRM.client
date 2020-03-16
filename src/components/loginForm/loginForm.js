@@ -35,7 +35,7 @@ class LoginForm extends Component {
         password: undefined,
         userrole: '',
         errorMessage: '',
-        tenant: undefined
+        tenants: []
     }
 
     getRole() {
@@ -48,7 +48,6 @@ class LoginForm extends Component {
 
         })
     }
-
 
 
     getData = () => {
@@ -79,6 +78,19 @@ class LoginForm extends Component {
             [name]: event.target.value,
         });
     };
+
+    getTenant = () => {
+        axios.get("/tenant").then(response => {
+            if (response !== undefined) {
+                let users = response.data.content;
+                this.setState({
+                    users: users,
+                });
+            }
+        }, error => {
+            this.setState({ errorMessage: error.response.data.message });
+        })
+    }
 
 
     render() {
@@ -128,26 +140,17 @@ class LoginForm extends Component {
                                 id: 'outlined-age-native-simple',
                             }}
                         >
-                            <option value="" />
-                            <option value={10}>Ten</option>
-                            <option value={20}>Twenty</option>
-                            <option value={30}>Thirty</option>
+                            {templates.map(msgTemplate => (
+                                <option key={msgTemplate.id} value={msgTemplate.text}>
+                                    {msgTemplate.text}
+                                </option>
+                            {/*<option value="" />*/}
+                            {/*<option value={10}>Ten</option>*/}
+                            {/*<option value={20}>Twenty</option>*/}
+                            {/*<option value={30}>Thirty</option>*/}
                         </Select>
                     </FormControl>
                     </Grid>
-                    {/*<PopupState variant="popover" popupId="demo-popup-menu">*/}
-                    {/*    {popupState => (*/}
-                    {/*        <React.Fragment>*/}
-                    {/*            <Button variant="contained" color="primary" {...bindTrigger(popupState)}>*/}
-                    {/*                Choose tenant*/}
-                    {/*            </Button>*/}
-                    {/*            <Menu {...bindMenu(popupState)}>*/}
-                    {/*                <MenuItem onClick={popupState.close}>Cake</MenuItem>*/}
-                    {/*                <MenuItem onClick={popupState.close}>Death</MenuItem>*/}
-                    {/*            </Menu>*/}
-                    {/*        </React.Fragment>*/}
-                    {/*    )}*/}
-                    {/*</PopupState>*/}
 
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary"/>}
