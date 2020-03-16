@@ -80,7 +80,6 @@ class UsersList extends Component {
                 <Grid item xs={10}>
                     {this.state.allUsers!==undefined &&
                     <UsersHistoryList allUsers={this.state.allUsers} />}
-                    {this.state.deletedUsers &&
                     <TableContainer component={Paper}>
                         <Table>
                             {/*{this.state.allUsers.map((item) =>*/}
@@ -93,7 +92,7 @@ class UsersList extends Component {
                             )}
                         </Table>
                     </TableContainer>
-                    }
+
 
                 </Grid>
                 <Grid item xs={1}/>
