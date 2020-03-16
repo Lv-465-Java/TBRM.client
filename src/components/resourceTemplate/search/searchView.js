@@ -5,15 +5,19 @@ import axios from "../../../utils/axios";
 import PointStringField from "./pointStringField";
 import PointReferenceField from "./pointReferenceField";
 import RadioButton from "./radioButton";
+import {getUserRole} from "../../../service/authService";
 
 class SearchView extends Component {
     state = {
-        searchCriteria: {},
+        searchCriteria: {}
     };
 
     setFilter = (name, search) => {
+        console.log(this.state.searchCriteria);
         let searchCriteria = {...this.state.searchCriteria};
+        console.log(searchCriteria);
         if (search !== "") {
+            console.log(searchCriteria[name]);
             searchCriteria[name] = search;
         } else {
             delete searchCriteria[name];
@@ -32,18 +36,26 @@ class SearchView extends Component {
 
     };
 
+    dontShowFullSearch = () => {
+        return getUserRole() === "ROLE_REGISTER";
+    };
+
     render() {
+
+        let showFullSearch = (getUserRole() === "ROLE_REGISTER") ? (
+                (this.setState({searchCriteria: "isPublished='true'"}))
+            ) :
+            (
+                <RadioButton setFilter={this.setFilter}
+                             name="Is published"
+                             columnName={"isPublished"}/>);
+
         return (
             <div className="filterField">
                 <div>
                     <PointStringField setFilter={this.setFilter}
                                       name="Name"
                                       columnName={"name"}/>
-                    <RadioButton setFilter={this.setFilter}
-                                 name="Is published"
-                                 columnName={"isPublished"}/>
-                </div>
-                <div>
                     <PointStringField setFilter={this.setFilter}
                                       name="Description"
                                       columnName={"description"}/>
@@ -51,6 +63,18 @@ class SearchView extends Component {
                                          name="User"
                                          columnName={"user"}
                                          setData={this.setData}/>
+                    {showFullSearch}
+                    {/*<Hidden mdUp={this.dontShowFullSearch()}>*/}
+                    {/*    <RadioButton setFilter={this.setFilter}*/}
+                    {/*                 role="ROLE_REGISTER"*/}
+                    {/*                 name="Is published"*/}
+                    {/*                 columnName={"isPublished"}/>*/}
+                    {/*</Hidden>*/}
+                    {/*<Hidden mdUp={this.dontShowFullSearch()}>*/}
+                    {/*    <RadioButton setFilter={this.setFilter}*/}
+                    {/*                 name="Is published"*/}
+                    {/*                 columnName={"isPublished"}/>*/}
+                    {/*</Hidden>*/}
                 </div>
                 <IconButton aria-label="delete"
                             color="primary"

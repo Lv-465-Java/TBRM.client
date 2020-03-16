@@ -20,6 +20,9 @@ class RadioButton extends Component {
         if (this.state.value !== "") {
             return `${this.props.columnName}='${this.state.value}'`
         }
+        // else if (this.props.role === "ROLE_REGISTER") {
+        //     return `${this.props.columnName}=true`
+        // }
         return ""
     };
 

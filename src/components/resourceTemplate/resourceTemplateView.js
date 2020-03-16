@@ -203,7 +203,7 @@ class ResourceTemplateView extends Component {
                     style={useStyles.button}
                     onClick={this.unpublish}
                 >Cancel publish</Button>
-            </Box>)
+            </Box>);
 
         return (
             <Grid container spacing={3}>
@@ -246,8 +246,6 @@ class ResourceTemplateView extends Component {
                             </Typography>
                         </CardContent>
                     </Card>
-                    {/*<CreateParameter getData={this.getData}*/}
-                    {/*    resTempId={this.state.resTempId} />*/}
                 </Grid>
                 <Grid item xs={3}>
                     <Grid container
@@ -307,7 +305,7 @@ class ResourceTemplateView extends Component {
                                     color="secondary"
                                     startIcon={<DeleteIcon/>}
                                     style={useStyles.button}
-                                    onClick={this.delete}
+                                    onClick={this.handleClickOpen}
                                 >
                                     Delete
                                 </Button>
