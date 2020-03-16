@@ -63,7 +63,6 @@ class PermissionResourceTemplateAdd extends Component {
                 successMessage: ""
             });
         })
-        console.log(this.state);
     }
 
     getData = () => {
@@ -74,10 +73,7 @@ class PermissionResourceTemplateAdd extends Component {
                     name: data.name
                 })
             }).catch(error => {
-            console.dir(error.response.data);
-
         })
-
     }
 
     getUsers = (pageNumber) => {
@@ -87,6 +83,8 @@ class PermissionResourceTemplateAdd extends Component {
                 let totalPages = response.data.totalPages;
                 let itemsCountPerPage = response.data.numberOfElements;
                 let totalItemsCount = response.data.totalElements;
+                let data = response.data;
+
                 this.setState({
                     users: users,
                     totalPagesUser: totalPages,
@@ -94,7 +92,6 @@ class PermissionResourceTemplateAdd extends Component {
                     totalItemsCountUser: totalItemsCount
                 });
             }).catch(error => {
-            console.log(error.response.data);
         })
     }
 

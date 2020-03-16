@@ -1,18 +1,16 @@
 import React, {Component} from 'react';
 import axios from '../../utils/axios';
-import {Box, ButtonGroup, Button, Grid} from '@material-ui/core';
+import {ButtonGroup, Button, Grid} from '@material-ui/core';
 import UserItem from './userItem';
-import List from "@material-ui/core/List";
 import TableContainer from "@material-ui/core/TableContainer";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import DateFnsUtils from '@date-io/date-fns';
 import {
     MuiPickersUtilsProvider,
-    KeyboardTimePicker,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
-import UserHistoryList from "./userHistoryList";
+import UsersHistoryList from "./usersHistoryList";
 
 const style = {
 
@@ -32,32 +30,23 @@ const itemsNumber = 5;
 class UsersList extends Component {
 
     state = {
-        users: [],
-        activePage: 1,
-        totalPages: 0,
-        itemsCountPerPage: 0,
-        totalItemsCount: 0,
+        deletedUsers: [],
+        allUsers: undefined,
         selectedDate: undefined
     };
 
     getDeletedAccounts = () => {
         axios.get('/deleted_accounts').then(response => {
-            let users = response.data;
-            this.setState({users});
+            let deletedUsers = response.data;
+            this.setState({deletedUsers});
         })
     };
 
-    getAllAccounts = (pageNumber) => {
-        axios.get(`/admin/user?page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
-            let users = response.data.content;
-            let totalPages = response.data.totalPages;
-            this.setState({users});
-        })
-    }
+
     getAllHistory = () => {
-        axios.get(`/all_accounts`).then(response => {
-            let users = response.data;
-            this.setState({users});
+        axios.get(`/all_history`).then(response => {
+            let allUsers = response.data;
+            this.setState({allUsers});
         })
     }
 
@@ -78,38 +67,38 @@ class UsersList extends Component {
             // {title: 'Role', field: 'role.name'}
         ];
         return (
-            <Grid>
-                <Grid container spacing={3} style={gridStyle}>
+            <Grid container>
+                <Grid spacing={3} xs={12} style={gridStyle} alignContent={"center"}>
                     <ButtonGroup color="primary" aria-label="small outlined button group">
                         <Button onClick={this.getAllAccounts}>All accounts</Button>
                         <Button>Disable accounts</Button>
                         <Button onClick={this.getDeletedAccounts}>Deleted accounts</Button>
                         <Button onClick={this.getAllHistory}>All history</Button>
                     </ButtonGroup>
-
-                    <Grid item xs={12}>
-                        {/*alignContent={"center"} justify={"center"}>*/}
-                        <div style={style}>
-                            <Grid>
-                                <TableContainer component={Paper}>
-                                    <Table>
-                                        {/*<List >*/}
-                                        {/*dense={this.dense}>*/}
-                                        {this.state.users.map((item) =>
-                                            (<UserItem key={item}
-                                                       item={item}/>)
-                                        )}
-                                    </Table>
-                                </TableContainer>
-                                {/*<UserHistoryList key={this.state.users} item={this.state.users}/>*/}
-                                {/*</List>*/}
-                            </Grid>
-                        </div>
-                    </Grid>
-                    <Grid item xs>
-                    </Grid>
                 </Grid>
+                <Grid item xs={1}/>
+                <Grid item xs={10}>
+                    {this.state.allUsers!==undefined &&
+                    <UsersHistoryList allUsers={this.state.allUsers} />}
+                    {this.state.deletedUsers &&
+                    <TableContainer component={Paper}>
+                        <Table>
+                            {/*{this.state.allUsers.map((item) =>*/}
+                            {/*    (<UserItem key={item}*/}
+                            {/*               item={item}/>)*/}
+                            {/*)}*/}
+                            {this.state.deletedUsers.map((item) =>
+                                (<UserItem key={item}
+                                           item={item}/>)
+                            )}
+                        </Table>
+                    </TableContainer>
+                    }
+
+                </Grid>
+                <Grid item xs={1}/>
             </Grid>
+
         )
     }
 }
