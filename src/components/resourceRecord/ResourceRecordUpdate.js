@@ -11,6 +11,8 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import PointReference from "./parametersTypes/PointReference";
 import CoordinateString from "./parametersTypes/CoordinateString";
+import Alert from "@material-ui/lab/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
 
 class ResourceRecordUpdate extends Component {
 
@@ -18,20 +20,22 @@ class ResourceRecordUpdate extends Component {
         name: this.props.item.name,
         description: this.props.item.description,
         resourceParameters: this.props.resourceTemplate.resourceParameters,
-        parameters: this.props.item.parameters
+        parameters: this.props.item.parameters,
+        open: false
     }
 
     update = () => {
-        axios.patch(`/resource-template/resource/${this.props.tableName}/${this.props.item.id}`, this.state).then(
+        axios.patch(`/resource/${this.props.tableName}/${this.props.item.id}`, this.state).then(
             response => {
                 this.setState({
                     name: "",
                     description: "",
                     parameters: {},
+                    open: true
                     // data: {}
                 })
-                this.props.getRecordsData();
-                this.props.handleClose();
+                //
+                // this.props.handleClose();
             }).catch(error => {
             console.dir(error.response.data);
         })
@@ -55,6 +59,13 @@ class ResourceRecordUpdate extends Component {
 
     setData = (columnName, value) => {
         this.setState({parameters: {...this.state.parameters, [columnName]: value}})
+    }
+
+
+    handleClose = () => {
+        this.setState({open: false});
+        this.props.handleClose();
+        this.props.getRecordsData();
     }
 
     render() {
@@ -134,6 +145,11 @@ class ResourceRecordUpdate extends Component {
                         Close
                     </Button>
                 </DialogActions>
+                <Snackbar open={this.state.open} autoHideDuration={1000} onClose={this.handleClose}>
+                    <Alert onClose={this.handleClose} severity="success">
+                        Resource successfully updated
+                    </Alert>
+                </Snackbar>
             </div>
         );
     }
