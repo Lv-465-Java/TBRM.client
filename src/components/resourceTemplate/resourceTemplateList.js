@@ -102,7 +102,7 @@ class ResourceTemplateList extends Component {
                     (<ResourceTemplateItem key={item.id}
                                            item={item}/>)
                 )
-            ) : (<h4>{this.state.message}</h4>);
+            ) : (<p className={"App"}>{this.state.message}</p>);
 
         let userLinks = (getUserRole() === "ROLE_MANAGER") ?
             (

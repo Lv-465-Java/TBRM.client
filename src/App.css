@@ -21,6 +21,10 @@
     padding: 10px;
 }
 
+.emptyTable{
+
+}
+
 .filterCells {
     display: flex;
     flex-direction: row;
