@@ -82,11 +82,8 @@ class UsersHistory extends Component {
         console.log(url);
 
         axios.get(url).then(response => {
-            console.log("State = " + response.data);
-            this.setState({users: response.data},()=>{
-                this.handleChangeIndex(0);
-                this.handleChangeIndex(1);
-            });
+            console.log(response.data);
+            this.setState({users: response.data, value: 1}, ()=> console.log(this.state.users));
         });
         console.log(this.state.value);
     }

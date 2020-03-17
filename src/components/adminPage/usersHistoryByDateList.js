@@ -11,30 +11,9 @@ import TableBody from "@material-ui/core/TableBody";
 import UserItem from "./userItem";
 
 class UsersHistoryByDateList extends Component {
-    state = {
-        user: this.props.users,
-        date: undefined
-    };
-
-    handleDateChange = () => {
-            let date = this.props.selectedDate;
-            let url = `/${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-            axios.get(url).then(response => {
-                let users = response.data;
-                this.setState({user: users});
-            })
-    }
-
-    componentDidMount() {
-console.log("user hostory"+this.state.user)
-    }
-
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     console.log("users = " + nextProps.users);
-    //     return nextState.user != this.state.user;
-    // }
 
     render() {
+        console.log(this.props.users)
         return (
             <Grid>
                 <TableContainer component={Paper}>
@@ -52,8 +31,8 @@ console.log("user hostory"+this.state.user)
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.user.map((item) =>
-                                (<UserItem key={item}
+                            {this.props.users.map((item, i) =>
+                                (<UserItem key={i}
                                            item={item}/>)
                             )}
                         </TableBody>

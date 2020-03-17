@@ -7,7 +7,6 @@ import Grid from "@material-ui/core/Grid";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import ResourceRecordCreate from "./ResourceRecordCreate";
-import Image from "material-ui-image";
 import CustomPagination from "../pagination/customPagination";
 import {getUserRole} from "../../service/authService";
 import FilterView from "./filters/filterView";
