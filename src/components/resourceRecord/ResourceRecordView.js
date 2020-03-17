@@ -104,7 +104,7 @@ class ResourceRecordView extends Component {
                             tableName={this.state.tableName}
                             records={this.state.records}
                             resourceTemplate={this.state.resourceTemplate}
-                            getRecordsData={this.getRecordsData}
+                            getRecordsData={() => this.getRecordsData(this.state.activePage)}
                         />}
                     </Grid>
                     <Grid item xs={3}/>
@@ -131,7 +131,7 @@ class ResourceRecordView extends Component {
                                           tableName={this.state.tableName}
                                           resourceTemplate={this.state.resourceTemplate}
                                           // relatedResourceTableName={relatedResourceTableName}
-                                          getRecordsData={this.getRecordsData}
+                                          getRecordsData={() => this.getRecordsData(this.state.activePage)}
                     />
 
                 </Dialog>

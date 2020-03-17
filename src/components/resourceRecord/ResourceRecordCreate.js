@@ -13,6 +13,7 @@ import PointReference from "./parametersTypes/PointReference";
 import CoordinateString from "./parametersTypes/CoordinateString";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
+import PhotoUpload from "./parametersTypes/PhotoUpload";
 
 class ResourceRecordCreate extends Component {
 
@@ -93,6 +94,10 @@ class ResourceRecordCreate extends Component {
                             <TextField type="text" label="description" onChange={this.onChangeDescription}/>
                         </FormControl>
                     </div>
+                    <div>
+                        <PhotoUpload/>
+                        )
+                    </div>
                     {
                         // elements
                         this.state.resourceParameters.map(element => {
@@ -129,6 +134,12 @@ class ResourceRecordCreate extends Component {
                                                      relatedResourceTableName={element['relatedResourceTemplateTableName']}
                                                      setData={this.setData}/>)
                             } else if (element.parameterType === 'COORDINATES_STRING') {
+                                e = (<CoordinateString key={element.name}
+                                                       label={element.name}
+                                                       columnName={element.columnName.concat('_coordinate')}
+                                                       setData={this.setData}/>)
+                            }
+                            else if (element.parameterType === 'COORDINATES_STRING') {
                                 e = (<CoordinateString key={element.name}
                                                        label={element.name}
                                                        columnName={element.columnName.concat('_coordinate')}

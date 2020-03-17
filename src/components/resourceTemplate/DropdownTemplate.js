@@ -11,7 +11,7 @@ class DropdownTemplate extends Component {
 
     getData = () => {
         axios.get('resource-template/published').then(response => {
-            let publishedResourceTemplates = response.data;
+            let publishedResourceTemplates = response.data['content'];
             this.setState({ publishedResourceTemplates });
         })
     };

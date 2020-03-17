@@ -19,7 +19,7 @@ class ResourceRecordDropdown extends Component {
 
     getRecordsData = () => {
         axios.get(`/resource-template/resource/${this.state.relatedResourceTableName}`).then(response => {
-            this.setState({records: response.data})
+            this.setState({records: response.data['content']})
         })
     };
 
