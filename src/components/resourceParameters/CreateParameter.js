@@ -1,16 +1,26 @@
 import React, {Component} from 'react';
-import {Grid, TextField} from "@material-ui/core";
+import {TextField} from "@material-ui/core";
 import DropdownParameterType from "./DropdownParameterType";
 import Button from "@material-ui/core/Button";
-import EditIcon from "@material-ui/icons/Edit";
 import axios from "../../utils/axios";
 import DropdownTemplate from "../resourceTemplate/DropdownTemplate";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import InputLabel from "@material-ui/core/InputLabel";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
+import Typography from "@material-ui/core/Typography";
+import CardContent from "@material-ui/core/CardContent";
 
 const PARAMETER_TYPE = {
     point: ["int", "double", "string", "reference"],
     range: ["int", "double"],
     coordinates: ["string"]
 };
+
+const style = {
+    marginTop: 30
+}
 
 class CreateParameter extends Component {
 
@@ -20,7 +30,9 @@ class CreateParameter extends Component {
         parameter: "",
         parameterType: "",
         pattern: "",
-        relatedResourceTemplateId: ""
+        relatedResourceTemplateId: "",
+        open: false,
+        errorMessage: ''
     };
 
     onChangeName = (e) => {
@@ -39,8 +51,6 @@ class CreateParameter extends Component {
     };
 
     create = () => {
-        // let body = { 'isPublished': false };
-
         let data = {
             "name": this.state.name,
             "parameterType": `${this.state.parameter.toUpperCase()}_${this.state.parameterType.toUpperCase()}`
@@ -56,11 +66,12 @@ class CreateParameter extends Component {
                     parameter: "",
                     parameterType: "",
                     pattern: "",
-                    relatedResourceTemplateId: ""
+                    relatedResourceTemplateId: "",
+                    open: true
                 })
-                this.props.getData()
+                this.props.getData();
             }).catch(error => {
-            console.dir(error.response.data);
+            this.setState({errorMessage: error.response.data.message});
         })
     };
     isNotValid = () => {
@@ -68,43 +79,53 @@ class CreateParameter extends Component {
         return (name === "" || parameter === "" || parameterType === "");
     };
 
+    handleClose = () => {
+        this.setState({open: false});
+        this.props.handleClose();
+    }
+
 
     render() {
         return (
             <>
-                <Grid container spacing={1}>
-                    <Grid item xs={2}>
-                        <Button variant="contained"
-                                color="primary"
-                                startIcon={<EditIcon/>}
-                                onClick={this.create}
-                                disabled={this.isNotValid()}>
-                            Add
-                        </Button>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <TextField label="Name" type="text" name="name" onChange={this.onChangeName}
-                                   value={this.state.name}/>
-                    </Grid>
-                    <Grid item xs={2}>
+                <DialogContent dividers>
+                    <Typography variant="body2" color="textSecondary" component="h2">
+                        {/*{this.isPublished()}*/}
+                        {this.state.errorMessage &&
+                        <Alert severity="error">{this.state.errorMessage}</Alert>}
+                    </Typography>
+                    <TextField label="Name" type="text" name="name" onChange={this.onChangeName}
+                               value={this.state.name}/>
+                    <div style={style}>
+                        <InputLabel id="demo-simple-select-label">Parameter Type</InputLabel>
                         <DropdownParameterType parameterType={this.state.parameter}
                                                onChangeParameterType={this.onChangeParameter}
                                                list={Object.keys(PARAMETER_TYPE)}
-                                               label="Parameter"/>
-                    </Grid>
-                    <Grid item xs={2}>
+                                               style={style}/>
                         {!!this.state.parameter && <DropdownParameterType parameterType={this.state.parameterType}
                                                                           onChangeParameterType={this.onChangeParameterType}
-                                                                          list={PARAMETER_TYPE[this.state.parameter]}
-                                                                          label="ParameterType"/>}
-                    </Grid>
-                    <Grid item xs={2}>
+                                                                          list={PARAMETER_TYPE[this.state.parameter]}/>}
+                    </div>
+                    <div style={style}>
                         {this.state.parameterType === "reference" &&
-                        <DropdownTemplate setRelatedResourceTemplateId={this.setRelatedResourceTemplateId}/>}
-                    </Grid>
+                        <DropdownTemplate
+                            setRelatedResourceTemplateId={this.setRelatedResourceTemplateId}/>}
+                    </div>
 
-
-                </Grid>
+                </DialogContent>
+                <DialogActions>
+                    <Button autoFocus disabled={this.isNotValid()} onClick={this.create} color="primary">
+                        Create
+                    </Button>
+                    <Button autoFocus onClick={this.props.handleClose} color="primary">
+                        Close
+                    </Button>
+                </DialogActions>
+                <Snackbar open={this.state.open} autoHideDuration={1500} onClose={this.handleClose}>
+                    <Alert onClose={this.handleClose} severity="success">
+                        Resource successfully added
+                    </Alert>
+                </Snackbar>
             </>
         );
     }

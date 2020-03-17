@@ -16,14 +16,15 @@ class RangeDouble extends Component {
     };
 
     render() {
+        console.log(this.props.values)
         return (
             <div>
                 <div>
-                    <TextField required type="number" label={this.state.label.concat(' from')}
+                    <TextField required type="number" label={this.state.label.concat(' from')} value={this.props.valueFrom}
                                onChange={this.onChangeRangeDoubleFrom}/>
                 </div>
                 <div>
-                    <TextField required type="number" label={this.state.label.concat(' to')}
+                    <TextField required type="number" label={this.state.label.concat(' to')} value={this.props.valueTo}
                                onChange={this.onChangeRangeDoubleTo}/>
                 </div>
             </div>

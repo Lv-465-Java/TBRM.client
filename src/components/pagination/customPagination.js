@@ -19,8 +19,8 @@ class CustomPagination extends Component {
                     itemsCountPerPage={this.props.itemsCountPerPage}
                     totalItemsCount={this.props.totalItemsCount}
                     count={this.props.totalPages}
-                    showFirstButton='true'
-                    showLastButton='true'
+                    showFirstButton={true}
+                    showLastButton={true}
                     itemClass='page-item'
                     linkClass='btn btn-light'
                     onChange={this.props.onChange}

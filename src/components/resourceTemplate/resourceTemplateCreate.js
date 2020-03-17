@@ -30,7 +30,7 @@ class ResourceTemplateCreate extends Component {
     }
 
     isValid = () => {
-        return this.state.name === undefined;
+            return this.state.name === undefined;
     }
 
     onChangeName = (event) => {

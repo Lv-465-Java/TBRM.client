@@ -49,7 +49,7 @@ class ResourceTemplateList extends Component {
                 itemsCountPerPage: itemsCountPerPage,
                 totalItemsCount: totalItemsCount
             });
-            console.log(response.data);
+
         })
     };
 
@@ -115,6 +115,7 @@ class ResourceTemplateList extends Component {
                             )}
                         </div>
                     </Grid>
+                    <Grid item xs/>
                     <Grid container
                           style={paginationStyle}
                           justify="center">
