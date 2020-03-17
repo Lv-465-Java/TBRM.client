@@ -106,13 +106,13 @@ class UsersHistory extends Component {
                         onChange={this.handleChange}
                         indicatorColor="primary"
                         textColor="primary"
-                        variant="fullWidth"
-                        aria-label="full width tabs example"
+                         variant="fullWidth"
+                        // aria-label="full width tabs example"
                     >
-                        <Tab label="All History" {...a11yProps(0)} />
+                        <Tab label="All History" style={{wight:500}} {...a11yProps(0)} />
                         {/*<Tab label="Non Approved Users" {...a11yProps(1)} >*/}
-                        <MuiPickersUtilsProvider utils={DateFnsUtils} {...a11yProps(1)}>
-                            <Grid container justify="space-around">
+                        <MuiPickersUtilsProvider utils={DateFnsUtils} style={{wight:500}} {...a11yProps(1)}>
+                            {/*<Grid container justify="space-around">*/}
                                 <KeyboardDatePicker
                                     disableToolbar
                                     disableFuture
@@ -128,10 +128,10 @@ class UsersHistory extends Component {
                                         'aria-label': 'change date',
                                     }}
                                 />
-                            </Grid>
+                            {/*</Grid>*/}
                         </MuiPickersUtilsProvider>
                         {/*</Tab>*/}
-                        <Tab label="All deleted accounts" {...a11yProps(2)} />
+                        <Tab label="All deleted accounts" style={{wight:400}} {...a11yProps(2)} />
                     </Tabs>
                 </AppBar>
                 <SwipeableViews
