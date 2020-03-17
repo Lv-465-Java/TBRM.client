@@ -35,7 +35,6 @@ import ResourceRecordCreate from "./components/resourceRecord/ResourceRecordCrea
 import ResourceRecordUpdate from "./components/resourceRecord/ResourceRecordUpdate";
 import GroupChangeOwner from "./components/permissions/group/groupChangeOwner";
 import AdminPage from "./components/adminPage/adminPage";
-import UserList from "./components/user/userList";
 import FilterView from "./components/resourceRecord/filters/filterView";
 import TenantList from "./components/tenant/tenantList";
 
@@ -83,7 +82,6 @@ class Routers extends Component {
                     <Route path="/profile" component={ProfileForm} />
                     <Route path="/test" component={Testing} />
                     <Route path="/admin-panel" component={AdminPage} />
-                    <Route path="/admin-panel" component={UsersList} />
                     <Route path="/forgot_password" exact component={ForgotPassword} />
                     <ManagerRoute path="/resource-template/create" component={ResourceTemplateCreate} />
                     <ManagerRoute path="/resource-template/update/:id" component={ResourceTemplateUpdate} />

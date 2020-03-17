@@ -61,15 +61,13 @@ class UserItem extends Component {
     //     })
     // }
 
-    componentDidMount(){
-        console.log(this.props);
+    componentDidMount() {
     }
 
     render() {
         return (
-
             <TableRow>
-                <TableCell align="right">  {this.state.to_timestamp.replace("T", " ").substring(0, 19)}</TableCell>
+                <TableCell align="right">{this.state.to_timestamp.replace("T", " ").substring(0, 19)}</TableCell>
                 <TableCell align="right">
                     <div onClick={this.handleClickOpen} style={{cursor: "pointer"}}>
                         <Avatar src={this.state.imageUrl}/>
@@ -126,21 +124,8 @@ class UserItem extends Component {
                 <TableCell align="right">{this.state.email}</TableCell>
                 <TableCell align="right">{this.state.phone}</TableCell>
                 <TableCell align="right">{this.state.role.substring(5).toLowerCase()}</TableCell>
-                {/*<TableCell align="right">*/}
-                {/*    <FormControlLabel*/}
-                {/*        control={*/}
-                {/*            <Switch checked={this.state.enabled} onChange={this.handleChange} value="enabled"/>*/}
-                {/*        }*/}
-                {/*        label="Enable"*/}
-                {/*    />*/}
-                {/*</TableCell>*/}
             </TableRow>
         )
-    }
-
-
-    redirect = () => {
-        this.props.history.pushState(`/profile`);
     }
 }
 

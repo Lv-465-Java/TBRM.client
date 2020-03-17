@@ -6,8 +6,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import UsersHistoryList from './usersHistoryList';
 import UserList from "../user/userList";
+import UsersHistory from "./usersHistory";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -76,14 +76,14 @@ export default function AdminPage() {
           aria-label="nav tabs example"
         >
           <LinkTab label="Users" href="/drafts" {...a11yProps(0)} />
-          <LinkTab label="User History" href="/trash" {...a11yProps(1)} />
+          <LinkTab label="Users History" href="/trash" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
         <UserList/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-       <UsersHistoryList/>
+       <UsersHistory/>
       </TabPanel>
     </div>
   );

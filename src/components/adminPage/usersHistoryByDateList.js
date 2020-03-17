@@ -1,34 +1,38 @@
 import React, {Component} from "react";
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
 import axios from "../../utils/axios";
-import Table from "@material-ui/core/Table";
-import UserItem from "./userItem";
+import Grid from "@material-ui/core/Grid";
 import TableContainer from "@material-ui/core/TableContainer";
+import Paper from "@material-ui/core/Paper";
+import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
+import UserItem from "./userItem";
 
-
-class UsersHistoryList extends Component {
+class UsersHistoryByDateList extends Component {
     state = {
-        user: [],
-        selectedDate: undefined
+        user: this.props.users,
+        date: undefined
     };
 
-    getAllHistory = () => {
-        axios.get(`/all_history`).then(response => {
-            let allUsers = response.data;
-            this.setState({user: allUsers});
-        })
+    handleDateChange = () => {
+            let date = this.props.selectedDate;
+            let url = `/${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+            axios.get(url).then(response => {
+                let users = response.data;
+                this.setState({user: users});
+            })
     }
 
-    componentDidMount(){
-        this.getAllHistory();
+    componentDidMount() {
+console.log("user hostory"+this.state.user)
     }
+
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     console.log("users = " + nextProps.users);
+    //     return nextState.user != this.state.user;
+    // }
 
     render() {
         return (
@@ -60,4 +64,4 @@ class UsersHistoryList extends Component {
     }
 }
 
-export default UsersHistoryList;
+export default UsersHistoryByDateList;
