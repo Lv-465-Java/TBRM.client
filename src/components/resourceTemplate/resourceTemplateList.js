@@ -7,7 +7,6 @@ import CustomPagination from "../pagination/customPagination";
 import SearchView from "./search/searchView";
 
 const style = {
-
     display: "flex",
     flexWrap: "wrap",
 };
@@ -35,6 +34,7 @@ class ResourceTemplateList extends Component {
         totalPages: 0,
         itemsCountPerPage: 0,
         totalItemsCount: 0,
+        message: undefined
     };
 
     getData = (pageNumber) => {
@@ -94,7 +94,35 @@ class ResourceTemplateList extends Component {
         this.setState({resourceTemplates})
     };
 
+    // methodCheckResourceToDisplay = () => {
+    //     if (this.state.resourceTemplates.length === 0) {
+    //         console.log("ss");
+    //         // return "There is no resource templates to display"
+    //     } else {
+    //         this.state.resourceTemplates.map((item) =>
+    //             (<ResourceTemplateItem key={item.id}
+    //                                    item={item}/>)
+    //         )
+    //     }
+    // };
+
     render() {
+
+        let string = (this.state.resourceTemplates.length !== 0) ?
+            (
+                this.state.resourceTemplates.map((item) =>
+                    (<ResourceTemplateItem key={item.id}
+                                           item={item}/>)
+                )
+            ) : (<h1>There is no resource templates to display</h1>);
+
+        // let string = (this.state.resourceTemplates.length !== 0) ?
+        //     (
+        //         this.state.resourceTemplates.map((item) =>
+        //             (<ResourceTemplateItem key={item.id}
+        //                                    item={item}/>)
+        //         )
+        //     ) : (<h1>There is no resource templates to display</h1>);
 
         let userLinks = (getUserRole() === "ROLE_MANAGER") ?
             (
@@ -116,6 +144,7 @@ class ResourceTemplateList extends Component {
                                     resourceTemplate={this.state.resourceTemplate}
                                     setRecordsData={this.setRecordsData}/>
                         <div style={style}>
+                            <h1>{this.state.message}</h1>
                             {this.state.resourceTemplates.map((item) =>
                                 (<ResourceTemplateItem key={item.id}
                                                        item={item}/>)

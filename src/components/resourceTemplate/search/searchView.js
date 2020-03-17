@@ -14,11 +14,8 @@ class SearchView extends Component {
     };
 
     setFilter = (name, search) => {
-        console.log(this.state.searchCriteria);
         let searchCriteria = {...this.state.searchCriteria};
-        console.log(searchCriteria);
         if (search !== "") {
-            console.log(searchCriteria[name]);
             searchCriteria[name] = search;
         } else {
             delete searchCriteria[name];
@@ -67,20 +64,18 @@ class SearchView extends Component {
             );
 
         return (
-            <div className="filterField">
-                {/*<div className="searchField">*/}
-                    <PointStringField setFilter={this.setFilter}
-                                      name="Name"
-                                      columnName={"name"}/>
-                    <PointStringField setFilter={this.setFilter}
-                                      name="Description"
-                                      columnName={"description"}/>
-                    <PointReferenceField setFilter={this.setFilter}
-                                         name="User"
-                                         columnName={"user"}
-                                         setData={this.setData}/>
-                    {showFullSearch}
-                {/*</div>*/}
+            <div className="searchField">
+                <PointStringField setFilter={this.setFilter}
+                                  name="Name"
+                                  columnName={"name"}/>
+                <PointStringField setFilter={this.setFilter}
+                                  name="Description"
+                                  columnName={"description"}/>
+                <PointReferenceField setFilter={this.setFilter}
+                                     name="User"
+                                     columnName={"user"}
+                                     setData={this.setData}/>
+                {showFullSearch}
                 <IconButton aria-label="delete"
                             color="primary"
                             onClick={this.getData}>

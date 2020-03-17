@@ -2,6 +2,15 @@
     text-align: center;
 }
 
+.searchField {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    background-color: #e3eeff;
+    padding: 10px;
+}
+
 .filterField {
     display: flex;
     flex-direction: row;
@@ -24,7 +33,7 @@
     align-items: center;
 }
 
-label.MuiFormControlLabel-root{
+label.MuiFormControlLabel-root {
     cursor: pointer;
     display: inline-flex;
     align-items: center;

@@ -148,6 +148,12 @@ class ResourceTemplateView extends Component {
 
     }
 
+    // method = () => {
+    //     if (this.state.resourceParameters.length === 0) {
+    //         this.setState({errorMessage: "lalalallallalallalalal"})
+    //     }
+    // };
+
     goBack = () => {
         this.props.history.push("/resource-template");
     }
@@ -241,6 +247,7 @@ class ResourceTemplateView extends Component {
                         <CardContent>
                             <Typography variant="body2" color="textSecondary" component="h2">
                                 {this.isPublished()}
+                                {/*{this.method}*/}
                                 {this.state.errorMessage &&
                                 <Alert severity="error">{this.state.errorMessage}</Alert>}
                             </Typography>

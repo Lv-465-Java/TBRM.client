@@ -10,7 +10,7 @@ class UserDropdown extends Component {
     };
 
     getRecordsData = () => {
-        axios.get(`/user/role/2`).then(response => {
+        axios.get(`/users/role?role=manager`).then(response => {
             this.setState({users: response.data["content"]})
         })
     };
