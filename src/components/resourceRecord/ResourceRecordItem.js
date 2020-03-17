@@ -27,7 +27,7 @@ class resourceRecordItem extends Component {
 
 
     delete = () => {
-        axios.delete(`/resource-template/resource/${this.props.tableName}/${this.props.item.id}`).then(
+        axios.delete(`/resource/${this.props.tableName}/${this.props.item.id}`).then(
             response => {
 
                 this.props.getRecordsData();
