@@ -56,7 +56,7 @@ class CreateParameter extends Component {
                     pattern: "",
                     relatedResourceTemplateId: ""
                 })
-                this.props.getData()
+                this.props.getData();
             }).catch(error => {
             console.dir(error.response.data);
         })

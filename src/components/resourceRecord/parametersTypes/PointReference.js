@@ -8,7 +8,8 @@ class PointReference extends Component {
         return (
             <div>
                 <FormControl>
-                    <ResourceRecordDropdown relatedResourceTableName={this.props.relatedResourceTableName}
+                    <ResourceRecordDropdown className={"referenceDropdown"}
+                                            relatedResourceTableName={this.props.relatedResourceTableName}
                                             onChangePointReference={this.props.setData}
                                             columnName={this.props.columnName}/>
                 </FormControl>
