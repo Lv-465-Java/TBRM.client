@@ -90,7 +90,7 @@ class Routers extends Component {
                     <Route path="/test-maps" component={TestMaps} />
                     <Route path="/forgot_password/:email" component={ForgotPasswordMessage} />
                     <ManagerRoute path="/group/edit/:name" component={EditGroup} />
-                    <ManagerRoute path="/group/view/:name" component={GroupItem} />
+                    <ManagerRoute path="/group/view/:id/:name" component={GroupItem} />
                     <ManagerRoute path="/group/permission/owner/:name" component={GroupChangeOwner} />
                     <ManagerRoute path="/group/permission/:id" component={AddPermission} />
                     <Route path="/oauth2/redirect" component={OAuth2RedirectHandler} />
