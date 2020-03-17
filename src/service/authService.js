@@ -2,7 +2,7 @@ import Alert from "@material-ui/lab/Alert";
 
 export const logout = () => {
     sessionStorage.removeItem('authorization');
-    localStorage.removeItem('refreshToken');
+    sessionStorage.removeItem('refreshToken');
     sessionStorage.removeItem('userrole');
 }
 

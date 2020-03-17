@@ -16,7 +16,7 @@ const LocalSessionStorageService = (function () {
     }
 
     function _setRefreshToken(refreshToken) {
-        localStorage.setItem('refreshToken', refreshToken);
+        sessionStorage.setItem('refreshToken', refreshToken);
     }
 
     function _getAccessToken() {
@@ -24,12 +24,12 @@ const LocalSessionStorageService = (function () {
     }
 
     function _getRefreshToken() {
-        return localStorage.getItem('refreshToken');
+        return sessionStorage.getItem('refreshToken');
     }
 
     function _clearToken() {
         sessionStorage.removeItem('authorization');
-        localStorage.removeItem('refreshToken');
+        sessionStorage.removeItem('refreshToken');
     }
 
     return {

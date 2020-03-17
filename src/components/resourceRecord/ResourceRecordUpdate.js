@@ -10,14 +10,15 @@ import RangeDouble from "./parametersTypes/RangeDouble";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import PointReference from "./parametersTypes/PointReference";
+import CoordinateString from "./parametersTypes/CoordinateString";
 
 class ResourceRecordUpdate extends Component {
 
     state = {
-        name: undefined,
-        description: undefined,
+        name: this.props.item.name,
+        description: this.props.item.description,
         resourceParameters: this.props.resourceTemplate.resourceParameters,
-        parameters: {}
+        parameters: this.props.item.parameters
     }
 
     update = () => {
@@ -29,7 +30,8 @@ class ResourceRecordUpdate extends Component {
                     parameters: {},
                     // data: {}
                 })
-                this.props.getRecordsData()
+                this.props.getRecordsData();
+                this.props.handleClose();
             }).catch(error => {
             console.dir(error.response.data);
         })
@@ -37,6 +39,7 @@ class ResourceRecordUpdate extends Component {
 
     onChangeName = (event) => {
         let name = event.target.value;
+        console.log(name);
         if (name.trim().length === 0) {
             name = undefined;
         }
@@ -60,16 +63,14 @@ class ResourceRecordUpdate extends Component {
                 <DialogContent dividers>
                     <div>
                         <FormControl>
-                            <TextField required type="text" label="name" onChange={this.onChangeName}/>
-                            {/*<TextField required type="text" label="name" value={this.props.item.name} onChange={this.onChangeName}/>*/}
-                            {/*// helperText={this.state.errorMessage} error={!!this.state.errorMessage}/>*/}
-
+                            <TextField required type="text" label="name" onChange={this.onChangeName}
+                                       value={this.state.name}/>
                         </FormControl>
                     </div>
                     <div>
                         <FormControl>
-                            <TextField type="text" label="description" onChange={this.onChangeDescription}/>
-                            {/*<TextField type="text" label="description" value={this.props.item.description} onChange={this.onChangeDescription}/>*/}
+                            <TextField type="text" label="description" onChange={this.onChangeDescription}
+                                       value={this.state.description}/>
                         </FormControl>
                     </div>
                     {
@@ -80,31 +81,33 @@ class ResourceRecordUpdate extends Component {
                                 e = (<PointInteger key={element.name}
                                                    label={element.name}
                                                    columnName={element.columnName}
-                                                   value={this.props.item.parameters[element.columnName]}
+                                                   value={this.state.parameters[element.columnName]}
                                                    setData={this.setData}/>)
                             } else if (element.parameterType === 'POINT_STRING') {
                                 e = (<PointString key={element.name}
                                                   label={element.name}
                                                   columnName={element.columnName}
-                                                  value={this.props.item.parameters[element.columnName]}
+                                                  value={this.state.parameters[element.columnName]}
                                                   setData={this.setData}/>)
                             } else if (element.parameterType === 'POINT_DOUBLE') {
                                 e = (<PointDouble key={element.name}
                                                   label={element.name}
                                                   columnName={element.columnName}
-                                                  value={this.props.item.parameters[element.columnName]}
+                                                  value={this.state.parameters[element.columnName]}
                                                   setData={this.setData}/>)
                             } else if (element.parameterType === 'RANGE_INTEGER') {
                                 e = (<RangeInteger key={element.name}
                                                    label={element.name}
                                                    columnName={element.columnName}
-                                                   value={this.props.item.parameters[element.columnName]}
+                                                   valueFrom={this.state.parameters[element.columnName.concat('_from')]}
+                                                   valueTo={this.state.parameters[element.columnName.concat('_to')]}
                                                    setData={this.setData}/>)
                             } else if (element.parameterType === 'RANGE_DOUBLE') {
                                 e = (<RangeDouble key={element.name}
                                                   label={element.name}
                                                   columnName={element.columnName}
-                                                  value={this.props.item.parameters[element.columnName]}
+                                                  valueFrom={this.state.parameters[element.columnName.concat('_from')]}
+                                                  valueTo={this.state.parameters[element.columnName.concat('_to')]}
                                                   setData={this.setData}/>)
                             } else if (element.parameterType === 'POINT_REFERENCE') {
                                 e = (<PointReference key={element.name}
@@ -112,22 +115,16 @@ class ResourceRecordUpdate extends Component {
                                                      columnName={element.columnName}
                                                      relatedResourceTableName={element['relatedResourceTemplateTableName']}
                                                      setData={this.setData}/>)
+                            } else if (element.parameterType === 'COORDINATES_STRING') {
+                                e = (<CoordinateString key={element.name}
+                                                       label={element.name}
+                                                       columnName={element.columnName.concat('_coordinate')}
+                                                       value={this.state.parameters[element.columnName.concat('_coordinate')]}
+                                                       setData={this.setData}/>)
                             }
                             return e;
                         })
                     }
-                    {/*//     (<FormControl>*/}
-                    {/*//*/}
-                    {/*//             {*/}
-                    {/*//                 if(element.parameterType === 'POINT_INT'){*/}
-                    {/*//                 <TextField key={element.name}*/}
-                    {/*//                 type="text"*/}
-                    {/*//                 label={element.name}*/}
-                    {/*//                 setData={this.setData}/>}*/}
-                    {/*//             }*/}
-                    {/*//         </FormControl>)*/}
-                    {/*//*/}
-                    {/*// )}*/}
                 </DialogContent>
                 <DialogActions>
                     <Button autoFocus onClick={this.update} color="primary">

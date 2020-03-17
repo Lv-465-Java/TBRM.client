@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {TextField, Button, Grid, Box, FormControl, Container} from '@material-ui/core';
+import React, { Component } from 'react';
+import { TextField, Button, Grid, Box, FormControl, Container } from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import MaterialTable from 'material-table';
 import Alert from '@material-ui/lab/Alert';
-import {getUserRole} from '../../service/authService';
+import { getUserRole } from '../../service/authService';
 import axios from '../../utils/axios';
 import CustomPagination from "../pagination/customPagination";
 
@@ -18,10 +18,10 @@ const paginationStyle = {
 };
 
 const columns = [
-    {title: 'Email', field: 'email'},
-    {title: 'First Name', field: 'firstName'},
-    {title: 'Last Name', field: 'lastName'},
-    {title: 'Role', field: 'role.name'}
+    { title: 'Email', field: 'email' },
+    { title: 'First Name', field: 'firstName' },
+    { title: 'Last Name', field: 'lastName' },
+    { title: 'Role', field: 'role.name' }
 ];
 
 const successMessage = "owner was successfully changed";
@@ -29,7 +29,7 @@ const successMessage = "owner was successfully changed";
 class PermissionResourceTemplateChangeOwner extends Component {
 
     state = {
-        id: this.props.match.params.id,
+        id: this.props.id,
         name: undefined,
         recipient: "",
         data: [],
@@ -64,9 +64,8 @@ class PermissionResourceTemplateChangeOwner extends Component {
                     name: data.name
                 })
             }).catch(error => {
-            console.dir(error.response.data);
 
-        })
+            })
 
     };
 
@@ -84,57 +83,41 @@ class PermissionResourceTemplateChangeOwner extends Component {
                     totalItemsCount: totalItemsCount
                 });
             }).catch(error => {
-            console.dir(error.response.data);
-        })
+
+            })
 
     };
 
 
     onChangeRecipient = (event) => {
         let recipient = event.target.value;
-        this.setState({recipient});
+        this.setState({ recipient });
     };
 
     isValid = () => {
         return this.state.recipient !== "";
     };
 
-    verifyUser = () => {
-        if (getUserRole() !== "ROLE_MANAGER") {
-            this.props.history.push("/home");
-        }
-    };
-
-    goBack = () => {
-        this.props.history.goBack();
-    };
 
     componentDidMount = () => {
-        this.verifyUser();
         this.getData();
         this.getUsers(this.state.activePage);
     };
 
     handlePageChange = (event, pageNumber) => {
-        this.setState({activePage: pageNumber});
+        this.setState({ activePage: pageNumber });
         this.getUsers(pageNumber);
     };
 
 
     render() {
         return (
-            <div>
+            <Grid container
+                direction="row"
+                justify="center"
+                alignItems="center">
                 <Grid container spacing={3}>
                     <Grid item xs={2}>
-                        <Box mx="auto">
-                            <Box mt={4}>
-                                <Button
-                                    variant="contained"
-                                    startIcon={<ArrowBackIosIcon/>}
-                                    onClick={this.goBack}
-                                >Go Back</Button>
-                            </Box>
-                        </Box>
                     </Grid>
                     <Grid item xs={8}>
                         <h1>Change Owner to {this.state.name}</h1>
@@ -144,29 +127,8 @@ class PermissionResourceTemplateChangeOwner extends Component {
                     </Grid>
                 </Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={5}>
-                        <Box mx={7}>
-                            <Box mt={5}
-                                 display="flex"
-                                 flexDirection="column">
-                                {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
-                                {this.state.successMessage &&
-                                <Alert severity="success">{this.state.successMessage}</Alert>}
-                                <FormControl style={formStyles}>
-                                    <TextField type="text" label="recipient" value={this.state.recipient}
-                                               onChange={this.onChangeRecipient}/>
-                                </FormControl>
-                                <Button variant="contained"
-                                        color="primary"
-                                        size="large"
-                                        disabled={!this.isValid()}
-                                        onClick={this.changeOwner}
-                                >Change Owner</Button>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    <Grid item xs={7}>
-                        <Container maxWidth="md">
+                    <Grid item xs={8}>
+                    <Container maxWidth="md">
                             <MaterialTable
                                 title="Users"
                                 columns={columns}
@@ -191,7 +153,7 @@ class PermissionResourceTemplateChangeOwner extends Component {
                                                     this.setState(prevState => {
                                                         const data = [...prevState.data];
                                                         data[data.indexOf(oldData)] = newData;
-                                                        return {...prevState, data};
+                                                        return { ...prevState, data };
                                                     });
                                                 }
                                             }, 600);
@@ -204,8 +166,8 @@ class PermissionResourceTemplateChangeOwner extends Component {
                                 }}
                             />
                             <Grid container
-                                  style={paginationStyle}
-                                  justify="center">
+                                style={paginationStyle}
+                                justify="center">
                                 <CustomPagination
                                     activepage={this.state.activePage}
                                     totalPages={this.state.totalPages}
@@ -216,9 +178,30 @@ class PermissionResourceTemplateChangeOwner extends Component {
                             </Grid>
                         </Container>
                     </Grid>
+                    <Grid item xs={4}>
+                        <Box mx={7}>
+                            <Box mt={5}
+                                display="flex"
+                                flexDirection="column">
+                                {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
+                                {this.state.successMessage &&
+                                    <Alert severity="success">{this.state.successMessage}</Alert>}
+                                <FormControl style={formStyles}>
+                                    <TextField type="text" label="recipient" value={this.state.recipient}
+                                        onChange={this.onChangeRecipient} />
+                                </FormControl>
+                                <Button variant="contained"
+                                    color="primary"
+                                    size="large"
+                                    disabled={!this.isValid()}
+                                    onClick={this.changeOwner}
+                                >Change Owner</Button>
+                            </Box>
+                        </Box>
+                    </Grid>
 
                 </Grid>
-            </div>
+            </Grid>
         );
     }
 }

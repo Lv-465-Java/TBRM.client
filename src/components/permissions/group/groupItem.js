@@ -82,7 +82,7 @@ class GroupItem extends Component {
     };
 
     goBack = () => {
-        this.props.history.push(`/resource-template/permission/add/${this.state.id}`);
+        this.props.history.push(`/resource-template/permission/${this.state.id}`);
     };
 
     handlePageChange = (event, pageNumber) => {
