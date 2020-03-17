@@ -10,9 +10,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {getUserRole} from '../../service/authService';
+import Draggable from 'react-draggable';
+import Paper from '@material-ui/core/Paper';
+import { getUserRole } from '../../service/authService';
 import axios from '../../utils/axios';
 import CustomPagination from "../pagination/customPagination";
+import PermissionResourceTemplateRemove from './permissionResourcetemplateRemove';
+import { createBrowserHistory } from 'history';
 
 const formStyles = {
     marginBottom: 20,
@@ -27,18 +31,19 @@ const itemsNumber = 5;
 const noError = '';
 
 const successMessage = "permission was successfully added";
-
+const history = createBrowserHistory();
 class PermissionResourceTemplateAdd extends Component {
 
     state = {
-        id: this.props.match.params.id,
-        name: undefined,
+        id: this.props.id,
+        name: "",
         permission: "",
         principal: "",
         recipient: "",
         users: [],
         groups: [],
         open: false,
+        openPermissions: false,
         activePageGroup: 1,
         totalPagesGroup: 0,
         itemsCountPerPageGroup: 0,
@@ -63,7 +68,6 @@ class PermissionResourceTemplateAdd extends Component {
                 successMessage: ""
             });
         })
-        console.log(this.state);
     }
 
     getData = () => {
@@ -74,9 +78,8 @@ class PermissionResourceTemplateAdd extends Component {
                     name: data.name
                 })
             }).catch(error => {
-            console.dir(error.response.data);
 
-        })
+            })
 
     }
 
@@ -87,6 +90,8 @@ class PermissionResourceTemplateAdd extends Component {
                 let totalPages = response.data.totalPages;
                 let itemsCountPerPage = response.data.numberOfElements;
                 let totalItemsCount = response.data.totalElements;
+                let data = response.data;
+
                 this.setState({
                     users: users,
                     totalPagesUser: totalPages,
@@ -94,8 +99,8 @@ class PermissionResourceTemplateAdd extends Component {
                     totalItemsCountUser: totalItemsCount
                 });
             }).catch(error => {
-            console.log(error.response.data);
-        })
+
+            })
     }
 
     getGroups = (pageNumber) => {
@@ -136,7 +141,18 @@ class PermissionResourceTemplateAdd extends Component {
     };
 
     handleClose = () => {
-        this.setState({open: false});
+        this.setState({
+            open: false,
+            errorMessage: "",
+            successMessage: ""
+        });
+    };
+    handleClickOpenPermissions = () => {
+        this.setState({ openPermissions: true });
+    };
+
+    handleClosePermissions = () => {
+        this.setState({ openPermissions: false });
     };
 
     isValid = () => {
@@ -146,7 +162,7 @@ class PermissionResourceTemplateAdd extends Component {
 
 
     goBack = () => {
-        this.props.history.goBack();
+        this.props.history.push(`/resource-template/view/${this.props.id}`);
     };
 
     goToEditGroup(name) {
@@ -166,6 +182,14 @@ class PermissionResourceTemplateAdd extends Component {
     handleDeleteItem = () => {
         return this.state.totalItemsCountGroup % 5 === 0;
     };
+
+    PaperComponent(props) {
+        return (
+            <Draggable handle="#draggable-dialog-title" cancel={'[class*="MuiDialogContent-root"]'}>
+                <Paper {...props} />
+            </Draggable>
+        );
+    }
 
     componentDidMount = () => {
         this.getData();
@@ -187,10 +211,13 @@ class PermissionResourceTemplateAdd extends Component {
         ];
         return (
             <div>
-                <Grid container spacing={3}>
+                <Grid container
+                    direction="row"
+                    justify="center"
+                    alignItems="center" spacing={1}>
                     <Grid item xs={2}>
                         <Box mx="auto">
-                            <Box mt={4}>
+                            <Box mt={1}>
                                 <Button
                                     variant="contained"
                                     startIcon={<ArrowBackIosIcon/>}
@@ -200,7 +227,29 @@ class PermissionResourceTemplateAdd extends Component {
                         </Box>
                     </Grid>
                     <Grid item xs={8}>
-                        <h1>Add/Update Permission to {this.state.name}</h1>
+
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={this.handleClickOpenPermissions}
+                        >View/Delete Permissions to {this.state.name}</Button>
+                        <Dialog open={this.state.openPermissions} onClose={this.handleClosePermissions}
+                            PaperComponent={this.PaperComponent}
+                            aria-labelledby="draggable-dialog-title"
+                        >
+                            <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">Permissions</DialogTitle>
+                            <DialogContentText>
+                                To delete permission click on +
+                                </DialogContentText>
+                            <DialogContent dividers={true}>
+                                <PermissionResourceTemplateRemove id={this.props.id} />
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={this.handleClosePermissions} color="primary">
+                                    Cancel
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
                         <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
                             <DialogTitle id="form-dialog-title">Permission</DialogTitle>
                             <DialogContent>
@@ -268,8 +317,11 @@ class PermissionResourceTemplateAdd extends Component {
                     </Grid>
                     <Grid item xs={2}/>
                 </Grid>
-                <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                <Grid container
+                    direction="row"
+                    justify="center"
+                    alignItems="center" spacing={1}>
+                    <Grid item xs={7}>
                         <Container maxWidth="md">
                             <MaterialTable
                                 title="Users"
@@ -321,7 +373,7 @@ class PermissionResourceTemplateAdd extends Component {
                             </Grid>
                         </Container>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={5}>
                         <Container maxWidth="md">
                             <MaterialTable
                                 title="Groups"
@@ -333,7 +385,7 @@ class PermissionResourceTemplateAdd extends Component {
                                         tooltip: 'Choose',
                                         onClick: (event, data) => {
                                             this.setState({
-                                                recipient: data.email
+                                                recipient: data.name
                                             });
                                             this.handleClickOpen();
                                         }

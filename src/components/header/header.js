@@ -26,7 +26,6 @@ const Header = (props) => {
         },
         link: {
             flexGrow: 1,
-            
         },
     }));
 
@@ -52,7 +51,6 @@ const Header = (props) => {
     }
 
     const userLoggedIn = (
-
         <div>
             <IconButton
                 aria-label="account of current user"
@@ -86,7 +84,7 @@ const Header = (props) => {
         </div>
     );
 
-    const userNotLoggedIn = ( 
+    const userNotLoggedIn = (
         <div>
             <Link to="/"><Button style={{ color: '#FFF' }}>Sign In</Button></Link>
             <Link to="/registration"><Button style={{ color: '#FFF' }}>Sign Up</Button></Link>
@@ -98,10 +96,9 @@ const Header = (props) => {
 
     );
 
-    const managarLinks = (
+    const managerLinks = (
         <div>
-            <Link to="/resource-template" style={linkStyle}><Button style={{ color: '#FFF' }}>Resource Templates</Button></Link>
-            <Link to="/resource" style={linkStyle}><Button style={{ color: '#FFF' }}>Resources</Button></Link>
+            <Link to="/resource-template"><Button style={{ color: '#FFF' }}>Resources</Button></Link>
         </div>
     );
 
@@ -116,7 +113,7 @@ const Header = (props) => {
     if (getUserRole() === "ROLE_ADMIN") {
         userRoleLinks = adminLinks;
     } else if (getUserRole() === "ROLE_MANAGER" || getUserRole() === "ROLE_REGISTER" || getUserRole() === "ROLE_USER") {
-        userRoleLinks = managarLinks;
+        userRoleLinks = managerLinks;
     }else{
         userRoleLinks = (<div></div>);
     }
