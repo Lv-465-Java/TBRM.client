@@ -72,9 +72,6 @@ class CreateParameter extends Component {
                 this.props.getData();
             }).catch(error => {
             this.setState({errorMessage: error.response.data.message});
-            console.dir(error.response.data);
-
-            // console.dir(error.response.data);
         })
     };
     isNotValid = () => {

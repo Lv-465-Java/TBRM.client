@@ -96,7 +96,6 @@ class ResourceRecordCreate extends Component {
                     </div>
                     <div>
                         <PhotoUpload/>
-                        )
                     </div>
                     {
                         // elements

@@ -69,7 +69,6 @@ class UpdateParameter extends Component {
                 open: true
             })
             this.setState({errorMessage: error.response.data.message});
-            console.dir(error.response.data);
         })
     };
 
