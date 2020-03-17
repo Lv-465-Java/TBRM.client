@@ -21,11 +21,11 @@ export default class MyDialog extends Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button autoFocus onClick={this.props.handleClose} color="primary">
-                            Disagree
-                        </Button>
                         <Button onClick={this.props.delete} color="primary" autoFocus>
                             Agree
+                        </Button>
+                        <Button autoFocus onClick={this.props.handleClose} color="primary">
+                            Disagree
                         </Button>
                     </DialogActions>
                 </Dialog></>

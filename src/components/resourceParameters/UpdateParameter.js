@@ -6,8 +6,10 @@ import DropdownTemplate from "../resourceTemplate/DropdownTemplate";
 import TableCell from "@material-ui/core/TableCell";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
+import {Edit} from "@material-ui/icons";
+import Alert from "@material-ui/lab/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const PARAMETER_TYPE = {
     point: ["int", "double", "string", "reference"],
@@ -25,7 +27,9 @@ class UpdateParameter extends Component {
         parameter: this.props.parameterType.split('_')[0].toLowerCase(),
         parameterType: this.props.parameterType.split('_')[1].toLowerCase(),
         pattern: "",
-        relatedResourceTemplateId: ""
+        relatedResourceTemplateId: "",
+        errorMessage: '',
+        open: false
     };
 
     onChangeName = (e) => {
@@ -43,6 +47,10 @@ class UpdateParameter extends Component {
         this.setState({relatedResourceTemplateId: id})
     };
 
+    handleClose = () => {
+        this.setState({open: false});
+    }
+
     create = () => {
         // let body = { 'isPublished': false };
 
@@ -55,17 +63,24 @@ class UpdateParameter extends Component {
         }
         axios.put(`/resource-template/${this.state.resTempId}/resource-parameter/${this.state.id}`, data).then(
             response => {
-                console.log(this.props.getData)
                 this.props.getData()
             }).catch(error => {
-            // console.dir(error.response.data);
+            this.setState({
+                open: true
+            })
+            this.setState({errorMessage: error.response.data.message});
         })
     };
 
     render() {
         return (
             <>
-
+                <Snackbar open={this.state.open} autoHideDuration={1500} onClose={this.handleClose}
+                          anchorOrigin={{horizontal: 'center', vertical: 'top'}}>
+                    <Alert onClose={this.handleClose} severity="error">
+                        {this.state.errorMessage}
+                    </Alert>
+                </Snackbar>
                 <TableCell align="right">
                     <TextField type="text" name="name" onChange={this.onChangeName} value={this.state.name}/>
                 </TableCell>
@@ -87,8 +102,8 @@ class UpdateParameter extends Component {
                     <DropdownTemplate setRelatedResourceTemplateId={this.setRelatedResourceTemplateId}/>}
                 </TableCell>
                 <Tooltip title="Save">
-                    <IconButton aria-label="save" color="primary" onClick={this.create}>
-                        <AddCircleOutlineOutlinedIcon/>
+                    <IconButton aria-label="Edit" color="primary" onClick={this.create}>
+                        <Edit/>
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Cancel">
