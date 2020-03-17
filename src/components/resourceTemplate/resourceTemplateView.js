@@ -4,9 +4,6 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import PopupState, {bindMenu, bindTrigger} from 'material-ui-popup-state';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -24,7 +21,6 @@ import MyDialog from "./popUp"
 import CustomPagination from "../pagination/customPagination";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import ResourceRecordCreate from "../resourceRecord/ResourceRecordCreate";
 
 const style = {
     maxWidth: 800,
@@ -76,11 +72,11 @@ class ResourceTemplateView extends Component {
         itemsCountPerPage: 0,
         totalItemsCount: 0,
         errorMessageParameter: ''
-    }
+    };
 
     classes = () => {
         useStyles();
-    }
+    };
 
     getData = () => {
         axios.get(`/resource-template/${this.state.resTempId}`).then(
@@ -148,21 +144,15 @@ class ResourceTemplateView extends Component {
             });
             console.log(error.response.data.message);
         })
-    }
-
-    // method = () => {
-    //     if (this.state.resourceParameters.length === 0) {
-    //         this.setState({errorMessage: "lalalallallalallalalal"})
-    //     }
-    // };
+    };
 
     goBack = () => {
         this.props.history.push("/resource-template");
-    }
+    };
 
     isPublished = () => {
         return this.state.isPublished ? "Published" : "Not Published";
-    }
+    };
 
     showLinks = () => {
         if (getUserRole() === "ROLE_MANAGER") {
@@ -170,7 +160,7 @@ class ResourceTemplateView extends Component {
         } else {
             return true;
         }
-    }
+    };
 
     componentDidMount() {
         this.getData();
@@ -178,7 +168,7 @@ class ResourceTemplateView extends Component {
     }
 
     handleClickOpen = () => {
-        console.log("open")
+        console.log("open");
         this.setState({open: true}, () => console.log(this.state));
     };
 
@@ -256,7 +246,6 @@ class ResourceTemplateView extends Component {
                         <CardContent>
                             <Typography variant="body2" color="textSecondary" component="h2">
                                 {this.isPublished()}
-                                {/*{this.method}*/}
                                 {this.state.errorMessage &&
                                 <Alert severity="error">{this.state.errorMessage}</Alert>}
                             </Typography>
@@ -346,7 +335,7 @@ class ResourceTemplateView extends Component {
                     <DialogTitle id="simple-dialog-title">Create new Resource Parameter</DialogTitle>
 
                     <CreateParameter errorMessage={this.state.errorMessageParameter}
-                        handleClose={this.handleCloseCreate}
+                                     handleClose={this.handleCloseCreate}
                                      getData={() => this.getParameters(this.state.activePage)}
                                      resTempId={this.state.resTempId}
                     />

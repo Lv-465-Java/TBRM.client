@@ -45,7 +45,8 @@ class ResourceRecordView extends Component {
     };
 
     setRecordsData = (records) => {
-        this.setState({records})
+        let message = records.length === 0 ? "There is no resources to display" : "";
+        this.setState({records, message})
     };
 
     getResourceTemplateData = () => {
@@ -71,6 +72,7 @@ class ResourceRecordView extends Component {
     }
 
     render() {
+
         return (
             <div>
                 <div>
