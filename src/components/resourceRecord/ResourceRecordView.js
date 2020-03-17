@@ -7,11 +7,8 @@ import Grid from "@material-ui/core/Grid";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import ResourceRecordCreate from "./ResourceRecordCreate";
-import Image from "material-ui-image";
 import CustomPagination from "../pagination/customPagination";
-import {getUserRole} from "../../service/authService";
 import FilterView from "./filters/filterView";
-
 
 const itemsNumber = 5;
 
@@ -74,13 +71,6 @@ class ResourceRecordView extends Component {
     }
 
     render() {
-        // function relatedResourceTableName() {
-        //     this.state.resourceTemplate.resourceParameters.map(key => {
-        //         if (key.parameterType === "POINT_REFERENCE") {
-        //             return key['relatedResourceTemplateTableName'];
-        //         }
-        //     })
-        // }
         return (
             <div>
                 <div>

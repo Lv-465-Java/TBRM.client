@@ -34,7 +34,7 @@ class ResourceTemplateList extends Component {
         totalPages: 0,
         itemsCountPerPage: 0,
         totalItemsCount: 0,
-        message: undefined
+        // message: ""
     };
 
     getData = (pageNumber) => {
@@ -47,7 +47,7 @@ class ResourceTemplateList extends Component {
                 resourceTemplates: resourceTemplates,
                 totalPages: totalPages,
                 itemsCountPerPage: itemsCountPerPage,
-                totalItemsCount: totalItemsCount
+                totalItemsCount: totalItemsCount,
             });
 
         })
@@ -63,9 +63,8 @@ class ResourceTemplateList extends Component {
                 resourceTemplates: resourceTemplates,
                 totalPages: totalPages,
                 itemsCountPerPage: itemsCountPerPage,
-                totalItemsCount: totalItemsCount
+                totalItemsCount: totalItemsCount,
             });
-            this.setState({resourceTemplates});
         })
     };
 
@@ -91,38 +90,19 @@ class ResourceTemplateList extends Component {
     };
 
     setRecordsData = (resourceTemplates) => {
-        this.setState({resourceTemplates})
+        let message = resourceTemplates.length === 0 ? "There is no resource templates to display" : "";
+        this.setState({resourceTemplates, message})
     };
-
-    // methodCheckResourceToDisplay = () => {
-    //     if (this.state.resourceTemplates.length === 0) {
-    //         console.log("ss");
-    //         // return "There is no resource templates to display"
-    //     } else {
-    //         this.state.resourceTemplates.map((item) =>
-    //             (<ResourceTemplateItem key={item.id}
-    //                                    item={item}/>)
-    //         )
-    //     }
-    // };
 
     render() {
 
-        let string = (this.state.resourceTemplates.length !== 0) ?
+        let showTemplateListOrErrorMessage = (this.state.resourceTemplates.length !== 0) ?
             (
                 this.state.resourceTemplates.map((item) =>
                     (<ResourceTemplateItem key={item.id}
                                            item={item}/>)
                 )
-            ) : (<h1>There is no resource templates to display</h1>);
-
-        // let string = (this.state.resourceTemplates.length !== 0) ?
-        //     (
-        //         this.state.resourceTemplates.map((item) =>
-        //             (<ResourceTemplateItem key={item.id}
-        //                                    item={item}/>)
-        //         )
-        //     ) : (<h1>There is no resource templates to display</h1>);
+            ) : (<h4>{this.state.message}</h4>);
 
         let userLinks = (getUserRole() === "ROLE_MANAGER") ?
             (
@@ -132,7 +112,7 @@ class ResourceTemplateList extends Component {
                     onClick={this.goToCreateResource}>Create template</Button>
             ) : (
                 <div></div>
-            )
+            );
 
         return (
             <div>
@@ -144,11 +124,11 @@ class ResourceTemplateList extends Component {
                                     resourceTemplate={this.state.resourceTemplate}
                                     setRecordsData={this.setRecordsData}/>
                         <div style={style}>
-                            <h1>{this.state.message}</h1>
-                            {this.state.resourceTemplates.map((item) =>
-                                (<ResourceTemplateItem key={item.id}
-                                                       item={item}/>)
-                            )}
+                            {showTemplateListOrErrorMessage}
+                            {/*{this.state.resourceTemplates.map((item) =>*/}
+                            {/*    (<ResourceTemplateItem key={item.id}*/}
+                            {/*                           item={item}/>)*/}
+                            {/*)}*/}
                         </div>
                     </Grid>
                     <Grid item xs/>

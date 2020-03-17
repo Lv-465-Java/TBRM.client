@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TextField, Button, Grid, Box, FormControl, Container} from '@material-ui/core';
+import {Box, Button, Container, FormControl, Grid, TextField} from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -12,11 +12,10 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Draggable from 'react-draggable';
 import Paper from '@material-ui/core/Paper';
-import { getUserRole } from '../../service/authService';
 import axios from '../../utils/axios';
 import CustomPagination from "../pagination/customPagination";
 import PermissionResourceTemplateRemove from './permissionResourcetemplateRemove';
-import { createBrowserHistory } from 'history';
+import {createBrowserHistory} from 'history';
 
 const formStyles = {
     marginBottom: 20,
@@ -32,6 +31,7 @@ const noError = '';
 
 const successMessage = "permission was successfully added";
 const history = createBrowserHistory();
+
 class PermissionResourceTemplateAdd extends Component {
 
     state = {
@@ -79,7 +79,7 @@ class PermissionResourceTemplateAdd extends Component {
                 })
             }).catch(error => {
 
-            })
+        })
 
     }
 
@@ -100,7 +100,7 @@ class PermissionResourceTemplateAdd extends Component {
                 });
             }).catch(error => {
 
-            })
+        })
     }
 
     getGroups = (pageNumber) => {
@@ -148,11 +148,11 @@ class PermissionResourceTemplateAdd extends Component {
         });
     };
     handleClickOpenPermissions = () => {
-        this.setState({ openPermissions: true });
+        this.setState({openPermissions: true});
     };
 
     handleClosePermissions = () => {
-        this.setState({ openPermissions: false });
+        this.setState({openPermissions: false});
     };
 
     isValid = () => {
@@ -212,9 +212,9 @@ class PermissionResourceTemplateAdd extends Component {
         return (
             <div>
                 <Grid container
-                    direction="row"
-                    justify="center"
-                    alignItems="center" spacing={1}>
+                      direction="row"
+                      justify="center"
+                      alignItems="center" spacing={1}>
                     <Grid item xs={2}>
                         <Box mx="auto">
                             <Box mt={1}>
@@ -234,15 +234,15 @@ class PermissionResourceTemplateAdd extends Component {
                             onClick={this.handleClickOpenPermissions}
                         >View/Delete Permissions to {this.state.name}</Button>
                         <Dialog open={this.state.openPermissions} onClose={this.handleClosePermissions}
-                            PaperComponent={this.PaperComponent}
-                            aria-labelledby="draggable-dialog-title"
+                                PaperComponent={this.PaperComponent}
+                                aria-labelledby="draggable-dialog-title"
                         >
-                            <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">Permissions</DialogTitle>
+                            <DialogTitle style={{cursor: 'move'}} id="draggable-dialog-title">Permissions</DialogTitle>
                             <DialogContentText>
                                 To delete permission click on +
-                                </DialogContentText>
+                            </DialogContentText>
                             <DialogContent dividers={true}>
-                                <PermissionResourceTemplateRemove id={this.props.id} />
+                                <PermissionResourceTemplateRemove id={this.props.id}/>
                             </DialogContent>
                             <DialogActions>
                                 <Button onClick={this.handleClosePermissions} color="primary">
@@ -318,9 +318,9 @@ class PermissionResourceTemplateAdd extends Component {
                     <Grid item xs={2}/>
                 </Grid>
                 <Grid container
-                    direction="row"
-                    justify="center"
-                    alignItems="center" spacing={1}>
+                      direction="row"
+                      justify="center"
+                      alignItems="center" spacing={1}>
                     <Grid item xs={7}>
                         <Container maxWidth="md">
                             <MaterialTable
