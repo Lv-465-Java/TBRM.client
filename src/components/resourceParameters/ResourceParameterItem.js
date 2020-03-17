@@ -7,6 +7,8 @@ import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import axios from "../../utils/axios";
 import UpdateParameter from "./UpdateParameter";
+import Alert from "@material-ui/lab/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
 
 class ResourceParameterItem extends Component {
 
@@ -17,7 +19,9 @@ class ResourceParameterItem extends Component {
         parameterType: this.props.item.parameterType,
         pattern: this.props.item.pattern,
         resourceRelation: this.props.item.relatedResourceTemplateName,
-        isNotEdit: true
+        isNotEdit: true,
+        errorMessage: '',
+        open: false
     };
 
     UNSAFE_componentWillReceiveProps(nextProps) {
@@ -40,12 +44,12 @@ class ResourceParameterItem extends Component {
     delete = () => {
         axios.delete(`/resource-template/${this.props.resTempId}/resource-parameter/${this.state.id}`).then(
             response => {
-                // this.props.history.push("/resource-template");
                 this.props.getData();
-                // this.props.getData();
             }).catch(error => {
-            // console.dir(error.response.data);
-
+            this.setState({
+                open: true
+            })
+            this.setState({errorMessage: error.response.data.message});
         })
 
     }
@@ -53,12 +57,14 @@ class ResourceParameterItem extends Component {
         this.setState({isNotEdit: !this.state.isNotEdit})
     };
 
+    handleClose = () => {
+        this.setState({open: false});
+    }
+
 
     render() {
-
         let element = this.state.isNotEdit ? (<><TableCell align="right">{this.state.name}</TableCell>
             <TableCell align="right">{this.state.parameterType}</TableCell>
-            {/*<TableCell align="right">{this.state.pattern}</TableCell>*/}
             <TableCell align="right">{this.state.resourceRelation}</TableCell>
             <Tooltip title="Edit">
                 <IconButton aria-label="edit" color="secondary" onClick={this.onChangeEdit}>
@@ -76,29 +82,16 @@ class ResourceParameterItem extends Component {
                                                name={this.state.name}
                                                parameterType={this.state.parameterType}
         />);
-        console.log(this.state)
+
         return (
             <>
+                <Snackbar open={this.state.open} autoHideDuration={1500} onClose={this.handleClose}
+                          anchorOrigin={{horizontal: 'center', vertical: 'top'}}>
+                    <Alert onClose={this.handleClose} severity="error">
+                        {this.state.errorMessage}
+                    </Alert>
+                </Snackbar>
                 <TableRow>
-                    {/*<TableCell align="right">{this.state.id}</TableCell>*/}
-                    {/*<TableCell align="right">{this.state.columnName}</TableCell>*/}
-                    {/*<TableCell align="right">{this.state.name}</TableCell>*/}
-                    {/*<TableCell align="right">{this.state.parameterType}</TableCell>*/}
-                    {/*<TableCell align="right">{this.state.pattern}</TableCell>*/}
-                    {/*<TableCell align="right">{this.state.resourceRelation}</TableCell>*/}
-
-                    {/*    <Tooltip title="Delete">*/}
-                    {/*        <IconButton aria-label="delete" onClick={this.delete}>*/}
-                    {/*           <DeleteIcon/>*/}
-                    {/*        </IconButton>*/}
-                    {/*    </Tooltip>*/}
-                    {/*    <Tooltip title="Edit">*/}
-                    {/*        <IconButton aria-label="edit">*/}
-                    {/*            <EditIcon/>*/}
-                    {/*        </IconButton>*/}
-                    {/*    </Tooltip>*/}
-                    {/*<CreateParameter getData={this.getData}*/}
-                    {/*                 resTempId={this.state.resTempId}/>*/}
                     {element}
 
                 </TableRow>

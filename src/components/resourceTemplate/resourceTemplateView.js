@@ -22,6 +22,9 @@ import CreateParameter from "../resourceParameters/CreateParameter";
 import ResourceParametersList from "../resourceParameters/ResourceParametersList";
 import MyDialog from "./popUp"
 import CustomPagination from "../pagination/customPagination";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import ResourceRecordCreate from "../resourceRecord/ResourceRecordCreate";
 
 const style = {
     maxWidth: 800,
@@ -66,11 +69,13 @@ class ResourceTemplateView extends Component {
         isPublished: "",
         userId: "",
         open: false,
+        openCreate: false,
         resourceParameters: [],
         activePage: 1,
         totalPages: 0,
         itemsCountPerPage: 0,
         totalItemsCount: 0,
+        errorMessageParameter: ''
     }
 
     classes = () => {
@@ -87,7 +92,6 @@ class ResourceTemplateView extends Component {
                     isPublished: data.isPublished,
                 })
             }).catch(error => {
-            console.dir(error.response.data);
         })
     };
 
@@ -105,7 +109,6 @@ class ResourceTemplateView extends Component {
                     totalItemsCount: totalItemsCount
                 });
             }).catch(error => {
-            console.dir(error.response.data);
         })
     };
 
@@ -145,7 +148,6 @@ class ResourceTemplateView extends Component {
             });
             console.log(error.response.data.message);
         })
-
     }
 
     // method = () => {
@@ -182,6 +184,13 @@ class ResourceTemplateView extends Component {
 
     handleClose = () => {
         this.setState({open: false});
+    };
+    handleCloseCreate = () => {
+        this.setState({openCreate: false});
+    };
+
+    handleOpenCreate = () => {
+        this.setState({openCreate: true})
     };
 
     handlePageChange = (event, pageNumber) => {
@@ -263,39 +272,12 @@ class ResourceTemplateView extends Component {
                     ><Hidden mdUp={this.showLinks()}>
                         <Box mx="auto">
                             <Box>
-                                <PopupState variant="popover" popupId="demo-popup-menu">
-                                    {popupState => (
-                                        <React.Fragment>
-                                            <Button variant="contained"
-                                                    color="primary" {...bindTrigger(popupState)}>
-                                                Permissions
-                                            </Button>
-                                            <Menu {...bindMenu(popupState)}>
-                                                <Link to={`/resource-template/permission/${this.state.resTempId}`}
-                                                      style={linkStyle}>
-                                                    <MenuItem onClick={popupState.close}>View Permissions</MenuItem>
-                                                </Link>
-                                                <Link
-                                                    to={`/resource-template/permission/add/${this.state.resTempId}`}
-                                                    style={linkStyle}>
-                                                    <MenuItem onClick={popupState.close}>Add/Update
-                                                        Permission</MenuItem>
-                                                </Link>
-                                                <Link
-                                                    to={`/resource-template/permission/owner/${this.state.resTempId}`}
-                                                    style={linkStyle}>
-                                                    <MenuItem onClick={popupState.close}>Change Owner</MenuItem>
-                                                </Link>
-                                                <Link
-                                                    to={`/resource-template/permission/remove/${this.state.resTempId}`}
-                                                    style={linkStyle}>
-                                                    <MenuItem onClick={popupState.close}>Delete
-                                                        Permission</MenuItem>
-                                                </Link>
-                                            </Menu>
-                                        </React.Fragment>
-                                    )}
-                                </PopupState>
+                                <Link to={`/resource-template/permission/${this.state.resTempId}`}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                    >Permissions</Button>
+                                </Link>
                             </Box>
                             <Box mt={5}>
                                 <Link to={`/resource-template/update/${this.state.resTempId}`}>
@@ -312,8 +294,7 @@ class ResourceTemplateView extends Component {
                                     color="secondary"
                                     startIcon={<DeleteIcon/>}
                                     style={useStyles.button}
-                                    onClick={this.handleClickOpen}
-                                >
+                                    onClick={this.handleClickOpen}>
                                     Delete
                                 </Button>
                             </Box>
@@ -326,13 +307,24 @@ class ResourceTemplateView extends Component {
                     <h3>Resource Parameters</h3>
                     <Card style={cardStyle}>
                         <CardContent>
-                            <CreateParameter getData={this.getData}
-                                             resTempId={this.state.resTempId}/>
+                            <Typography variant="body2" color="textSecondary" component="h2">
+                                {/*{this.isPublished()}*/}
+                                {this.state.errorMessageParameter &&
+                                <Alert severity="error">{this.state.errorMessageParameter}</Alert>}
+                            </Typography>
+                            <Button variant="contained"
+                                    color="primary"
+                                    startIcon={<EditIcon/>}
+                                    onClick={this.handleOpenCreate}>
+                                Create Parameter
+                            </Button>
+                            {/*<CreateParameter getData={() => this.getParameters(this.state.activePage)}*/}
+                            {/*                 resTempId={this.state.resTempId}/>*/}
                         </CardContent>
                         <CardContent>
                             <ResourceParametersList resourceParameters={this.state.resourceParameters}
                                                     resTempId={this.state.resTempId}
-                                                    getData={this.getData}/>
+                                                    getData={() => this.getParameters(this.state.activePage)}/>
                         </CardContent>
                     </Card>
                     <Grid container
@@ -347,6 +339,19 @@ class ResourceTemplateView extends Component {
                         />
                     </Grid>
                 </Grid>
+                <Dialog fullWidth={true}
+                        onClose={this.handleCloseCreate}
+                        aria-labelledby="simple-dialog-title"
+                        open={this.state.openCreate}>
+                    <DialogTitle id="simple-dialog-title">Create new Resource Parameter</DialogTitle>
+
+                    <CreateParameter errorMessage={this.state.errorMessageParameter}
+                        handleClose={this.handleCloseCreate}
+                                     getData={() => this.getParameters(this.state.activePage)}
+                                     resTempId={this.state.resTempId}
+                    />
+
+                </Dialog>
                 <MyDialog
                     delete={this.delete}
                     open={this.state.open}

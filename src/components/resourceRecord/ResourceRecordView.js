@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import axios from "../../utils/axios";
-// import axios from "../../utils/axios";
 import ResourceRecordList from "./ResourceRecordList";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import Button from "@material-ui/core/Button";
@@ -8,13 +7,11 @@ import Grid from "@material-ui/core/Grid";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import ResourceRecordCreate from "./ResourceRecordCreate";
+import Image from "material-ui-image";
 import CustomPagination from "../pagination/customPagination";
 import {getUserRole} from "../../service/authService";
 import FilterView from "./filters/filterView";
 
-// const gridStyles = {
-//     marginLeft: 300
-// }
 
 const itemsNumber = 5;
 
@@ -49,9 +46,11 @@ class ResourceRecordView extends Component {
             });
         })
     };
+
     setRecordsData = (records) => {
         this.setState({records})
     };
+
     getResourceTemplateData = () => {
         axios.get(`/resource-template/table/${this.state.tableName}`).then(response => {
             this.setState({resourceTemplate: response.data})
@@ -70,7 +69,6 @@ class ResourceRecordView extends Component {
     };
 
     componentDidMount() {
-        //this.getRecordsData();
         this.getResourceTemplateData();
         this.getRecordsData(this.state.activePage);
     }
@@ -89,11 +87,11 @@ class ResourceRecordView extends Component {
                     <h1>{this.state.resourceTemplate.name}</h1>
                     <h3>{this.state.resourceTemplate.description}</h3>
                 </div>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<CheckCircleIcon/>}
-                    onClick={this.handleOpen}>
+                <Button style={{marginBottom: 40}}
+                        variant="contained"
+                        color="primary"
+                        startIcon={<CheckCircleIcon/>}
+                        onClick={this.handleOpen}>
                     Add record
                 </Button>
 
@@ -108,7 +106,7 @@ class ResourceRecordView extends Component {
                             tableName={this.state.tableName}
                             records={this.state.records}
                             resourceTemplate={this.state.resourceTemplate}
-                            getRecordsData={this.getRecordsData}
+                            getRecordsData={() => this.getRecordsData(this.state.activePage)}
                         />}
                     </Grid>
                     <Grid item xs={3}/>
@@ -124,13 +122,16 @@ class ResourceRecordView extends Component {
                         onChange={this.handlePageChange}
                     />
                 </Grid>
-                <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.state.openDialog}>
+                <Dialog fullWidth={true}
+                        onClose={this.handleClose}
+                        aria-labelledby="simple-dialog-title"
+                        open={this.state.openDialog}>
                     <DialogTitle id="simple-dialog-title">Create new {this.state.resourceTemplate.name}</DialogTitle>
 
                     <ResourceRecordCreate handleClose={this.handleClose}
                                           tableName={this.state.tableName}
                                           resourceTemplate={this.state.resourceTemplate}
-                                          getRecordsData={this.getRecordsData}
+                                          getRecordsData={() => this.getRecordsData(this.state.activePage)}
                     />
 
                 </Dialog>

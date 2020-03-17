@@ -49,7 +49,7 @@ class ResourceTemplateList extends Component {
                 itemsCountPerPage: itemsCountPerPage,
                 totalItemsCount: totalItemsCount
             });
-            console.log(response.data);
+
         })
     };
 
