@@ -88,12 +88,14 @@ class resourceRecordItem extends Component {
                                 //             style={linkStyle}
                                             align="right">{this.state.data[element.columnName]}
                             </TableCell>)
-                        } else if (element.columnName === 'photos') {
-                            e = (<TableCell align="right"><Image
-                                src={this.state.data[element.columnName]}
-                            />
-                            </TableCell>)
-                        } else if (element.columnName.endsWith('_coordinate')) {
+                        }
+                        // else if (element.columnName === 'photos') {
+                        //     e = (<TableCell align="right"><Image
+                        //         src={this.state.data[element.columnName]}
+                        //     />
+                        //     </TableCell>)
+                        // }
+                        else if (element.columnName.endsWith('_coordinate')) {
                             e = (<TableCell align="right">
                                 <Tooltip title={this.state.data[element.columnName].map(key => (
 
