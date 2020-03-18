@@ -2,6 +2,15 @@
     text-align: center;
 }
 
+.searchField {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    background-color: #e3eeff;
+    padding: 10px;
+}
+
 .filterField {
     display: flex;
     flex-direction: row;
@@ -9,19 +18,40 @@
     margin-top: 30px;
     margin-bottom: 30px;
     background-color: #e3eeff;
+    padding: 10px;
+}
+
+.emptyTable{
+
 }
 
 .filterCells {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-left: 5px;
-    margin-right: 5px;
 }
 
 .filterDropdown {
-    margin-left: 5px;
-    width: 200px;
+    margin-right: 10px;
+    width: 250px;
+    align-items: center;
+}
+
+label.MuiFormControlLabel-root {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0px;
+    margin-right: 0px;
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.MuiFormGroup-root.radioGroup {
+    margin-top: 10px;
+    display: block;
+    flex-wrap: wrap;
+    flex-direction: column;
 }
 
 .referenceDropdown {

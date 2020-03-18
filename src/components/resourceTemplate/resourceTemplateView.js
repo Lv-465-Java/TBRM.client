@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -12,10 +12,10 @@ import EditIcon from '@material-ui/icons/Edit';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ReplayIcon from '@material-ui/icons/Replay';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import { makeStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
-import { Grid, Box, Hidden } from '@material-ui/core';
-import { getUserRole } from '../../service/authService';
+import {makeStyles} from '@material-ui/core/styles';
+import {Link} from 'react-router-dom';
+import {Box, Grid, Hidden} from '@material-ui/core';
+import {getUserRole} from '../../service/authService';
 import Alert from '@material-ui/lab/Alert';
 import axios from '../../utils/axios';
 import CreateParameter from "../resourceParameters/CreateParameter";
@@ -24,7 +24,6 @@ import MyDialog from "./popUp"
 import CustomPagination from "../pagination/customPagination";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import ResourceRecordCreate from "../resourceRecord/ResourceRecordCreate";
 
 const style = {
     maxWidth: 800,
@@ -76,11 +75,11 @@ class ResourceTemplateView extends Component {
         itemsCountPerPage: 0,
         totalItemsCount: 0,
         errorMessageParameter: ''
-    }
+    };
 
     classes = () => {
         useStyles();
-    }
+    };
 
     getData = () => {
         axios.get(`/resource-template/${this.state.resTempId}`).then(
@@ -110,32 +109,32 @@ class ResourceTemplateView extends Component {
                     totalItemsCount: totalItemsCount
                 });
             }).catch(error => {
-            })
+        })
     };
 
 
     publish = () => {
-        let body = { 'isPublished': true };
+        let body = {'isPublished': true};
 
         axios.put(`/resource-template/${this.state.resTempId}/publish`, body).then(
             response => {
-                this.setState({ isPublished: true });
+                this.setState({isPublished: true});
             }).catch(error => {
-                this.setState({ errorMessage: error.response.data.message });
-                console.dir(error.response.data);
-            })
+            this.setState({errorMessage: error.response.data.message});
+            console.dir(error.response.data);
+        })
     };
 
     unpublish = () => {
-        let body = { 'isPublished': false };
+        let body = {'isPublished': false};
 
         axios.put(`/resource-template/${this.state.resTempId}/publish`, body).then(
             response => {
-                this.setState({ isPublished: false });
+                this.setState({isPublished: false});
             }).catch(error => {
-                this.setState({ errorMessage: error.response.data.message });
-                console.log(error.response.data.message);
-            })
+            this.setState({errorMessage: error.response.data.message});
+            console.log(error.response.data.message);
+        })
     };
 
     delete = () => {
@@ -143,21 +142,21 @@ class ResourceTemplateView extends Component {
             response => {
                 this.props.history.push("/resource-template");
             }).catch(error => {
-                this.setState({
-                    errorMessage: error.response.data.message,
-                    open: false
-                });
-                console.log(error.response.data.message);
-            })
-    }
+            this.setState({
+                errorMessage: error.response.data.message,
+                open: false
+            });
+            console.log(error.response.data.message);
+        })
+    };
 
     goBack = () => {
         this.props.history.push("/resource-template");
-    }
+    };
 
     isPublished = () => {
         return this.state.isPublished ? "Published" : "Not Published";
-    }
+    };
 
     showLinks = () => {
         if (getUserRole() === "ROLE_MANAGER") {
@@ -165,7 +164,7 @@ class ResourceTemplateView extends Component {
         } else {
             return true;
         }
-    }
+    };
 
     componentDidMount() {
         this.getData();
@@ -173,23 +172,23 @@ class ResourceTemplateView extends Component {
     }
 
     handleClickOpen = () => {
-        console.log("open")
-        this.setState({ open: true }, () => console.log(this.state));
+        console.log("open");
+        this.setState({open: true}, () => console.log(this.state));
     };
 
     handleClose = () => {
-        this.setState({ open: false });
+        this.setState({open: false});
     };
     handleCloseCreate = () => {
-        this.setState({ openCreate: false });
+        this.setState({openCreate: false});
     };
 
     handleOpenCreate = () => {
-        this.setState({ openCreate: true })
+        this.setState({openCreate: true})
     };
 
     handlePageChange = (event, pageNumber) => {
-        this.setState({ activePage: pageNumber });
+        this.setState({activePage: pageNumber});
         this.getParameters(pageNumber);
     };
 
@@ -199,21 +198,21 @@ class ResourceTemplateView extends Component {
                 <Button
                     variant="contained"
                     color="primary"
-                    startIcon={<CheckCircleIcon />}
+                    startIcon={<CheckCircleIcon/>}
                     style={useStyles.button}
                     onClick={this.publish}
                     disabled={this.state.resourceParameters.length === 0}
                 >Publish</Button>
             </Box>) : (
-                <Box mt={5}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<ReplayIcon />}
-                        style={useStyles.button}
-                        onClick={this.unpublish}
-                    >Cancel publish</Button>
-                </Box>)
+            <Box mt={5}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<ReplayIcon/>}
+                    style={useStyles.button}
+                    onClick={this.unpublish}
+                >Cancel publish</Button>
+            </Box>);
 
         return (
             <Grid container spacing={3}>
@@ -228,7 +227,7 @@ class ResourceTemplateView extends Component {
                             <Box>
                                 <Button
                                     variant="contained"
-                                    startIcon={<ArrowBackIosIcon />}
+                                    startIcon={<ArrowBackIosIcon/>}
                                     onClick={this.goBack}
                                 >Go Back</Button>
                             </Box>
@@ -249,22 +248,20 @@ class ResourceTemplateView extends Component {
                             </CardContent>
                         </CardActionArea>
                         <CardContent>
-                            {/*<Typography variant="body2" color="textSecondary" component="h2">*/}
-                            {/*    {this.isPublished()}*/}
-                            {/*    {this.state.errorMessage &&*/}
-                            {/*    <Alert severity="error">{this.state.errorMessage}</Alert>}*/}
-                            {/*</Typography>*/}
+                            <Typography variant="body2" color="textSecondary" component="h2">
+                                {this.isPublished()}
+                                {this.state.errorMessage &&
+                                <Alert severity="error">{this.state.errorMessage}</Alert>}
+                            </Typography>
                         </CardContent>
                     </Card>
-                    {/*<CreateParameter getData={this.getData}*/}
-                    {/*    resTempId={this.state.resTempId} />*/}
                 </Grid>
                 <Grid item xs={3}>
                     <Grid container
-                        direction="column"
-                        justify="center"
-                        alignItems="center"
-                        style={gridStyle}
+                          direction="column"
+                          justify="center"
+                          alignItems="center"
+                          style={gridStyle}
                     ><Hidden mdUp={this.showLinks()}>
                             <Box mx="auto">
                                 <Box>
@@ -315,12 +312,12 @@ class ResourceTemplateView extends Component {
                             <Typography variant="body2" color="textSecondary" component="h2">
                                 {/*{this.isPublished()}*/}
                                 {this.state.errorMessageParameter &&
-                                    <Alert severity="error">{this.state.errorMessageParameter}</Alert>}
+                                <Alert severity="error">{this.state.errorMessageParameter}</Alert>}
                             </Typography>
                             <Button variant="contained"
-                                color="primary"
-                                startIcon={<EditIcon />}
-                                onClick={this.handleOpenCreate}>
+                                    color="primary"
+                                    startIcon={<EditIcon/>}
+                                    onClick={this.handleOpenCreate}>
                                 Create Parameter
                             </Button>
                             {/*<CreateParameter getData={() => this.getParameters(this.state.activePage)}*/}
@@ -328,13 +325,13 @@ class ResourceTemplateView extends Component {
                         </CardContent>
                         <CardContent>
                             <ResourceParametersList resourceParameters={this.state.resourceParameters}
-                                resTempId={this.state.resTempId}
-                                getData={() => this.getParameters(this.state.activePage)} />
+                                                    resTempId={this.state.resTempId}
+                                                    getData={() => this.getParameters(this.state.activePage)}/>
                         </CardContent>
                     </Card>
                     <Grid container
-                        style={paginationStyle}
-                        justify="center">
+                          style={paginationStyle}
+                          justify="center">
                         <CustomPagination
                             activepage={this.state.activePage}
                             totalPages={this.state.totalPages}
@@ -345,9 +342,9 @@ class ResourceTemplateView extends Component {
                     </Grid>
                 </Grid>
                 <Dialog fullWidth={true}
-                    onClose={this.handleCloseCreate}
-                    aria-labelledby="simple-dialog-title"
-                    open={this.state.openCreate}>
+                        onClose={this.handleCloseCreate}
+                        aria-labelledby="simple-dialog-title"
+                        open={this.state.openCreate}>
                     <DialogTitle id="simple-dialog-title">Create new Resource Parameter</DialogTitle>
 
                     <CreateParameter errorMessage={this.state.errorMessageParameter}
@@ -363,9 +360,8 @@ class ResourceTemplateView extends Component {
                     handleClickOpen={this.handleClickOpen}
                     handleClose={this.handleClose}
                     title="Delete resource template"
-                    msg="Are you sure you want to delete this resource template?" />
+                    msg="Are you sure you want to delete this resource template?"/>
             </Grid>
-
         );
     }
 }

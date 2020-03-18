@@ -11,6 +11,7 @@ class PointReference extends Component {
                     <ResourceRecordDropdown className={"referenceDropdown"}
                                             relatedResourceTableName={this.props.relatedResourceTableName}
                                             onChangePointReference={this.props.setData}
+                        // onChangePointReferenceName={this.props.setData}
                                             columnName={this.props.columnName}/>
                 </FormControl>
             </div>
