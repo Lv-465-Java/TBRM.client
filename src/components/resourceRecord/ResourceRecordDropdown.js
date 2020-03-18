@@ -3,11 +3,6 @@ import axios from "../../utils/axios";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-// const style = {
-//     marginTop: 30,
-//     width: 300
-// };
-
 class ResourceRecordDropdown extends Component {
 
 
@@ -47,7 +42,6 @@ class ResourceRecordDropdown extends Component {
                     getOptionLabel={option => option.name}
                     onChange={this.onChange}
                     onInputChange={this.onInputChange}
-                    // style={style}
                     renderInput={params => <TextField {...params} label={this.state.label} variant="outlined"/>}
                 />
             </div>
