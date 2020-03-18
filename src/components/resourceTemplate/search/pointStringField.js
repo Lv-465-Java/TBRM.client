@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {TextField} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import Tooltip from "@material-ui/core/Tooltip";
 
 class PointStringField extends Component {
     state = {
@@ -41,11 +42,13 @@ class PointStringField extends Component {
                                onChange={this.onChange}
                                helperText={this.state.errorMessage}
                                error={!!this.state.errorMessage}/>
-                    <IconButton aria-label="delete"
-                                color="primary"
-                                onClick={this.reset}>
-                        <HighlightOffIcon/>
-                    </IconButton>
+                    <Tooltip title="Clear">
+                        <IconButton aria-label="delete"
+                                    color="primary"
+                                    onClick={this.reset}>
+                            <HighlightOffIcon/>
+                        </IconButton>
+                    </Tooltip>
                 </div>
             </>
         );

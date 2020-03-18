@@ -6,6 +6,7 @@ import PointStringField from "./pointStringField";
 import PointReferenceField from "./pointReferenceField";
 import RadioButton from "./radioButton";
 import {getUserRole} from "../../../service/authService";
+import Tooltip from "@material-ui/core/Tooltip";
 
 class SearchView extends Component {
     state = {
@@ -64,7 +65,7 @@ class SearchView extends Component {
             );
 
         return (
-            <div className="searchField">
+            <div className="filterField">
                 <PointStringField setFilter={this.setFilter}
                                   name="Name"
                                   columnName={"name"}/>
@@ -76,11 +77,13 @@ class SearchView extends Component {
                                      columnName={"user"}
                                      setData={this.setData}/>
                 {showFullSearch}
-                <IconButton aria-label="delete"
-                            color="primary"
-                            onClick={this.getData}>
-                    <SearchIcon/>
-                </IconButton>
+                <Tooltip title="Search">
+                    <IconButton aria-label="search"
+                                color="secondary"
+                                onClick={this.getData}>
+                        <SearchIcon/>
+                    </IconButton>
+                </Tooltip>
             </div>
         );
     }

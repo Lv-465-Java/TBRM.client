@@ -4,6 +4,7 @@ import Select from '@material-ui/core/Select';
 import {TextField} from "@material-ui/core";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
 
 class FilterPointNumberField extends Component {
     state = {
@@ -61,11 +62,13 @@ class FilterPointNumberField extends Component {
                                style={{minWidth: "30px"}}
                                helperText={this.state.errorMessage}
                                error={!!this.state.errorMessage}/>
-                    <IconButton aria-label="delete"
-                                color="primary"
-                                onClick={this.reset}>
-                        <HighlightOffIcon/>
-                    </IconButton>
+                    <Tooltip title="Clear">
+                        <IconButton aria-label="delete"
+                                    color="primary"
+                                    onClick={this.reset}>
+                            <HighlightOffIcon/>
+                        </IconButton>
+                    </Tooltip>
                 </div>
             </>
         );
