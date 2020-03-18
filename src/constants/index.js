@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'http://localhost:8080';
+export const API_BASE_URL = 'https://localhost:8443';
 export const ACCESS_TOKEN = 'authorization';
 export const REFRESH_TOKEN='refreshToken';
 
