@@ -22,7 +22,7 @@ class ResourceRecordUpdate extends Component {
         resourceParameters: this.props.resourceTemplate.resourceParameters,
         parameters: this.props.item.parameters,
         open: false
-    }
+    };
 
     update = () => {
         axios.patch(`/resource/${this.props.tableName}/${this.props.item.id}`, this.state).then(
@@ -48,25 +48,25 @@ class ResourceRecordUpdate extends Component {
             name = undefined;
         }
         this.setState({name});
-    }
+    };
 
     onChangeDescription = (event) => {
         let description = event.target.value;
         this.setState({description});
 
         // this.props.setData(this.props.columnName, event.target.value)
-    }
+    };
 
     setData = (columnName, value) => {
         this.setState({parameters: {...this.state.parameters, [columnName]: value}})
-    }
+    };
 
 
     handleClose = () => {
         this.setState({open: false});
         this.props.handleClose();
         this.props.getRecordsData();
-    }
+    };
 
     render() {
         return (

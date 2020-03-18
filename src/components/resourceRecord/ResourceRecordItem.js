@@ -13,7 +13,7 @@ import ResourceRecordUpdate from "./ResourceRecordUpdate";
 import ResourceRecordItemView from "./ResourceRecordItemView";
 import MyDialog from "../resourceTemplate/popUp";
 import PhotoUpload from "./parametersTypes/PhotoUpload";
-import { getUserRole } from "../../service/authService"
+import {getUserRole} from "../../service/authService"
 
 class resourceRecordItem extends Component {
 
@@ -25,7 +25,6 @@ class resourceRecordItem extends Component {
         open: false
     };
 
-
     delete = () => {
         axios.delete(`/resource/${this.props.tableName}/${this.props.item.id}`).then(
             response => {
@@ -34,8 +33,8 @@ class resourceRecordItem extends Component {
 
             }).catch(error => {
 
-                console.dir(error.response.data);
-            })
+            console.dir(error.response.data);
+        })
     };
 
     handleClickOpen = () => {
@@ -59,7 +58,7 @@ class resourceRecordItem extends Component {
         this.setState({openDialogEdit: false})
     };
     getRecordValues = () => {
-        this.state.data['description'] = this.props.item['description']
+        this.state.data['description'] = this.props.item['description'];
         this.state.data['name'] = this.props.item['name'];
         this.state.data['photos'] = this.props.item['photos'];
         Object.keys(this.props.item['parameters']).forEach(key => {
@@ -70,25 +69,25 @@ class resourceRecordItem extends Component {
     verifyUser = () => {
         if (getUserRole() === "ROLE_REGISTER") {
             return (
-            <div>
-                <Tooltip title="Edit">
-                    <IconButton aria-label="edit" color="secondary" onClick={this.handleOpenEdit}>
-                        <EditIcon />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Delete">
-                    <IconButton aria-label="delete" color="primary" onClick={this.handleClickOpen}>
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
-            </div>
+                <div>
+                    <Tooltip title="Edit">
+                        <IconButton aria-label="edit" color="secondary" onClick={this.handleOpenEdit}>
+                            <EditIcon/>
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                        <IconButton aria-label="delete" color="primary" onClick={this.handleClickOpen}>
+                            <DeleteIcon/>
+                        </IconButton>
+                    </Tooltip>
+                </div>
             );
-        }else{
+        } else {
             return (
                 <div></div>
             );
         }
-    }
+    };
 
     render() {
         this.getRecordValues();
@@ -152,22 +151,22 @@ class resourceRecordItem extends Component {
                 </TableRow>
 
                 <Dialog fullWidth
-                    onClose={this.handleCloseEdit} aria-labelledby="simple-dialog-title"
-                    open={this.state.openDialogEdit}>
+                        onClose={this.handleCloseEdit} aria-labelledby="simple-dialog-title"
+                        open={this.state.openDialogEdit}>
                     <DialogTitle id="simple-dialog-title">Update {this.props.resourceTemplate.name}</DialogTitle>
 
                     <ResourceRecordUpdate handleClose={this.handleCloseEdit}
-                        tableName={this.props.tableName}
-                        resourceTemplate={this.props.resourceTemplate}
-                        getRecordsData={this.props.getRecordsData}
-                        item={this.props.item}
+                                          tableName={this.props.tableName}
+                                          resourceTemplate={this.props.resourceTemplate}
+                                          getRecordsData={this.props.getRecordsData}
+                                          item={this.props.item}
                     />
 
                 </Dialog>
 
                 <Dialog fullWidth
-                    open={this.state.openDialogView}
-                    onClose={this.handleCloseView}
+                        open={this.state.openDialogView}
+                        onClose={this.handleCloseView}
                 >
                     <ResourceRecordItemView handleClose={this.handleCloseView}
                         tableName={this.props.tableName}
@@ -178,11 +177,11 @@ class resourceRecordItem extends Component {
                     />
                 </Dialog>
                 <MyDialog delete={this.delete}
-                    open={this.state.open}
-                    handleClickOpen={this.handleClickOpen}
-                    handleClose={this.handleClose}
-                    title="Delete resource"
-                    msg="Are you sure you want to delete this resource?" />
+                          open={this.state.open}
+                          handleClickOpen={this.handleClickOpen}
+                          handleClose={this.handleClose}
+                          title="Delete resource"
+                          msg="Are you sure you want to delete this resource?"/>
             </>
         );
     }

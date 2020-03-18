@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import {TextField, Button, FormControl, Grid, Box} from '@material-ui/core';
+import {Box, Button, FormControl, Grid, TextField} from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import axios from '../../utils/axios';
-import { getUserRole } from '../../service/authService';
-
+import {getUserRole} from '../../service/authService';
 
 const gridStyles = {
     marginTop: 30
@@ -62,7 +61,6 @@ class ResourceTemplateUpdate extends Component {
             this.props.history.push("/home");
         }
     };
-
 
     componentDidMount() {
         this.verifyUser();

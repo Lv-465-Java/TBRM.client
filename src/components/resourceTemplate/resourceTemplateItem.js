@@ -12,14 +12,13 @@ const cardStyle = {
     minWidth: 250,
     margin: 10,
 
-}
+};
 
 const linkStyle = {
     textDecoration: 'none'
-}
+};
 
 class ResourceTemplateItem extends Component {
-
 
     state = {
         id: this.props.item.id,
@@ -33,7 +32,7 @@ class ResourceTemplateItem extends Component {
 
     render() {
         let userLink = (getUserRole() === "ROLE_MANAGER") ?
-            ( <Link to={`/resource-template/view/${this.state.id}`} style={linkStyle}>
+            (<Link to={`/resource-template/view/${this.state.id}`} style={linkStyle}>
                     <Card style={cardStyle}>
                         <CardActionArea>
                             <CardContent>
@@ -65,7 +64,7 @@ class ResourceTemplateItem extends Component {
             );
         return (
             <>
-            {userLink}
+                {userLink}
             </>
         );
     }

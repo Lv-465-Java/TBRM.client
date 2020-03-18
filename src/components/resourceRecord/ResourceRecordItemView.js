@@ -24,10 +24,11 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 
 
+
 const dialogContentStyle = {
     display: "flex",
     'margin-top': '15px'
-}
+};
 
 class ResourceRecordItemView extends Component {
 
@@ -44,7 +45,7 @@ class ResourceRecordItemView extends Component {
         coordinates: undefined,
         activeStep: 0
         // parameters: undefined
-    }
+    };
 
     componentDidMount() {
 
@@ -76,7 +77,7 @@ class ResourceRecordItemView extends Component {
             }
             this.state.data[key] = this.props.item['parameters'][key]
         });
-    }
+    };
 
     render() {
         this.getRecordValues();
@@ -107,7 +108,6 @@ class ResourceRecordItemView extends Component {
                 <div style={dialogContentStyle}>
 
                     <List>
-
                         {this.state.headers.map((element, index) => {
                             let e;
                             if (element.columnName.endsWith('_coordinate')) {
@@ -213,7 +213,6 @@ class ResourceRecordItemView extends Component {
 
         );
     }
-
 }
 
 export default ResourceRecordItemView;
