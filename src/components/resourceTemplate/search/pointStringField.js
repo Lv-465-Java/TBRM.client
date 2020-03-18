@@ -32,25 +32,22 @@ class PointStringField extends Component {
 
     render() {
         return (
-            <>
-                <div className={"filterCells"}>
-                    {this.props.name}
-                    <TextField id={"clear"}
-                               type="text"
-                               value={this.state.value}
-                               style={{minWidth: "30px"}}
-                               onChange={this.onChange}
-                               helperText={this.state.errorMessage}
-                               error={!!this.state.errorMessage}/>
-                    <Tooltip title="Clear">
-                        <IconButton aria-label="delete"
-                                    color="primary"
-                                    onClick={this.reset}>
-                            <HighlightOffIcon/>
-                        </IconButton>
-                    </Tooltip>
-                </div>
-            </>
+            <div className={"filterCells"}>
+                {this.props.name}
+                <TextField type="text"
+                           value={this.state.value}
+                           style={{minWidth: "30px", marginLeft: "10px"}}
+                           onChange={this.onChange}
+                           helperText={this.state.errorMessage}
+                           error={!!this.state.errorMessage}/>
+                <Tooltip title="Clear">
+                    <IconButton aria-label="delete"
+                                color="primary"
+                                onClick={this.reset}>
+                        <HighlightOffIcon/>
+                    </IconButton>
+                </Tooltip>
+            </div>
         );
     }
 }

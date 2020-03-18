@@ -9,6 +9,7 @@ import SearchView from "./search/searchView";
 const style = {
     display: "flex",
     flexWrap: "wrap",
+    justifyContent: "center"
 };
 
 const gridStyle = {
@@ -34,7 +35,6 @@ class ResourceTemplateList extends Component {
         totalPages: 0,
         itemsCountPerPage: 0,
         totalItemsCount: 0,
-        // message: ""
     };
 
     getData = (pageNumber) => {
@@ -99,16 +99,11 @@ class ResourceTemplateList extends Component {
         let showTemplateListOrErrorMessage = (this.state.resourceTemplates.length !== 0) ?
             (
                 <div style={style}>
-                    {/*{showTemplateListOrErrorMessage}*/}
                     {this.state.resourceTemplates.map((item) =>
                         (<ResourceTemplateItem key={item.id}
                                                item={item}/>)
                     )}
                 </div>
-
-                // this.state.resourceTemplates.map((item) =>
-                //     (<ResourceTemplateItem key={item.id}
-                //                            item={item}/>)
             ) : (<p className={"message"}>{this.state.message}</p>);
 
         let userLinks = (getUserRole() === "ROLE_MANAGER") ?
@@ -130,13 +125,7 @@ class ResourceTemplateList extends Component {
                         <SearchView label="Search"
                                     resourceTemplate={this.state.resourceTemplate}
                                     setRecordsData={this.setRecordsData}/>
-                        {/*<div style={style}>*/}
-                            {showTemplateListOrErrorMessage}
-                            {/*{this.state.resourceTemplates.map((item) =>*/}
-                            {/*    (<ResourceTemplateItem key={item.id}*/}
-                            {/*                           item={item}/>)*/}
-                            {/*)}*/}
-                        {/*</div>*/}
+                        {showTemplateListOrErrorMessage}
                     </Grid>
                     <Grid item xs/>
                     <Grid container

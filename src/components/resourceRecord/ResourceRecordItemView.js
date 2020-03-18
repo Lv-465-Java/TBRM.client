@@ -10,11 +10,9 @@ import ListItem from "@material-ui/core/ListItem";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 
-
-
 const dialogContentStyle = {
     display: "flex"
-}
+};
 
 class ResourceRecordItemView extends Component {
 
@@ -28,7 +26,7 @@ class ResourceRecordItemView extends Component {
         data: this.props.data,
         coordinates: undefined
         // parameters: undefined
-    }
+    };
 
     getRecordValues = () => {
         this.state.data['description'] = this.props.item['description']
@@ -40,7 +38,7 @@ class ResourceRecordItemView extends Component {
             }
             this.state.data[key] = this.props.item['parameters'][key]
         });
-    }
+    };
 
     render() {
         this.getRecordValues();
