@@ -17,6 +17,7 @@ const messageOk = 'Successfully updated!!!';
 
 class EditGroup extends Component {
     state = {
+        resID: this.props.match.params.id,
         name: this.props.match.params.name,
         description: "",
         oldName: "",
@@ -72,7 +73,7 @@ class EditGroup extends Component {
     }
 
     goBack = () => {
-        this.props.history.push(`/group/view/${this.state.oldName}`);
+        this.props.history.push(`/group/view/${this.state.resID}/${this.state.oldName}`);
     };
 
     isValid = () => {

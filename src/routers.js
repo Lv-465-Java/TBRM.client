@@ -92,7 +92,7 @@ class Routers extends Component {
                     <ResourceRoute path="/resource/:tableName" component={ResourceRecordView}/>
                     <Route path="/test-maps" component={TestMaps} />
                     <Route path="/forgot_password/:email" component={ForgotPasswordMessage} />
-                    <ManagerRoute path="/group/edit/:name" component={EditGroup} />
+                    <ManagerRoute path="/group/edit/:id/:name" component={EditGroup} />
                     <ManagerRoute path="/group/view/:id/:name" component={GroupItem} />
                     <ManagerRoute path="/group/permission/owner/:name" component={GroupChangeOwner} />
                     <ManagerRoute path="/group/permission/:id" component={AddPermission} />

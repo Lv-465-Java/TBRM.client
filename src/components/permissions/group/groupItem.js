@@ -79,7 +79,7 @@ class GroupItem extends Component {
 
 
     goToUpdateData = () => {
-        this.props.history.push(`/group/edit/${this.state.name}`);
+        this.props.history.push(`/group/edit/${this.state.resTempId}/${this.state.name}`);
     };
 
     goBack = () => {

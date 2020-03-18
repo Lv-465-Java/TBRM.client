@@ -8,9 +8,9 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import ResourceRecordCreate from "./ResourceRecordCreate";
 import CustomPagination from "../pagination/customPagination";
-import { getUserRole } from "../../service/authService";
+import {getUserRole} from "../../service/authService";
 import FilterView from "./filters/filterView";
-import { Hidden } from '@material-ui/core';
+import Hidden from "@material-ui/core/Hidden";
 
 const itemsNumber = 5;
 
@@ -28,11 +28,24 @@ class ResourceRecordView extends Component {
         totalItemsCount: 0,
         resourceTemplate: "",
         tableName: this.props.match.params.tableName,
-        openDialog: false
+        openDialog: false,
+        filters: "",
+        oldFilter: "Foo"
+    };
+    setFilters = (filters) => {
+        this.setState({filters});
     };
 
     getRecordsData = (pageNumber) => {
-        axios.get(`/resource/${this.state.tableName}?page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
+        let activePage = this.state.activePage;
+        if (this.state.oldFilter !== this.state.filters) {
+            activePage = 1;
+        }
+        let url = `/resource/${this.state.tableName}?page=${activePage}&pageSize=${itemsNumber}`;
+        if (this.state.filters.length > 8) {
+            url = `/${this.state.tableName}/filter?page=${activePage}&pageSize=${itemsNumber}&${this.state.filters}`;
+        }
+        axios.get(url).then(response => {
             let records = response.data.content;
             let totalPages = response.data.totalPages;
             let itemsCountPerPage = response.data.numberOfElements;
@@ -41,36 +54,39 @@ class ResourceRecordView extends Component {
                 records: records,
                 totalPages: totalPages,
                 itemsCountPerPage: itemsCountPerPage,
-                totalItemsCount: totalItemsCount
+                totalItemsCount: totalItemsCount,
+                activePage: activePage,
+                oldFilter: this.state.filters
             });
         })
     };
 
-    setRecordsData = (records) => {
-        let message = records.length === 0 ? "There is no resources to display" : "";
-        this.setState({records, message})
+    setRecordsData = (records, totalPages, itemsCountPerPage, totalItemsCount) => {
+        this.setState({records, totalPages, itemsCountPerPage, totalItemsCount});
+        this.forceUpdate();
     };
 
     getResourceTemplateData = () => {
         axios.get(`/resource-template/table/${this.state.tableName}`).then(response => {
-            this.setState({ resourceTemplate: response.data })
+            this.setState({resourceTemplate: response.data})
         })
     };
+
     handleClose = () => {
         this.setState({openDialog: false})
     };
+
     handleOpen = () => {
         this.setState({openDialog: true})
     };
 
     handlePageChange = (event, pageNumber) => {
-        this.setState({activePage: pageNumber});
-        this.getRecordsData(pageNumber);
+        this.setState({activePage: pageNumber}, () => this.getRecordsData());
     };
 
     verifyUser = () => {
         return getUserRole() === "ROLE_REGISTER";
-    }
+    };
 
     componentDidMount() {
         this.getResourceTemplateData();
@@ -78,7 +94,6 @@ class ResourceRecordView extends Component {
     }
 
     render() {
-
         return (
             <div>
                 <div>
@@ -98,16 +113,19 @@ class ResourceRecordView extends Component {
                     <Grid item xs={1}/>
                     <Grid item xs={10}>
                         <FilterView label="Filter"
-                            resourceTemplate={this.state.resourceTemplate}
-                            setRecordsData={this.setRecordsData}/>
+                                    resourceTemplate={this.state.resourceTemplate}
+                                    setRecordsData={this.setRecordsData}
+                                    setFilters={this.setFilters}
+                                    getData={this.getRecordsData}/>
                         {this.state.resourceTemplate &&
                         <ResourceRecordList
                             tableName={this.state.tableName}
                             records={this.state.records}
                             resourceTemplate={this.state.resourceTemplate}
-                            getRecordsData={() => this.getRecordsData(this.state.activePage)}
+                            getRecordsData={this.getRecordsData}
                         />}
                     </Grid>
+                    <Grid item xs={3}/>
                     <Grid item xs={3}/>
                 </Grid>
                 <Grid container
