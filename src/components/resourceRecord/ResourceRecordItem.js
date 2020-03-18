@@ -11,7 +11,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
 import ResourceRecordUpdate from "./ResourceRecordUpdate";
 import ResourceRecordItemView from "./ResourceRecordItemView";
-import Image from 'material-ui-image'
 import MyDialog from "../resourceTemplate/popUp";
 import PhotoUpload from "./parametersTypes/PhotoUpload";
 import { getUserRole } from "../../service/authService"
@@ -118,12 +117,12 @@ class resourceRecordItem extends Component {
                         else if (element.columnName === 'photos') {
                             e = (  <TableCell align="right">
                                 {this.state.data[element.columnName] && (
-                                    <Image src={this.state.data[element.columnName]
+                                    <img src={this.state.data[element.columnName]
                                         .substring(0,this.state.data[element.columnName].indexOf(","))}
                                            style={{
-                                               height:20
+                                               height:100
                                            }}
-                                           stylealt={"image"}/>
+                                           alt={"image"}/>
                                     )}
                                 </TableCell>)
                         }
