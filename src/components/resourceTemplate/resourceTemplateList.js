@@ -5,7 +5,6 @@ import {Button, Grid} from '@material-ui/core';
 import {getUserRole} from '../../service/authService';
 import CustomPagination from "../pagination/customPagination";
 import SearchView from "./search/searchView";
-import FilterView from "../resourceRecord/filters/filterView";
 
 const style = {
     display: "flex",
@@ -36,7 +35,7 @@ class ResourceTemplateList extends Component {
         totalPages: 0,
         itemsCountPerPage: 0,
         totalItemsCount: 0,
-        searchCriteria:"",
+        searchCriteria: "",
         oldSearchCriteria: "Foo"
     };
 
@@ -59,6 +58,7 @@ class ResourceTemplateList extends Component {
         }
         axios.get(url).then(response => {
             let resourceTemplates = response.data.content;
+            let message = resourceTemplates.length === 0 ? "There is no resource templates to display" : "";
             let totalPages = response.data.totalPages;
             let itemsCountPerPage = response.data.numberOfElements;
             let totalItemsCount = response.data.totalElements;
@@ -68,7 +68,8 @@ class ResourceTemplateList extends Component {
                 itemsCountPerPage: itemsCountPerPage,
                 totalItemsCount: totalItemsCount,
                 activePage: activePage,
-                oldSearchCriteria: this.state.searchCriteria
+                oldSearchCriteria: this.state.searchCriteria,
+                message: message
             });
 
         })
@@ -85,6 +86,7 @@ class ResourceTemplateList extends Component {
         }
         axios.get(url).then(response => {
             let resourceTemplates = response.data.content;
+            let message = resourceTemplates.length === 0 ? "There is no resource templates to display" : "";
             let totalPages = response.data.totalPages;
             let itemsCountPerPage = response.data.numberOfElements;
             let totalItemsCount = response.data.totalElements;
@@ -94,7 +96,8 @@ class ResourceTemplateList extends Component {
                 itemsCountPerPage: itemsCountPerPage,
                 totalItemsCount: totalItemsCount,
                 activePage: activePage,
-                oldSearchCriteria: this.state.searchCriteria
+                oldSearchCriteria: this.state.searchCriteria,
+                message: message
             });
         })
     };
@@ -137,7 +140,7 @@ class ResourceTemplateList extends Component {
                                                item={item}/>)
                     )}
                 </div>
-            ) : (<p className={"message"}>{this.state.message}</p>);
+            ) : (<p className={"messageAboutEmptyTable"}>{this.state.message}</p>);
 
         let userLinks = (getUserRole() === "ROLE_MANAGER") ?
             (
@@ -162,10 +165,6 @@ class ResourceTemplateList extends Component {
                                     getData={this.getSearch}/>
                         <div style={style}>
                             {showTemplateListOrErrorMessage}
-                            {/*{this.state.resourceTemplates.map((item) =>*/}
-                            {/*    (<ResourceTemplateItem key={item.id}*/}
-                            {/*                           item={item}/>)*/}
-                            {/*)}*/}
                         </div>
                     </Grid>
                     <Grid item xs/>
