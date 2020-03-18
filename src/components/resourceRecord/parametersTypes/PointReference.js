@@ -6,13 +6,12 @@ class PointReference extends Component {
 
     render() {
         return (
-            <div>
-                <FormControl>
-                    <ResourceRecordDropdown className={"referenceDropdown"}
-                                            relatedResourceTableName={this.props.relatedResourceTableName}
-                                            onChangePointReference={this.props.setData}
-                        // onChangePointReferenceName={this.props.setData}
-                                            columnName={this.props.columnName}/>
+            <div style={{marginTop: "30px"}}>
+                <FormControl style={{width: "300px"}}>
+                    <ResourceRecordDropdown
+                        relatedResourceTableName={this.props.relatedResourceTableName}
+                        onChangePointReference={this.props.setData}
+                        columnName={this.props.columnName}/>
                 </FormControl>
             </div>
         );
