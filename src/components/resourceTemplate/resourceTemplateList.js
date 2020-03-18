@@ -5,10 +5,12 @@ import {Button, Grid} from '@material-ui/core';
 import {getUserRole} from '../../service/authService';
 import CustomPagination from "../pagination/customPagination";
 import SearchView from "./search/searchView";
+import FilterView from "../resourceRecord/filters/filterView";
 
 const style = {
     display: "flex",
     flexWrap: "wrap",
+    justifyContent: "center"
 };
 
 const gridStyle = {
@@ -34,11 +36,28 @@ class ResourceTemplateList extends Component {
         totalPages: 0,
         itemsCountPerPage: 0,
         totalItemsCount: 0,
-        // message: ""
+        searchCriteria:"",
+        oldSearchCriteria: "Foo"
+    };
+
+    setSearchCriteria = (searchCriteria) => {
+        this.setState({searchCriteria});
+    };
+
+    setRecordsData = (resourceTemplates, totalPages, itemsCountPerPage, totalItemsCount) => {
+        this.setState({resourceTemplates, totalPages, itemsCountPerPage, totalItemsCount});
     };
 
     getData = (pageNumber) => {
-        axios.get(`resource-template?page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
+        let activePage = this.state.activePage;
+        if (this.state.oldSearchCriteria !== this.state.searchCriteria) {
+            activePage = 1;
+        }
+        let url = `resource-template?page=${activePage}&pageSize=${itemsNumber}`;
+        if (this.state.searchCriteria.length > 8) {
+            url = `${this.state.searchCriteria}&page=${activePage}&pageSize=${itemsNumber}`;
+        }
+        axios.get(url).then(response => {
             let resourceTemplates = response.data.content;
             let totalPages = response.data.totalPages;
             let itemsCountPerPage = response.data.numberOfElements;
@@ -48,13 +67,23 @@ class ResourceTemplateList extends Component {
                 totalPages: totalPages,
                 itemsCountPerPage: itemsCountPerPage,
                 totalItemsCount: totalItemsCount,
+                activePage: activePage,
+                oldSearchCriteria: this.state.searchCriteria
             });
 
         })
     };
 
     getAllPublishedTemplates = (pageNumber) => {
-        axios.get(`resource-template/published?page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
+        let activePage = this.state.activePage;
+        if (this.state.oldSearchCriteria !== this.state.searchCriteria) {
+            activePage = 1;
+        }
+        let url = `resource-template/published?page=${activePage}&pageSize=${itemsNumber}`;
+        if (this.state.searchCriteria.length > 8) {
+            url = `${this.state.searchCriteria}&page=${activePage}&pageSize=${itemsNumber}`;
+        }
+        axios.get(url).then(response => {
             let resourceTemplates = response.data.content;
             let totalPages = response.data.totalPages;
             let itemsCountPerPage = response.data.numberOfElements;
@@ -64,6 +93,8 @@ class ResourceTemplateList extends Component {
                 totalPages: totalPages,
                 itemsCountPerPage: itemsCountPerPage,
                 totalItemsCount: totalItemsCount,
+                activePage: activePage,
+                oldSearchCriteria: this.state.searchCriteria
             });
         })
     };
@@ -77,7 +108,14 @@ class ResourceTemplateList extends Component {
     }
 
     handlePageChange = (event, pageNumber) => {
-        this.setState({activePage: pageNumber});
+        if (getUserRole() === "ROLE_MANAGER") {
+            this.setState({activePage: pageNumber}, () => this.getData());
+        } else {
+            this.setState({activePage: pageNumber}, () => this.getAllPublishedTemplates());
+        }
+    };
+
+    getSearch = (pageNumber) => {
         if (getUserRole() === "ROLE_MANAGER") {
             this.getData(pageNumber);
         } else {
@@ -89,20 +127,17 @@ class ResourceTemplateList extends Component {
         this.props.history.push("/resource-template/create");
     };
 
-    setRecordsData = (resourceTemplates) => {
-        let message = resourceTemplates.length === 0 ? "There is no resource templates to display" : "";
-        this.setState({resourceTemplates, message})
-    };
-
     render() {
 
         let showTemplateListOrErrorMessage = (this.state.resourceTemplates.length !== 0) ?
             (
-                this.state.resourceTemplates.map((item) =>
-                    (<ResourceTemplateItem key={item.id}
-                                           item={item}/>)
-                )
-            ) : (<p className={"App"}>{this.state.message}</p>);
+                <div style={style}>
+                    {this.state.resourceTemplates.map((item) =>
+                        (<ResourceTemplateItem key={item.id}
+                                               item={item}/>)
+                    )}
+                </div>
+            ) : (<p className={"message"}>{this.state.message}</p>);
 
         let userLinks = (getUserRole() === "ROLE_MANAGER") ?
             (
@@ -111,7 +146,7 @@ class ResourceTemplateList extends Component {
                     style={buttonStyle}
                     onClick={this.goToCreateResource}>Create template</Button>
             ) : (
-                <div></div>
+                <div/>
             );
 
         return (
@@ -122,7 +157,9 @@ class ResourceTemplateList extends Component {
                     <Grid item xs={10}>
                         <SearchView label="Search"
                                     resourceTemplate={this.state.resourceTemplate}
-                                    setRecordsData={this.setRecordsData}/>
+                                    setRecordsData={this.setRecordsData}
+                                    setSearchCriteria={this.setSearchCriteria}
+                                    getData={this.getSearch}/>
                         <div style={style}>
                             {showTemplateListOrErrorMessage}
                             {/*{this.state.resourceTemplates.map((item) =>*/}
