@@ -166,7 +166,7 @@ class PermissionResourceTemplateAdd extends Component {
     };
 
     goToEditGroup(name) {
-        this.props.history.push(`/group/view/${name}`);
+        this.props.history.push(`/group/view/${this.state.id}/${name}`);
     }
 
     handlePageChangeGroup = (event, pageNumber) => {

@@ -4,6 +4,9 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -84,11 +87,12 @@ class ResourceTemplateView extends Component {
                 let data = response.data;
                 this.setState({
                     name: data.name,
+                    tableName: data.tableName,
                     description: data.description,
                     isPublished: data.isPublished,
                 })
             }).catch(error => {
-        })
+            })
     };
 
     getParameters = (pageNumber) => {
@@ -259,42 +263,51 @@ class ResourceTemplateView extends Component {
                           alignItems="center"
                           style={gridStyle}
                     ><Hidden mdUp={this.showLinks()}>
-                        <Box mx="auto">
-                            <Box>
-                                <Link to={`/resource-template/permission/${this.state.resTempId}`}>
+                            <Box mx="auto">
+                                <Box>
+                                    <Link to={`/resource/${this.state.tableName}`}>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                        >View SubResources</Button>
+                                    </Link>
+                                </Box>
+                                <Box mt={5}>
+                                    <Link to={`/resource-template/permission/${this.state.resTempId}`}>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                        >Permissions</Button>
+                                    </Link>
+                                </Box>
+                                <Box mt={5}>
+                                    <Link to={`/resource-template/update/${this.state.resTempId}`}>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            startIcon={<EditIcon />}
+                                        >Update</Button>
+                                    </Link>
+                                </Box>
+                                <Box mt={5}>
                                     <Button
                                         variant="contained"
-                                        color="primary"
-                                    >Permissions</Button>
-                                </Link>
-                            </Box>
-                            <Box mt={5}>
-                                <Link to={`/resource-template/update/${this.state.resTempId}`}>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        startIcon={<EditIcon/>}
-                                    >Update</Button>
-                                </Link>
-                            </Box>
-                            <Box mt={5}>
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    startIcon={<DeleteIcon/>}
-                                    style={useStyles.button}
-                                    onClick={this.handleClickOpen}>
-                                    Delete
+                                        color="secondary"
+                                        startIcon={<DeleteIcon />}
+                                        style={useStyles.button}
+                                        onClick={this.delete}
+                                    >
+                                        Delete
                                 </Button>
+                                </Box>
+                                {publishButton}
                             </Box>
-                            {publishButton}
-                        </Box>
-                    </Hidden>
+                        </Hidden>
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                    <h3>Resource Parameters</h3>
                     <Card style={cardStyle}>
+                    <h3>Resource Parameters</h3>
                         <CardContent>
                             <Typography variant="body2" color="textSecondary" component="h2">
                                 {/*{this.isPublished()}*/}
@@ -335,9 +348,9 @@ class ResourceTemplateView extends Component {
                     <DialogTitle id="simple-dialog-title">Create new Resource Parameter</DialogTitle>
 
                     <CreateParameter errorMessage={this.state.errorMessageParameter}
-                                     handleClose={this.handleCloseCreate}
-                                     getData={() => this.getParameters(this.state.activePage)}
-                                     resTempId={this.state.resTempId}
+                        handleClose={this.handleCloseCreate}
+                        getData={() => this.getParameters(this.state.activePage)}
+                        resTempId={this.state.resTempId}
                     />
 
                 </Dialog>

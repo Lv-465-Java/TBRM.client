@@ -57,6 +57,12 @@ const RegisterRoute
         ? <Route {...props} />
         : <Forbidden />;
 
+const GuestRoute
+    = ({ isAllowed, ...props }) =>
+    getUserRole() === "ROLE_GUEST"
+        ? <Route {...props} />
+        : <Forbidden />;
+
 const ResourceRoute
     = ({ isAllowed, ...props }) =>
         getUserRole() === "ROLE_MANAGER" || getUserRole() === "ROLE_REGISTER"
@@ -80,19 +86,16 @@ class Routers extends Component {
                     <ManagerRoute path="/resource-template/view/:id" component={ResourceTemplateView} />
                     <ManagerRoute path="/resource-template/permission/:id" component={PermissionResourceTemplate} />
                     <ResourceRoute path="/resource-template" component={ResourceTemplateList} />
-                    <RegisterRoute path="/resource/update/:tableName/:id" component={ResourceRecordUpdate} />
-                    <RegisterRoute path="/resource/view/:tableName/:recordId" component={ResourceRecordItemView} />
-                    <RegisterRoute path="/resource/:tableName" component={ResourceRecordView}/>
-                    <RegisterRoute path="/resource/create" component={ResourceRecordCreate} />
+                    <ResourceRoute path="/resource/:tableName" component={ResourceRecordView}/>
                     <Route path="/test-maps" component={TestMaps} />
                     <Route path="/forgot_password/:email" component={ForgotPasswordMessage} />
                     <ManagerRoute path="/group/edit/:name" component={EditGroup} />
-                    <ManagerRoute path="/group/view/:name" component={GroupItem} />
+                    <ManagerRoute path="/group/view/:id/:name" component={GroupItem} />
                     <ManagerRoute path="/group/permission/owner/:name" component={GroupChangeOwner} />
                     <ManagerRoute path="/group/permission/:id" component={AddPermission} />
                     <Route path="/oauth2/redirect" component={OAuth2RedirectHandler} />
                     <Route path="/oauth2/fullRegister" component={FullOAuthRegister} />
-                    <Route path="/welcome" component={GuestPage} />
+                    <GuestRoute path="/welcome" component={GuestPage} />
                     <Route path="/FilterView" component={FilterView} />
                     <Route path="/" exact component={LoginForm} />
                 </Switch>

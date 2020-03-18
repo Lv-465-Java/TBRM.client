@@ -26,7 +26,7 @@ class ResourceRecordCreate extends Component {
     };
 
     create = () => {
-        axios.post(`/resource-template/resource/${this.props.tableName}`, this.state).then(
+        axios.post(`/resource/${this.props.tableName}`, this.state).then(
             response => {
                 this.setState({
                     name: "",
