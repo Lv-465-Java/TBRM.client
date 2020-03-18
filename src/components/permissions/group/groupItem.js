@@ -33,6 +33,7 @@ const noError = '';
 
 class GroupItem extends Component {
     state = {
+        resTempId: this.props.match.params.id,
         name: this.props.match.params.name,
         id: 0,
         description: "",
@@ -82,7 +83,7 @@ class GroupItem extends Component {
     };
 
     goBack = () => {
-        this.props.history.push(`/resource-template/permission/${this.state.id}`);
+        this.props.history.push(`/resource-template/permission/${this.state.resTempId}`);
     };
 
     handlePageChange = (event, pageNumber) => {

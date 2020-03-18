@@ -103,7 +103,7 @@ class PhotoUpload extends Component {
         for (let i = 0; i < this.state.selectedFile.length; i++) {
             formData.append('files', this.state.selectedFile[i]);
         }
-        axios.put(`/resource-template/resource/${this.props.tableName}/${this.props.id}/updatePhoto`, formData, {
+        axios.put(`/resource/${this.props.tableName}/${this.props.id}/updatePhoto`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -116,7 +116,7 @@ class PhotoUpload extends Component {
         for (let i = 0; i < this.state.selectedFile.length; i++) {
             formData.append('files', this.state.selectedFile[i]);
         }
-        axios.put(`/resource-template/resource/${this.props.tableName}/${this.props.id}/document`, formData, {
+        axios.put(`/resource/${this.props.tableName}/${this.props.id}/document`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

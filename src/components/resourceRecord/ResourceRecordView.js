@@ -8,8 +8,9 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import ResourceRecordCreate from "./ResourceRecordCreate";
 import CustomPagination from "../pagination/customPagination";
+import { getUserRole } from "../../service/authService";
 import FilterView from "./filters/filterView";
-
+import { Hidden } from '@material-ui/core';
 
 const itemsNumber = 5;
 
@@ -31,7 +32,7 @@ class ResourceRecordView extends Component {
     };
 
     getRecordsData = (pageNumber) => {
-        axios.get(`/resource-template/resource/${this.state.tableName}?page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
+        axios.get(`/resource/${this.state.tableName}?page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
             let records = response.data.content;
             let totalPages = response.data.totalPages;
             let itemsCountPerPage = response.data.numberOfElements;
@@ -44,12 +45,15 @@ class ResourceRecordView extends Component {
             });
         })
     };
+
     setRecordsData = (records) => {
-        this.setState({records})
+        let message = records.length === 0 ? "There is no resources to display" : "";
+        this.setState({records, message})
     };
+
     getResourceTemplateData = () => {
         axios.get(`/resource-template/table/${this.state.tableName}`).then(response => {
-            this.setState({resourceTemplate: response.data})
+            this.setState({ resourceTemplate: response.data })
         })
     };
     handleClose = () => {
@@ -64,39 +68,38 @@ class ResourceRecordView extends Component {
         this.getRecordsData(pageNumber);
     };
 
+    verifyUser = () => {
+        return getUserRole() === "ROLE_REGISTER";
+    }
+
     componentDidMount() {
-        //this.getRecordsData();
         this.getResourceTemplateData();
         this.getRecordsData(this.state.activePage);
     }
 
     render() {
-        // function relatedResourceTableName() {
-        //     this.state.resourceTemplate.resourceParameters.map(key => {
-        //         if (key.parameterType === "POINT_REFERENCE") {
-        //             return key['relatedResourceTemplateTableName'];
-        //         }
-        //     })
-        // }
+
         return (
             <div>
                 <div>
                     <h1>{this.state.resourceTemplate.name}</h1>
+                    <h3>{this.state.resourceTemplate.description}</h3>
                 </div>
-                <Button style={{marginBottom: 40}}
+                <Hidden mdUp={!this.verifyUser()}>
+                    <Button style={{ marginBottom: 40 }}
                         variant="contained"
                         color="primary"
                         startIcon={<CheckCircleIcon/>}
                         onClick={this.handleOpen}>
-                    Add record
-                </Button>
-
+                        Add record
+                    </Button>
+                </Hidden>
                 <Grid container spacing={3}>
                     <Grid item xs={1}/>
                     <Grid item xs={10}>
                         <FilterView label="Filter"
-                                    resourceTemplate={this.state.resourceTemplate}
-                                    setRecordsData={this.setRecordsData}/>
+                            resourceTemplate={this.state.resourceTemplate}
+                            setRecordsData={this.setRecordsData}/>
                         {this.state.resourceTemplate &&
                         <ResourceRecordList
                             tableName={this.state.tableName}
@@ -105,7 +108,6 @@ class ResourceRecordView extends Component {
                             getRecordsData={() => this.getRecordsData(this.state.activePage)}
                         />}
                     </Grid>
-                    <Grid item xs={3}/>
                     <Grid item xs={3}/>
                 </Grid>
                 <Grid container
@@ -128,7 +130,6 @@ class ResourceRecordView extends Component {
                     <ResourceRecordCreate handleClose={this.handleClose}
                                           tableName={this.state.tableName}
                                           resourceTemplate={this.state.resourceTemplate}
-                                          // relatedResourceTableName={relatedResourceTableName}
                                           getRecordsData={() => this.getRecordsData(this.state.activePage)}
                     />
 

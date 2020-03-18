@@ -45,6 +45,22 @@ class ResourceRecordList extends Component {
     }
 
     render() {
+
+        // let showRecordsListOrErrorMessage = (this.state.data.length !== 0) ?
+        //     (
+        //         this.state.data.map((item) =>
+        //             (<ResourceRecordItem key={item.id}
+        //                                  item={item}
+        //                                  tableName={this.props.tableName}
+        //                                  relatedResourceTableName={this.state.relatedResourceTableName}
+        //                                  headers={this.state.headers}
+        //                                  getRecordsData={this.props.getRecordsData}
+        //                                  resourceTemplate={this.props.resourceTemplate}/>
+        //
+        //             )
+        //         )
+        //     ) : (<h4>{this.state.message}</h4>);
+
         return (
             <>
                 <TableContainer component={Paper}>
@@ -56,7 +72,7 @@ class ResourceRecordList extends Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-
+                            {/*{showRecordsListOrErrorMessage}*/}
                             {this.props.records.map((item) =>
                                 (<ResourceRecordItem key={item.id}
                                                      item={item}
@@ -65,7 +81,6 @@ class ResourceRecordList extends Component {
                                                      headers={this.state.headers}
                                                      getRecordsData={this.props.getRecordsData}
                                                      resourceTemplate={this.props.resourceTemplate}/>
-
                                 )
                             )}
                         </TableBody>
