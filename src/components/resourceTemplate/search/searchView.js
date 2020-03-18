@@ -22,17 +22,20 @@ class SearchView extends Component {
         } else {
             delete searchCriteria[name];
         }
-        this.setState({searchCriteria});
+        this.setState({searchCriteria}, () => {
+            this.props.setSearchCriteria(`/search?search=${Object.values(this.state.searchCriteria).join(',')}`)
+        });
     };
 
     getData = () => {
-        console.log(this.state.searchCriteria);
-        let searchUrl = `/search?search=${Object.values(this.state.searchCriteria).join(',')}`;
-        console.log(searchUrl);
-
-        axios.get(searchUrl).then(response => {
-            this.props.setRecordsData(response.data.content)
-        })
+        this.props.getData();
+        // console.log(this.state.searchCriteria);
+        // let searchUrl = `/search?search=${Object.values(this.state.searchCriteria).join(',')}`;
+        // console.log(searchUrl);
+        //
+        // axios.get(searchUrl).then(response => {
+        //     this.props.setRecordsData(response.data.content)
+        // })
     };
 
     verifyUser = () => {

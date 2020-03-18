@@ -13,7 +13,6 @@ class CustomPagination extends Component {
     render() {
         return (
                 <Pagination
-                    color='primary'
                     hideNavigation
                     page={this.props.activePage}
                     itemsCountPerPage={this.props.itemsCountPerPage}

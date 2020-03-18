@@ -21,18 +21,13 @@ class FilterView extends Component {
         } else {
             delete filters[name];
         }
-        this.setState({ filters });
+        this.setState({filters}, ()=>{
+            this.props.setFilters(`filter=${Object.values(this.state.filters).join(',')}`)
+        });
     };
 
     getData = () => {
-        console.log(this.state.filters);
-        let searchUrl = `/${this.props.resourceTemplate["tableName"]}/filter?filter=${Object.values(this.state.filters).join(',')}`;
-        console.log(searchUrl);
-
-        axios.get(searchUrl).then(response => {
-            this.props.setRecordsData(response.data.content)
-        })
-
+        this.props.getData();
     };
 
     render() {
