@@ -101,9 +101,6 @@ class ResourceRecordCreate extends Component {
                             <TextField type="text" label="description" onChange={this.onChangeDescription}/>
                         </FormControl>
                     </div>
-                    <div>
-                        <PhotoUpload/>
-                    </div>
                     {
                         // elements
                         this.state.resourceParameters.map(element => {

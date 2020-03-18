@@ -34,7 +34,7 @@ const gridStyle = {
 
 const cardStyle = {
     maxWidth: 100,
-    minWidth: 1000,
+    minWidth: 800,
     marginLeft: 100
 };
 
@@ -248,59 +248,9 @@ class ResourceTemplateView extends Component {
                             </Typography>
                         </CardContent>
                     </Card>
-                </Grid>
-                <Grid item xs={3}>
-                    <Grid container
-                          direction="column"
-                          justify="center"
-                          alignItems="center"
-                          style={gridStyle}
-                    ><Hidden mdUp={this.showLinks()}>
-                        <Box mx="auto">
-                            <Box>
-                                <Link to={`/resource/${this.state.tableName}`}>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                    >View SubResources</Button>
-                                </Link>
-                            </Box>
-                            <Box mt={5}>
-                                <Link to={`/resource-template/permission/${this.state.resTempId}`}>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                    >Permissions</Button>
-                                </Link>
-                            </Box>
-                            <Box mt={5}>
-                                <Link to={`/resource-template/update/${this.state.resTempId}`}>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        startIcon={<EditIcon/>}
-                                    >Update</Button>
-                                </Link>
-                            </Box>
-                            <Box mt={5}>
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    startIcon={<DeleteIcon/>}
-                                    style={useStyles.button}
-                                    onClick={this.delete}
-                                >
-                                    Delete
-                                </Button>
-                            </Box>
-                            {publishButton}
-                        </Box>
-                    </Hidden>
-                    </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                    <Card style={cardStyle}>
-                        <h3>Resource Parameters</h3>
+
+                    <Card style={style}>
+                    <h3>Resource Parameters</h3>
                         <CardContent>
                             <Typography variant="body2" color="textSecondary" component="h2">
                                 {/*{this.isPublished()}*/}
@@ -331,7 +281,7 @@ class ResourceTemplateView extends Component {
                             onChange={this.handlePageChange}
                         />
                     </Grid>
-                </Grid>
+
                 <Dialog fullWidth={true}
                         onClose={this.handleCloseCreate}
                         aria-labelledby="simple-dialog-title"
@@ -352,6 +302,56 @@ class ResourceTemplateView extends Component {
                     handleClose={this.handleClose}
                     title="Delete resource template"
                     msg="Are you sure you want to delete this resource template?"/>
+                </Grid>
+                <Grid item xs={3}>
+                    <Grid container
+                          direction="column"
+                          justify="center"
+                          alignItems="center"
+                          style={gridStyle}
+                    ><Hidden mdUp={this.showLinks()}>
+                            <Box mx="auto">
+                                <Box>
+                                    <Link to={`/resource/${this.state.tableName}`}>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                        >View SubResources</Button>
+                                    </Link>
+                                </Box>
+                                <Box mt={5}>
+                                    <Link to={`/resource-template/permission/${this.state.resTempId}`}>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                        >Permissions</Button>
+                                    </Link>
+                                </Box>
+                                <Box mt={5}>
+                                    <Link to={`/resource-template/update/${this.state.resTempId}`}>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            startIcon={<EditIcon />}
+                                        >Update</Button>
+                                    </Link>
+                                </Box>
+                                <Box mt={5}>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        startIcon={<DeleteIcon />}
+                                        style={useStyles.button}
+                                        onClick={this.handleClickOpen}
+                                    >
+                                        Delete
+                                </Button>
+                                </Box>
+                                {publishButton}
+                            </Box>
+                        </Hidden>
+                    </Grid>
+                </Grid>
             </Grid>
         );
     }
