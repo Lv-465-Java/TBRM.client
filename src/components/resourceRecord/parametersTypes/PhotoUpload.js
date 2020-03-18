@@ -7,7 +7,6 @@ import Alert from "@material-ui/lab/Alert";
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import Tooltip from "@material-ui/core/Tooltip";
-import TableRow from "@material-ui/core/TableRow";
 
 class PhotoUpload extends Component {
 
@@ -33,7 +32,6 @@ class PhotoUpload extends Component {
         const types = ['image/png', 'image/jpeg', 'image/gif'];
         for (let x = 0; x < files.length; x++) {
             if (types.every(type => files[x].type !== type)) {
-                // eslint-disable-next-line no-template-curly-in-string
                 this.setState({err: files[x].type +' is not a supported format'});
             }else {
                 this.setState({err: ('')});

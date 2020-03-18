@@ -65,7 +65,7 @@ class PhotosCreateDelete extends Component {
     }
 
     deleteAllPhotos = () => {
-        axios.delete(`/resource-template/resource/${this.props.tableName}/${this.props.id}/deletePhoto`, {}).then(r => {
+        axios.delete(`/resource/${this.props.tableName}/${this.props.id}/deletePhoto`, {}).then(r => {
             this.props.getRecordsData()});
         this.setState({
             openDialogDelete: false
@@ -77,7 +77,7 @@ class PhotosCreateDelete extends Component {
         for (var i = 0; i < this.state.selectedFile.length; i++) {
             formData.append('files', this.state.selectedFile[i]);
         }
-        axios.put(`/resource-template/resource/${this.props.tableName}/${this.props.id}/updatePhoto`, formData, {
+        axios.put(`/resource/${this.props.tableName}/${this.props.id}/updatePhoto`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

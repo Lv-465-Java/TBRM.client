@@ -50,7 +50,7 @@ class ResourceRecordItemView extends Component {
     }
 
     deleteCertainPhoto(e, item) {
-        axios.delete(`/resource-template/resource/${this.props.tableName}/${this.props.item.id}/photo/${item.substring(49)}`).then(
+        axios.delete(`/resource/${this.props.tableName}/${this.props.item.id}/photo/${item.substring(49)}`).then(
             response => {
                 this.props.getRecordsData();
             }
@@ -59,7 +59,7 @@ class ResourceRecordItemView extends Component {
 
     deleteCertainDocument = (event, documentName) => {
         event.preventDefault();
-        axios.delete(`/resource-template/resource/${this.state.tableName}/${this.state.id}/document/${documentName.substring(49)}`).then(
+        axios.delete(`/resource/${this.state.tableName}/${this.state.id}/document/${documentName.substring(49)}`).then(
             response =>{
                 this.props.getRecordsData();
             }
@@ -187,11 +187,6 @@ class ResourceRecordItemView extends Component {
                                         this.props.item.photos.substring(0, this.props.item.photos.length - 1)
                                             .split(",").map((item) => (
                                             <div >
-                                            {/*    <GridListTile key={item} cols={2}>*/}
-                                            {/*    <img src={item} style={{*/}
-                                            {/*        width: 250, height: 250*/}
-                                            {/*    }} alt={"image"}/>*/}
-                                            {/*</GridListTile>*/}
                                                 <div>
                                                 <IconButton
                                                      color="secondary"
@@ -207,13 +202,6 @@ class ResourceRecordItemView extends Component {
                                                 </GridListTile>
                                             </div>
                                         )))}
-                                    {/*<IconButton*/}
-                                    {/*    color="primary"*/}
-                                    {/*    component="label"*/}
-                                    {/*    onClick={this.deleteCurrentPicture(item)}*/}
-                                    {/*>*/}
-                                    {/*    <DeleteIcon/>*/}
-                                    {/*</IconButton>*/}
                                 </GridList>
                             </div>
                         </div>

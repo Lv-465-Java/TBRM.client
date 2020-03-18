@@ -18,7 +18,7 @@ class DocumentCreateDelete extends Component {
     }
 
     deleteAllDocuments = () => {
-        axios.delete(`/resource-template/resource/${this.props.tableName}/${this.props.id}/deleteDocument`,
+        axios.delete(`/resource/${this.props.tableName}/${this.props.id}/deleteDocument`,
             {}).then(r =>
             this.props.getRecordsData());
         this.setState({
@@ -37,7 +37,7 @@ class DocumentCreateDelete extends Component {
         for (var i = 0; i < this.state.selectedFile.length; i++) {
             formData.append('files', this.state.selectedFile[i]);
         }
-        axios.put(`/resource-template/resource/${this.props.tableName}/${this.props.id}/document`, formData, {
+        axios.put(`/resource/${this.props.tableName}/${this.props.id}/document`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -85,7 +85,6 @@ class DocumentCreateDelete extends Component {
 
     render() {
         return (
-            // eslint-disable-next-line react/jsx-no-undef
             <Grid>
                 {this.state.err && <Alert severity="error">{this.state.err}</Alert>}
                 <Tooltip title={"Add"}>
