@@ -2,27 +2,22 @@
     text-align: center;
 }
 
-.searchField {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 30px;
-    background-color: #e3eeff;
-    padding: 10px;
-}
-
 .filterField {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-top: 30px;
     margin-bottom: 30px;
     background-color: #e3eeff;
     padding: 10px;
 }
 
-.emptyTable{
+.messageAboutEmptyTable {
+    font-size: 18px;
+}
 
+.searchIcon {
+    margin: auto;
+    width: 5%;
 }
 
 .filterCells {

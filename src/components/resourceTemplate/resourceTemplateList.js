@@ -10,6 +10,7 @@ import FilterView from "../resourceRecord/filters/filterView";
 const style = {
     display: "flex",
     flexWrap: "wrap",
+    justifyContent: "center"
 };
 
 const gridStyle = {
@@ -37,7 +38,6 @@ class ResourceTemplateList extends Component {
         totalItemsCount: 0,
         searchCriteria:"",
         oldSearchCriteria: "Foo"
-        // message: ""
     };
 
     setSearchCriteria = (searchCriteria) => {
@@ -45,7 +45,6 @@ class ResourceTemplateList extends Component {
     };
 
     setRecordsData = (resourceTemplates, totalPages, itemsCountPerPage, totalItemsCount) => {
-        let message = resourceTemplates.length === 0 ? "There is no resource templates to display" : "";
         this.setState({resourceTemplates, totalPages, itemsCountPerPage, totalItemsCount});
     };
 
@@ -132,11 +131,13 @@ class ResourceTemplateList extends Component {
 
         let showTemplateListOrErrorMessage = (this.state.resourceTemplates.length !== 0) ?
             (
-                this.state.resourceTemplates.map((item) =>
-                    (<ResourceTemplateItem key={item.id}
-                                           item={item}/>)
-                )
-            ) : (<p className={"App"}>{this.state.message}</p>);
+                <div style={style}>
+                    {this.state.resourceTemplates.map((item) =>
+                        (<ResourceTemplateItem key={item.id}
+                                               item={item}/>)
+                    )}
+                </div>
+            ) : (<p className={"message"}>{this.state.message}</p>);
 
         let userLinks = (getUserRole() === "ROLE_MANAGER") ?
             (

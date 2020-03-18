@@ -25,15 +25,13 @@ class PointReferenceField extends Component {
 
     render() {
         return (
-            <>
-                <div className={"filterDropdown"}>
-                    <UserDropdown
-                        onChangePointReference={this.onChangeValue}
-                        columnName={this.props.columnName}
-                        label={this.props.name}
-                    />
-                </div>
-            </>
+            <div className={"filterDropdown"}>
+                <UserDropdown
+                    onChangePointReference={this.onChangeValue}
+                    columnName={this.props.columnName}
+                    label={this.props.name}
+                />
+            </div>
         );
     }
 }

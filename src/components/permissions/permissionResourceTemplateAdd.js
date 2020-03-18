@@ -162,7 +162,7 @@ class PermissionResourceTemplateAdd extends Component {
 
 
     goBack = () => {
-        this.props.history.push(`/resource-template/view/${this.props.id}`);
+        this.props.history.push(`/resource-template/view/${this.state.id}`);
     };
 
     goToEditGroup(name) {
