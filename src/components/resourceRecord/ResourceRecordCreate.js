@@ -14,6 +14,11 @@ import CoordinateString from "./parametersTypes/CoordinateString";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import PhotoUpload from "./parametersTypes/PhotoUpload";
+import Grid from "@material-ui/core/Grid";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import IconButton from "@material-ui/core/IconButton";
+import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
+import AttachFileIcon from "@material-ui/icons/AttachFile";
 
 class ResourceRecordCreate extends Component {
 
@@ -22,10 +27,122 @@ class ResourceRecordCreate extends Component {
         description: undefined,
         resourceParameters: this.props.resourceTemplate.resourceParameters,
         parameters: undefined,
-        open: false
+        open: false,
+        selectedFile: [],
+        selectedPhoto:[],
+        err: ''
+    }
+    handleClickAddPhoto = (event) => {
+        const files = [];
+        if (this.checkMimeType(event) && (this.checkFileSize(event))) {
+            for (let i = 0; i < event.target.files.length; i++) {
+                files.push(event.target.files[i]);
+            }
+            this.setState({
+                selectedPhoto: files
+            })
+        }
+    };
+
+    checkMimeType = (event) => {
+        let files = event.target.files;
+        const types = ['image/png', 'image/jpeg', 'image/gif'];
+        for (let x = 0; x < files.length; x++) {
+            if (types.every(type => files[x].type !== type)) {
+                // eslint-disable-next-line no-template-curly-in-string
+                this.setState({err: (' is not a supported format')});
+            }else {
+                this.setState({err: ('')});
+                return true;
+            }
+        }
+    }
+
+    checkFileSize = (event) => {
+        let files = event.target.files;
+        let size = 4000000;
+        for (let x = 0; x < files.length; x++) {
+            if (files[x].size > size) {
+                this.setState({err: 'image is too large, please pick a smaller file'});
+                return false
+            } else {
+                this.setState({err: ('')});
+                return true;
+            }
+
+        }
+    }
+
+    checkDocumentSize = (event) => {
+        let files = event.target.files;
+        let size = 2000000;
+        for (let x = 0; x < files.length; x++) {
+            if (files[x].size > size) {
+                this.setState({err: 'document is too large, please pick a smaller file'});
+                return false
+            } else {
+                this.setState({err: ('')});
+                return true;
+            }
+
+        }
+    }
+
+    checkMimeTypeDocument = (event) => {
+        let files = event.target.files;
+        const types = ['application/pdf', 'application/rtf', 'text/plain'];
+        for (let x = 0; x < files.length; x++) {
+            if (types.every(type => files[x].type !== type)) {
+                // eslint-disable-next-line no-template-curly-in-string
+                this.setState({err: (' is not a supported format')});
+            }else {
+                this.setState({err: ('')});
+                return true;
+            }
+        }
+    }
+
+    handleClickAddDocument = (event) => {
+        const files = [];
+        if (this.checkDocumentSize(event) && (this.checkMimeTypeDocument(event))) {
+            for (let i = 0; i < event.target.files.length; i++) {
+                files.push(event.target.files[i]);
+            }
+            this.setState({
+                selectedFile: files
+            })
+        }
+    };
+
+
+    UpdatePhoto = (tableName,id) => {
+        const formData = new FormData();
+        for (let i = 0; i < this.state.selectedPhoto.length; i++) {
+            formData.append('files', this.state.selectedPhoto[i]);
+        }
+        axios.put(`/resource-template/resource/${tableName}/${id}/updatePhoto`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(r => {
+        });
+    }
+
+    UploadDocument= (tableName,id) =>{
+        const formData = new FormData();
+        for (let i = 0; i < this.state.selectedFile.length; i++) {
+            formData.append('files', this.state.selectedFile[i]);
+        }
+        axios.put(`/resource-template/resource/${tableName}/${id}/document`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(r => {
+        });
     }
 
     create = () => {
+        var table=this.props.tableName;
         axios.post(`/resource-template/resource/${this.props.tableName}`, this.state).then(
             response => {
                 this.setState({
@@ -35,8 +152,13 @@ class ResourceRecordCreate extends Component {
                     open: true
                 })
                 this.props.getRecordsData();
-
-            }).catch(error => {
+                  if(  this.state.selectedPhoto!==[]) {
+                      this.UpdatePhoto(table,3);
+                  }
+                if (this.state.selectedFile!==[]) {
+                    this.UploadDocument(table,2)}
+                }
+                ).catch(error => {
             console.dir(error.response.data);
         })
     };
@@ -95,7 +217,30 @@ class ResourceRecordCreate extends Component {
                         </FormControl>
                     </div>
                     <div>
-                        <PhotoUpload/>
+                            <Grid xl={12}>
+                                <CssBaseline/>
+                                {this.state.err && <Alert severity="error">{this.state.err}</Alert>}
+                                <IconButton
+                                    color="primary"
+                                    component="label"
+                                >
+                                    <AddAPhotoIcon/>
+                                    <input type='file' multiple='true'
+                                           style={{display: "none"}}
+                                           onChange={this.handleClickAddPhoto}
+                                    />
+                                </IconButton>
+                                <IconButton
+                                    color="primary"
+                                    component="label"
+                                >
+                                    <AttachFileIcon/>
+                                    <input type='file' multiple='true'
+                                           style={{display: "none"}}
+                                           onChange={this.handleClickAddDocument}
+                                    />
+                                </IconButton>
+                            </Grid>
                     </div>
                     {
                         // elements

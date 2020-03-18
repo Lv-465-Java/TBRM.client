@@ -7,9 +7,37 @@ import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import CloseIcon from '@material-ui/icons/Close';
 import ListItem from "@material-ui/core/ListItem";
+import DescriptionIcon from '@material-ui/icons/Description';
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+import {Image, KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
 
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import Avatar from '@material-ui/core/Avatar';
+import TableCell from "@material-ui/core/TableCell";
+import axios from "../../utils/axios";
+import Alert from "@material-ui/lab/Alert";
+import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
+
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Grid from "@material-ui/core/Grid";
+import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
+import DeleteIcon from "@material-ui/icons/Delete";
+import MyDialog from "../resourceTemplate/popUp";
+import DocumentCreateDelete from "./parametersTypes/documentCreateDelete";
+import PhotosCreateDelete from "./parametersTypes/PhotosCreateDelete";
+import Link from "@material-ui/core/Link";
+import {generate} from "fast-glob";
+import MobileStepper from "@material-ui/core/MobileStepper";
+import PhotosList from "./parametersTypes/PhotosList";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import {GridListTileBar} from "@material-ui/core";
 
 
 const dialogContentStyle = {
@@ -24,12 +52,35 @@ class ResourceRecordItemView extends Component {
         name: this.props.item.name,
         description: this.props.item.description,
         parameters: this.props.item.parameters,
+        photos: this.props.item.photos,
+        document: this.props.item.document,
         headers: this.props.headers,
         data: this.props.data,
-        coordinates: undefined
+        coordinates: undefined,
+        activeStep: 0
         // parameters: undefined
     }
 
+    componentDidMount() {
+
+    }
+
+    deleteCertainPhoto(e, item) {
+        axios.delete(`/resource-template/resource/${this.props.tableName}/${this.props.item.id}/photo/${item.substring(49)}`).then(
+            response => {
+                this.props.getRecordsData();
+            }
+        );
+    }
+
+    deleteCertainDocument = (event, documentName) => {
+        event.preventDefault();
+        axios.delete(`/resource-template/resource/${this.state.tableName}/${this.state.id}/document/${documentName.substring(49)}`).then(
+            response =>{
+                this.props.getRecordsData();
+            }
+        );
+    }
     getRecordValues = () => {
         this.state.data['description'] = this.props.item['description']
         this.state.data['name'] = this.props.item['name'];
@@ -70,8 +121,8 @@ class ResourceRecordItemView extends Component {
                 </AppBar>
                 <div style={dialogContentStyle}>
 
-
                     <List>
+
                         {this.state.headers.map((element, index) => {
                             let e;
                             if (element.columnName.endsWith('_coordinate')) {
@@ -93,11 +144,103 @@ class ResourceRecordItemView extends Component {
                             return e;
                         })
                         }
+                        <Grid>
+                            <ExpansionPanel>
+                                <ExpansionPanelSummary
+                                    expandIcon={<ExpandMoreIcon/>}
+                                    aria-controls="panel2a-content"
+                                    id="panel2a-header"
+                                >
+                                    <Typography>Documents </Typography>
+                                    <div style={{textAlign: "right"}}>
+                                        <DocumentCreateDelete  getRecordsData={this.props.getRecordsData}
+                                                               tableName={this.state.tableName} id={this.state.id}/>
+                                    </div>
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails>
+                                    {this.props.item.document && (
+                                        this.props.item.document.substring(0, this.props.item.document.length - 1)
+                                            .split(",").map((item, number) => (
+                                            <Grid alignItems={"center"} justify={"center"}>
+                                                <Link href={item}>
+                                                    {/*    <ListItemIcon>*/}
+                                                    {/*        <DescriptionIcon />*/}
+                                                    {/*    </ListItemIcon>*/}
+                                                    <div style={{display: "inline"}}>
+                                                        <DescriptionIcon color={"primary"}/>file{number}</div>
+                                                </Link>
+
+                                                <IconButton
+                                                    // color="secondary"
+                                                    component="label"
+                                                    onClick={(e) => this.deleteCertainDocument(e, item)}>
+                                                    <DeleteIcon/>
+                                                </IconButton>
+                                            </Grid>
+                                        )))}
+                                </ExpansionPanelDetails>
+                            </ExpansionPanel>
+                        </Grid>
+                        <Grid item xs={1}/>
+                        <div>
+                            <Typography align="center">Photos <PhotosCreateDelete getRecordsData={this.props.getRecordsData}
+                                tableName={this.state.tableName} id={this.state.id}/></Typography>
+                            <div style={{
+                                display: 'flex',
+                                flexWrap: 'wrap',
+                                justifyContent: 'space-around',
+                                overflow: 'hidden'
+                            }}>
+                                <GridList
+                                    cellHeight={160}
+                                    style={{
+                                        width: 600,
+                                        height: 450,
+                                    }}
+                                    cols={3}
+                                >
+                                    {this.props.item.photos && (
+                                        this.props.item.photos.substring(0, this.props.item.photos.length - 1)
+                                            .split(",").map((item) => (
+                                            <div >
+                                            {/*    <GridListTile key={item} cols={2}>*/}
+                                            {/*    <img src={item} style={{*/}
+                                            {/*        width: 250, height: 250*/}
+                                            {/*    }} alt={"image"}/>*/}
+                                            {/*</GridListTile>*/}
+                                                <div>
+                                                <IconButton
+                                                     color="secondary"
+                                                    component="label"
+                                                    onClick={(e) => this.deleteCertainPhoto(e, item)}>
+                                                    <DeleteIcon/>
+                                                </IconButton>
+                                                </div>
+                                                    <GridListTile key={item} cols={2}>
+                                                    <img src={item} style={{
+                                                        width: 250, height: 250
+                                                    }} alt={"image"}/>
+                                                </GridListTile>
+                                            </div>
+                                        )))}
+                                    {/*<IconButton*/}
+                                    {/*    color="primary"*/}
+                                    {/*    component="label"*/}
+                                    {/*    onClick={this.deleteCurrentPicture(item)}*/}
+                                    {/*>*/}
+                                    {/*    <DeleteIcon/>*/}
+                                    {/*</IconButton>*/}
+                                </GridList>
+                            </div>
+                        </div>
                     </List>
-                    {googleMap}</div>
-            </div>
+                </div>
+
+                {googleMap}</div>
+
         );
     }
+
 }
 
 export default ResourceRecordItemView;

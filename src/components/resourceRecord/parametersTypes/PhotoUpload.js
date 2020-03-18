@@ -6,6 +6,8 @@ import axios from "../../../utils/axios";
 import Alert from "@material-ui/lab/Alert";
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
+import Tooltip from "@material-ui/core/Tooltip";
+import TableRow from "@material-ui/core/TableRow";
 
 class PhotoUpload extends Component {
 
@@ -32,7 +34,7 @@ class PhotoUpload extends Component {
         for (let x = 0; x < files.length; x++) {
             if (types.every(type => files[x].type !== type)) {
                 // eslint-disable-next-line no-template-curly-in-string
-                this.setState({err: (' is not a supported format')});
+                this.setState({err: files[x].type +' is not a supported format'});
             }else {
                 this.setState({err: ('')});
                 return true;
@@ -75,8 +77,7 @@ class PhotoUpload extends Component {
         const types = ['application/pdf', 'application/rtf', 'text/plain'];
         for (let x = 0; x < files.length; x++) {
             if (types.every(type => files[x].type !== type)) {
-                // eslint-disable-next-line no-template-curly-in-string
-                this.setState({err: (' is not a supported format')});
+                this.setState({err: files[x].type +' is not a supported format'});
             }else {
                 this.setState({err: ('')});
                 return true;
@@ -102,11 +103,11 @@ class PhotoUpload extends Component {
         for (let i = 0; i < this.state.selectedFile.length; i++) {
             formData.append('files', this.state.selectedFile[i]);
         }
-        axios.put("/resource-template/resource/o/3/updatePhoto", formData, {
+        axios.put(`/resource-template/resource/${this.props.tableName}/${this.props.id}/updatePhoto`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
-        }).then(r => {
+        }).then(r => {  this.props.getRecordsData();
         });
     }
 
@@ -115,20 +116,21 @@ class PhotoUpload extends Component {
         for (let i = 0; i < this.state.selectedFile.length; i++) {
             formData.append('files', this.state.selectedFile[i]);
         }
-        axios.put("/resource-template/resource/o/3/document", formData, {
+        axios.put(`/resource-template/resource/${this.props.tableName}/${this.props.id}/document`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
-        }).then(r => {
+        }).then(r => {this.props.getRecordsData();
         });
     }
 
     render() {
         return (
             <div>
-                <Grid xl={12}>
+
                     <CssBaseline/>
                     {this.state.err && <Alert severity="error">{this.state.err}</Alert>}
+                    <Tooltip title="Add photos">
                     <IconButton
                         color="primary"
                         component="label"
@@ -139,6 +141,8 @@ class PhotoUpload extends Component {
                                onChange={this.handleClickAddPhoto}
                         />
                     </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Add documents">
                     <IconButton
                         color="primary"
                         component="label"
@@ -149,7 +153,8 @@ class PhotoUpload extends Component {
                                onChange={this.handleClickAddDocument}
                         />
                     </IconButton>
-                </Grid>
+                    </Tooltip>
+
 
             </div>
         );

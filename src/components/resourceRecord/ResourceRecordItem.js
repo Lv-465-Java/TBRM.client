@@ -13,6 +13,7 @@ import ResourceRecordUpdate from "./ResourceRecordUpdate";
 import ResourceRecordItemView from "./ResourceRecordItemView";
 import Image from 'material-ui-image'
 import MyDialog from "../resourceTemplate/popUp";
+import PhotoUpload from "./parametersTypes/PhotoUpload";
 
 class resourceRecordItem extends Component {
 
@@ -89,12 +90,13 @@ class resourceRecordItem extends Component {
                                             align="right">{this.state.data[element.columnName]}
                             </TableCell>)
                         }
-                        // else if (element.columnName === 'photos') {
-                        //     e = (<TableCell align="right"><Image
-                        //         src={this.state.data[element.columnName]}
-                        //     />
-                        //     </TableCell>)
-                        // }
+                        else if (element.columnName === 'photos') {
+                            // e = (<TableCell align="right">
+                            //     {this.state.data[element.columnName].split(",").map((item:T) => (
+                            //         <Image src={item}  alt={"image"}/>
+                            //     ))}
+                            // </TableCell>)
+                        }
                         else if (element.columnName.endsWith('_coordinate')) {
                             e = (<TableCell align="right">
                                 <Tooltip title={this.state.data[element.columnName].map(key => (
@@ -123,6 +125,8 @@ class resourceRecordItem extends Component {
                             <DeleteIcon/>
                         </IconButton>
                     </Tooltip>
+                <PhotoUpload getRecordsData={this.props.getRecordsData}
+                             tableName={this.props.tableName} id={this.props.item["id"]}/>
                 </TableRow>
 
                 <Dialog fullWidth
@@ -147,6 +151,7 @@ class resourceRecordItem extends Component {
                                             tableName={this.props.tableName}
                                             item={this.props.item}
                                             resourceTemplate={this.props.resourceTemplate}
+                                            getRecordsData={this.props.getRecordsData}
                                             headers={this.props.headers}
                                             data={this.state.data}
                     />

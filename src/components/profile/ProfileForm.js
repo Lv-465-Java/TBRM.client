@@ -340,7 +340,7 @@ class ProfileForm extends Component {
     checkMimeType = (event) => {
         let files = event.target.files[0];
         if ((files.type !== 'image/png') && (files.type !== 'image/jpeg') && (files.type !== 'image/gif')) {
-            this.setState({err: (' Chosen file is not a supported format')});
+            this.setState({err: files.type+' is not a supported format'});
         } else {
             this.setState({err: ('')});
             return true;
