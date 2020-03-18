@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import FilterPointStringField from "./filterPointStringField";
 import SearchIcon from '@material-ui/icons/Search';
 import FilterPointNumberField from "./filterPointNumberField";
@@ -6,7 +6,6 @@ import FilterPointReferenceField from "./filterPointReferenceField";
 import FilterRangeNumberField from "./filterRangeNumberField";
 import IconButton from "@material-ui/core/IconButton";
 import axios from "../../../utils/axios";
-import { Box } from '@material-ui/core';
 
 class FilterView extends Component {
     state = {
@@ -15,23 +14,36 @@ class FilterView extends Component {
     };
 
     setFilter = (name, filterStr) => {
-        let filters = { ...this.state.filters };
+        let filters = {...this.state.filters};
         if (filterStr !== "") {
             filters[name] = filterStr;
         } else {
             delete filters[name];
         }
-        this.setState({ filters });
+        this.setState({filters}, ()=>{
+            this.props.setFilters(`filter=${Object.values(this.state.filters).join(',')}`)
+        });
     };
 
     getData = () => {
-        console.log(this.state.filters);
-        let searchUrl = `/${this.props.resourceTemplate["tableName"]}/filter?filter=${Object.values(this.state.filters).join(',')}`;
-        console.log(searchUrl);
-
-        axios.get(searchUrl).then(response => {
-            this.props.setRecordsData(response.data.content)
-        })
+        this.props.getData();
+        // console.log(this.state.filters);
+        // let searchUrl = `/${this.props.resourceTemplate["tableName"]}/filter?filter=${Object.values(this.state.filters).join(',')}`;
+        // console.log(searchUrl);
+        //
+        // axios.get(searchUrl).then(response => {
+        //
+        //     let records = response.data.content;
+        //     let totalPages = response.data.totalPages;
+        //     let itemsCountPerPage = response.data.numberOfElements;
+        //     let totalItemsCount = response.data.totalElements;
+        //     this.props.setRecordsData(
+        //         records,
+        //         totalPages,
+        //         itemsCountPerPage,
+        //         totalItemsCount);
+        //
+        // })
 
     };
 
@@ -40,61 +52,57 @@ class FilterView extends Component {
 
         return (
             <div className="filterField">
-                <Box display="flex"
-                    flexDirection="row"
-                    flexWrap="wrap"
-                    >
-                    <FilterPointStringField setFilter={this.setFilter}
-                        name="Name"
-                        columnName={"name"} />
-                    <FilterPointStringField setFilter={this.setFilter}
-                        name="Description"
-                        columnName={"description"} />
-                    {parameters.map((element, index) => {
+                <FilterPointStringField setFilter={this.setFilter}
+                                        name="Name"
+                                        columnName={"name"}/>
+                <FilterPointStringField setFilter={this.setFilter}
+                                        name="Description"
+                                        columnName={"description"}/>
+                {parameters.map((element, index) => {
 
-                        switch (element["parameterType"]) {
-                            case "POINT_REFERENCE":
-                                return <FilterPointReferenceField key={index}
-                                    setFilter={this.setFilter}
-                                    name={element["name"]}
-                                    columnName={element["columnName"]}
-                                    relatedResourceTableName={element["relatedResourceTemplateTableName"]}
-                                    setData={this.setData} />;
-                            case "POINT_STRING":
-                                return <FilterPointStringField key={index}
-                                    setFilter={this.setFilter}
-                                    name={element["name"]}
-                                    columnName={element["columnName"]} />;
-                            case "POINT_DOUBLE":
-                                return <FilterPointNumberField key={index}
-                                    setFilter={this.setFilter}
-                                    name={element["name"]}
-                                    columnName={element["columnName"]} />;
-                            case "POINT_INT":
-                                return <FilterPointNumberField key={index}
-                                    setFilter={this.setFilter}
-                                    name={element["name"]}
-                                    columnName={element["columnName"]} />;
-                            case "RANGE_DOUBLE":
-                                return <FilterRangeNumberField key={index}
-                                    setFilter={this.setFilter}
-                                    name={element["name"]}
-                                    columnName={element["columnName"]} />;
-                            case "RANGE_INT":
-                                return <FilterRangeNumberField key={index}
-                                    setFilter={this.setFilter}
-                                    name={element["name"]}
-                                    columnName={element["columnName"]} />
-                            default:
-                                return undefined;
-                        }
-                    })}
-                    <IconButton aria-label="delete"
-                        color="primary"
-                        onClick={this.getData}>
-                        <SearchIcon />
-                    </IconButton>
-                </Box>
+                    switch (element["parameterType"]) {
+                        case "POINT_REFERENCE":
+                            return <FilterPointReferenceField key={index}
+                                                              setFilter={this.setFilter}
+                                                              name={element["name"]}
+                                                              columnName={element["columnName"]}
+                                                              relatedResourceTableName={element["relatedResourceTemplateTableName"]}
+                                                              setData={this.setData}/>;
+                        case "POINT_STRING":
+                            return <FilterPointStringField key={index}
+                                                           setFilter={this.setFilter}
+                                                           name={element["name"]}
+                                                           columnName={element["columnName"]}/>;
+                        case "POINT_DOUBLE":
+                            return <FilterPointNumberField key={index}
+                                                           setFilter={this.setFilter}
+                                                           name={element["name"]}
+                                                           columnName={element["columnName"]}/>;
+                        case "POINT_INT":
+                            return <FilterPointNumberField key={index}
+                                                           setFilter={this.setFilter}
+                                                           name={element["name"]}
+                                                           columnName={element["columnName"]}/>;
+                        case "RANGE_DOUBLE":
+                            return <FilterRangeNumberField key={index}
+                                                           setFilter={this.setFilter}
+                                                           name={element["name"]}
+                                                           columnName={element["columnName"]}/>;
+                        case "RANGE_INT":
+                            return <FilterRangeNumberField key={index}
+                                                           setFilter={this.setFilter}
+                                                           name={element["name"]}
+                                                           columnName={element["columnName"]}/>
+                        default:
+                            return undefined;
+                    }
+                })}
+                <IconButton aria-label="delete"
+                            color="primary"
+                            onClick={this.getData}>
+                    <SearchIcon/>
+                </IconButton>
+
             </div>
         );
     }
