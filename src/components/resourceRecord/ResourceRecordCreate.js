@@ -151,6 +151,7 @@ class ResourceRecordCreate extends Component {
                     parameters: {},
                     open: true
                 })
+                this.componentDidMount();
                 this.props.getRecordsData();
                   if(  this.state.selectedPhoto!==[]) {
                       this.UpdatePhoto(table,3);

@@ -81,14 +81,11 @@ class UsersHistory extends Component {
         let url = `/${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
         console.log(url);
 
-        axios.get(`/bydate/${url}`).then(response => {
+        axios.get(`/bydate${url}`).then(response => {
             console.log(response.data);
             this.setState({users: response.data, value: 1}, ()=> console.log(this.state.users));
         });
         console.log(this.state.value);
-    }
-
-    componentDidMount() {
     }
 
     render() {

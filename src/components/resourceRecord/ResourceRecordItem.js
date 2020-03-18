@@ -91,11 +91,17 @@ class resourceRecordItem extends Component {
                             </TableCell>)
                         }
                         else if (element.columnName === 'photos') {
-                            // e = (<TableCell align="right">
-                            //     {this.state.data[element.columnName].split(",").map((item:T) => (
-                            //         <Image src={item}  alt={"image"}/>
-                            //     ))}
-                            // </TableCell>)
+                            e = (  <TableCell align="right">
+                                {this.state.data[element.columnName] && (
+                                    <Image src={this.state.data[element.columnName]
+                                        .substring(0,this.state.data[element.columnName].indexOf(","))}
+                                           style={{
+                                               // width: 150,
+                                               height:20
+                                           }}
+                                           stylealt={"image"}/>
+                                    )}
+                                </TableCell>)
                         }
                         else if (element.columnName.endsWith('_coordinate')) {
                             e = (<TableCell align="right">
@@ -125,6 +131,7 @@ class resourceRecordItem extends Component {
                             <DeleteIcon/>
                         </IconButton>
                     </Tooltip>
+
                 <PhotoUpload getRecordsData={this.props.getRecordsData}
                              tableName={this.props.tableName} id={this.props.item["id"]}/>
                 </TableRow>

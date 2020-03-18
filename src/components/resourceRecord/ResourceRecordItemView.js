@@ -12,32 +12,16 @@ import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
-import {Image, KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
-
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import Avatar from '@material-ui/core/Avatar';
-import TableCell from "@material-ui/core/TableCell";
 import axios from "../../utils/axios";
-import Alert from "@material-ui/lab/Alert";
-import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
-
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Grid from "@material-ui/core/Grid";
-import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import DeleteIcon from "@material-ui/icons/Delete";
-import MyDialog from "../resourceTemplate/popUp";
 import DocumentCreateDelete from "./parametersTypes/documentCreateDelete";
 import PhotosCreateDelete from "./parametersTypes/PhotosCreateDelete";
 import Link from "@material-ui/core/Link";
-import {generate} from "fast-glob";
-import MobileStepper from "@material-ui/core/MobileStepper";
-import PhotosList from "./parametersTypes/PhotosList";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import {GridListTileBar} from "@material-ui/core";
 
 
 const dialogContentStyle = {
@@ -162,7 +146,7 @@ class ResourceRecordItemView extends Component {
                                         this.props.item.document.substring(0, this.props.item.document.length - 1)
                                             .split(",").map((item, number) => (
                                             <Grid alignItems={"center"} justify={"center"}>
-                                                <Link href={item}>
+                                                <Link href={item} target={"_blank"}>
                                                     {/*    <ListItemIcon>*/}
                                                     {/*        <DescriptionIcon />*/}
                                                     {/*    </ListItemIcon>*/}
