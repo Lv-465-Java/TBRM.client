@@ -3,25 +3,20 @@ import TextField from "@material-ui/core/TextField";
 import axios from '../../utils/axios';
 import {Box, Button} from "@material-ui/core";
 import {GOOGLE_AUTH_URL} from "../../constants";
-import LocalSessionStorageService from "../../services/LocalStorageService";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import googleLogo from "../../img/google-logo.png";
 import Alert from "@material-ui/lab/Alert";
-import { getUserRole, verifyUser } from '../../service/authService';
+import {verifyUser } from '../../service/authService';
 
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-
-const localStorageService = LocalSessionStorageService.getService();
 
 const style={
     marginTop:40
+}
+const styleButton={
+    marginTop:20
 }
 const formControl= {
         marginTop: 15,
@@ -34,8 +29,7 @@ class LoginForm extends Component {
         email: undefined,
         password: undefined,
         userrole: '',
-        errorMessage: '',
-        tenants: []
+        errorMessage: ''
     }
 
     getRole() {
@@ -79,32 +73,10 @@ class LoginForm extends Component {
         });
     };
 
-    getTenant = () => {
-        axios.get("/tenant").then(response => {
-            if (response !== undefined) {
-                let tenants = response.data.content;
-                this.setState({
-                    tenants: tenants,
-                });
-            }
-        }, error => {
-            this.setState({ errorMessage: error.response.data.message });
-        })
-    }
-
-    // componentDidMount() {
-    //     this.getTenant();
-    // }
 
 
     render() {
-       let options = this.state.tenants.map((data) =>
-       <option
-    key={data.email}
-    value={data.firstName}>
-        {data.email}
-        </option>
-        );
+
         return (
             <Container component="main" maxWidth="xs" style={style}>
                 <CssBaseline/>
@@ -135,35 +107,10 @@ class LoginForm extends Component {
                         autoComplete="current-password"
                     />
 
-                    <Grid>
-                    <FormControl variant="outlined" style={formControl}>
-                        <InputLabel ref="" htmlFor="outlined-age-native-simple">
-                            Choose Tenant
-                        </InputLabel>
-                        <Select
-                            native
-                            value={this.state.tenant}
-                            onChange={this.handleChange('tenant')}
-                            labelWidth={110}
-                            inputProps={{
-                                name: 'tenant',
-                                id: 'outlined-age-native-simple',
-                            }}
-                        >
-                            <option>Select Tenant</option>
-                            {options}
-                        </Select>
-                    </FormControl>
-                    </Grid>
-
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary"/>}
-                        label="Remember me"
-                    />
-
                     <Button
                         type="submit"
                         fullWidth
+                        style={styleButton}
                         variant="contained"
                         color="primary"
                         onClick={this.getData}

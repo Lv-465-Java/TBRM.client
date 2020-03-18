@@ -51,21 +51,21 @@ class AllUsersList extends Component {
     };
 
     componentDidMount() {
-        this.getAllAccounts(this.state.activePage);
+        this.getAllAccounts();
     }
 
 
     handlePageChange = (event, pageNumber) => {
-        this.setState({activePage: pageNumber});
-        this.getAllAccounts(pageNumber);
+        this.setState({activePage: pageNumber},() => {this.getAllAccounts()});
+
     };
 
     goBack = () => {
         this.props.history.goBack();
     };
 
-    getAllAccounts = (pageNumber) => {
-        axios.get(`/admin/user?page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
+    getAllAccounts = () => {
+        axios.get(`/admin/user?page=${this.state.activePage}&pageSize=${itemsNumber}`).then(response => {
             let users = response.data.content;
             let totalPages = response.data.totalPages;
             let itemsCountPerPage = response.data.numberOfElements;
@@ -104,7 +104,8 @@ class AllUsersList extends Component {
                             {this.state.users.map((item) => (
 
                                 <UserItem key={item}
-                                          item={item}/>)
+                                          item={item}
+                                          getAllAccounts={this.getAllAccounts}/>)
                             )}
                         </TableBody>
                     </Table>

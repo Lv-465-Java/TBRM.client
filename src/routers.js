@@ -23,15 +23,15 @@ import { getUserRole, isUserLoggedIn } from './service/authService';
 import Forbidden from "./hoc/forbidden";
 import GuestPage from "./components/guest";
 import ResourceRecordView from "./components/resourceRecord/ResourceRecordView";
-import AddTenant from "./components/home/AddTenant";
 import TestMaps from "./components/resourceParameters/GoogleMap";
 import ResourceRecordItemView from "./components/resourceRecord/ResourceRecordItemView";
 import ResourceRecordCreate from "./components/resourceRecord/ResourceRecordCreate";
 import ResourceRecordUpdate from "./components/resourceRecord/ResourceRecordUpdate";
 import GroupChangeOwner from "./components/permissions/group/groupChangeOwner";
+import AdminPage from "./components/adminPage/adminPage";
+import UserList from "./components/user/userList";
 import PermissionResourceTemplate from "./components/permissions/permissionResourceTemplate";
 
-import AdminPage from "./components/adminPage/adminPage";
 import FilterView from "./components/resourceRecord/filters/filterView";
 import TenantList from "./components/tenant/tenantList";
 
@@ -82,7 +82,7 @@ class Routers extends Component {
                     <Route path="/registration" component={RegistrationForm}/>
                     <Route path="/reset_password" component={ResetPassword} />
                     <ProtectedRoute path="/profile" component={ProfileForm} />
-                    <Route path="/admin-panel" component={AdminPage} />
+                    <AdminRoute path="/admin-panel" component={UserList}/>
                     <Route path="/forgot_password" exact component={ForgotPassword} />
                     <ManagerRoute path="/resource-template/create" component={ResourceTemplateCreate} />
                     <ManagerRoute path="/resource-template/update/:id" component={ResourceTemplateUpdate} />
