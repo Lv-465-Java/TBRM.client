@@ -38,7 +38,7 @@ const gridStyle = {
 
 const cardStyle = {
     maxWidth: 100,
-    minWidth: 1000,
+    minWidth: 800,
     marginLeft: 100
 }
 
@@ -255,6 +255,62 @@ class ResourceTemplateView extends Component {
                             </Typography>
                         </CardContent>
                     </Card>
+                    
+                    <Card style={style}>
+                    <h3>Resource Parameters</h3>
+                        <CardContent>
+                            <Typography variant="body2" color="textSecondary" component="h2">
+                                {/*{this.isPublished()}*/}
+                                {this.state.errorMessageParameter &&
+                                <Alert severity="error">{this.state.errorMessageParameter}</Alert>}
+                            </Typography>
+                            <Button variant="contained"
+                                    color="primary"
+                                    startIcon={<EditIcon/>}
+                                    onClick={this.handleOpenCreate}>
+                                Create Parameter
+                            </Button>
+                            {/*<CreateParameter getData={() => this.getParameters(this.state.activePage)}*/}
+                            {/*                 resTempId={this.state.resTempId}/>*/}
+                        </CardContent>
+                        <CardContent>
+                            <ResourceParametersList resourceParameters={this.state.resourceParameters}
+                                                    resTempId={this.state.resTempId}
+                                                    getData={() => this.getParameters(this.state.activePage)}/>
+                        </CardContent>
+                    </Card>
+                    <Grid container
+                          style={paginationStyle}
+                          justify="center">
+                        <CustomPagination
+                            activepage={this.state.activePage}
+                            totalPages={this.state.totalPages}
+                            itemsCountPerPage={this.state.itemsCountPerPage}
+                            totalItemsCount={this.state.totalItemsCount}
+                            onChange={this.handlePageChange}
+                        />
+                    </Grid>
+                
+                <Dialog fullWidth={true}
+                        onClose={this.handleCloseCreate}
+                        aria-labelledby="simple-dialog-title"
+                        open={this.state.openCreate}>
+                    <DialogTitle id="simple-dialog-title">Create new Resource Parameter</DialogTitle>
+
+                    <CreateParameter errorMessage={this.state.errorMessageParameter}
+                        handleClose={this.handleCloseCreate}
+                        getData={() => this.getParameters(this.state.activePage)}
+                        resTempId={this.state.resTempId}
+                    />
+
+                </Dialog>
+                <MyDialog
+                    delete={this.delete}
+                    open={this.state.open}
+                    handleClickOpen={this.handleClickOpen}
+                    handleClose={this.handleClose}
+                    title="Delete resource template"
+                    msg="Are you sure you want to delete this resource template?"/>
                 </Grid>
                 <Grid item xs={3}>
                     <Grid container
@@ -295,7 +351,7 @@ class ResourceTemplateView extends Component {
                                         color="secondary"
                                         startIcon={<DeleteIcon />}
                                         style={useStyles.button}
-                                        onClick={this.delete}
+                                        onClick={this.handleClickOpen}
                                     >
                                         Delete
                                 </Button>
@@ -305,62 +361,6 @@ class ResourceTemplateView extends Component {
                         </Hidden>
                     </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                    <Card style={cardStyle}>
-                    <h3>Resource Parameters</h3>
-                        <CardContent>
-                            <Typography variant="body2" color="textSecondary" component="h2">
-                                {/*{this.isPublished()}*/}
-                                {this.state.errorMessageParameter &&
-                                <Alert severity="error">{this.state.errorMessageParameter}</Alert>}
-                            </Typography>
-                            <Button variant="contained"
-                                    color="primary"
-                                    startIcon={<EditIcon/>}
-                                    onClick={this.handleOpenCreate}>
-                                Create Parameter
-                            </Button>
-                            {/*<CreateParameter getData={() => this.getParameters(this.state.activePage)}*/}
-                            {/*                 resTempId={this.state.resTempId}/>*/}
-                        </CardContent>
-                        <CardContent>
-                            <ResourceParametersList resourceParameters={this.state.resourceParameters}
-                                                    resTempId={this.state.resTempId}
-                                                    getData={() => this.getParameters(this.state.activePage)}/>
-                        </CardContent>
-                    </Card>
-                    <Grid container
-                          style={paginationStyle}
-                          justify="center">
-                        <CustomPagination
-                            activepage={this.state.activePage}
-                            totalPages={this.state.totalPages}
-                            itemsCountPerPage={this.state.itemsCountPerPage}
-                            totalItemsCount={this.state.totalItemsCount}
-                            onChange={this.handlePageChange}
-                        />
-                    </Grid>
-                </Grid>
-                <Dialog fullWidth={true}
-                        onClose={this.handleCloseCreate}
-                        aria-labelledby="simple-dialog-title"
-                        open={this.state.openCreate}>
-                    <DialogTitle id="simple-dialog-title">Create new Resource Parameter</DialogTitle>
-
-                    <CreateParameter errorMessage={this.state.errorMessageParameter}
-                        handleClose={this.handleCloseCreate}
-                        getData={() => this.getParameters(this.state.activePage)}
-                        resTempId={this.state.resTempId}
-                    />
-
-                </Dialog>
-                <MyDialog
-                    delete={this.delete}
-                    open={this.state.open}
-                    handleClickOpen={this.handleClickOpen}
-                    handleClose={this.handleClose}
-                    title="Delete resource template"
-                    msg="Are you sure you want to delete this resource template?"/>
             </Grid>
         );
     }
