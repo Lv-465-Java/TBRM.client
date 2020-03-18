@@ -3,21 +3,25 @@ import TextField from "@material-ui/core/TextField";
 import axios from '../../utils/axios';
 import {Box, Button} from "@material-ui/core";
 import {GOOGLE_AUTH_URL} from "../../constants";
-import LocalSessionStorageService from "../../services/LocalStorageService";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import googleLogo from "../../img/google-logo.png";
 import Alert from "@material-ui/lab/Alert";
-import { getUserRole, verifyUser } from '../../service/authService';
+import {verifyUser } from '../../service/authService';
 
 
 const style={
     marginTop:40
 }
+const styleButton={
+    marginTop:20
+}
+const formControl= {
+        marginTop: 15,
+        minWidth: 395,
+    }
 
 class LoginForm extends Component {
 
@@ -25,11 +29,7 @@ class LoginForm extends Component {
         email: undefined,
         password: undefined,
         userrole: '',
-        errorMessage: '',
-        tenants: [],
-        tenantid: undefined,
-        tenantName:'',
-        open: false
+        errorMessage: ''
     }
 
     getRole() {
@@ -45,11 +45,7 @@ class LoginForm extends Component {
 
 
     getData = () => {
-        axios.post("/authentication", this.state,{
-            headers: {
-                tenant_id: this.state.tenantid
-            }
-        }).then(response => {
+        axios.post("/authentication", this.state).then(response => {
                 if (response !== undefined) {
                     this.getRole();
                 }
@@ -57,7 +53,6 @@ class LoginForm extends Component {
            this.setState({ errorMessage: error.response.data.message });
         })
     }
-
 
     onChangeEmail = (event) => {
         this.setState({
@@ -71,18 +66,10 @@ class LoginForm extends Component {
         })
     }
 
-    handleClickOpen = () => {
-        this.setState({open: true});
-    };
-
-    handleClose = () => {
-        this.setState({open: false});
-    };
-
     handleChange = name => event => {
         this.setState({
             ...this.state,
-            tenantid: event.target.value
+            [name]: event.target.value,
         });
     };
 
@@ -120,14 +107,10 @@ class LoginForm extends Component {
                         autoComplete="current-password"
                     />
 
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary"/>}
-                        label="Remember me"
-                    />
-
                     <Button
                         type="submit"
                         fullWidth
+                        style={styleButton}
                         variant="contained"
                         color="primary"
                         onClick={this.getData}
@@ -155,10 +138,7 @@ class LoginForm extends Component {
                             variant="contained"
                             color="default"
                             endIcon={<img src={googleLogo} alt="" width={30} height={30}/>}
-                            onClick={this.handleClickOpen}>
-                            <Link href={GOOGLE_AUTH_URL}>Log in with Google</Link>
-
-                        </Button>
+                        ><Link href={GOOGLE_AUTH_URL}>Log in with Google</Link></Button>
                     </Grid>
                 </div>
             </Container>

@@ -30,7 +30,7 @@ class UserHistoryItem extends Component{
                 <TableCell align="right">{this.state.lastName}</TableCell>
                 <TableCell align="right">{this.state.email}</TableCell>
                 <TableCell align="right">{this.state.phone}</TableCell>
-                {/* <TableCell align="right">{this.state.role.name.substring(5).toLowerCase()}</TableCell> */}
+                <TableCell align="right">{this.state.role.substring(5).toLowerCase()}</TableCell>
                 <TableCell align="right"> {this.state.reset_token}</TableCell>
                 <TableCell align="right"> {this.state.password}</TableCell>
             </TableRow>

@@ -34,7 +34,7 @@ const textFieldStyles = {
 const style = {
     marginTop: 50,
     height: 700,
-    wight: 600
+    wight: 500
 };
 
 const photoLarge = {
@@ -311,15 +311,15 @@ class ProfileForm extends Component {
     };
 
     editData = () => {
-        let data={};
-        data.firstName=null;
-        data.lastName=null;
-        data.phone=null;
+        let data = {};
+        data.firstName = null;
+        data.lastName = null;
+        data.phone = null;
         if (this.state.firstName !== this.state.oldName) {
-            data.firstName=this.state.firstName;
+            data.firstName = this.state.firstName;
         }
         if (this.state.lastName !== this.state.oldLastName) {
-            data.lastName=this.state.lastName
+            data.lastName = this.state.lastName
         }
         if (this.state.phone !== this.state.oldPhone) {
             data.phone = this.state.phone
@@ -331,7 +331,7 @@ class ProfileForm extends Component {
             }).catch(error => {
             let errors = {};
             // error.response.data.forEach(err => {
-                errors["phone"] = error.response.data.message;
+            errors["phone"] = error.response.data.message;
             // });
             this.setState({errorMessages: errors}
             );
@@ -340,7 +340,7 @@ class ProfileForm extends Component {
     checkMimeType = (event) => {
         let files = event.target.files[0];
         if ((files.type !== 'image/png') && (files.type !== 'image/jpeg') && (files.type !== 'image/gif')) {
-            this.setState({err: (' Chosen file is not a supported format')});
+            this.setState({err: files.type+' is not a supported format'});
         } else {
             this.setState({err: ('')});
             return true;
@@ -396,13 +396,14 @@ class ProfileForm extends Component {
         return (
             <Grid container>
                 <Grid item xs={1}/>
-                <Card style={style}>
-                    <CardActionArea>
+                <Grid xs={12} sm={10}>
+                    <Card style={style}
+                    >
                         <CardContent>
                             <CssBaseline/>
                             {this.state.err && <Alert severity="error">{this.state.err}</Alert>}
                             <Grid container={"true"} justify={"space-evenly"}>
-                                <Grid item xs={12} sm={6} style={{position: "relative"}}>
+                                <Grid item xs={12} sm={8} style={{position: "relative"}}>
                                     <Avatar src={this.state.photo}
                                             style={photoLarge}
                                     />
@@ -712,8 +713,8 @@ class ProfileForm extends Component {
                                 </Grid>
                             </Grid>
                         </CardContent>
-                    </CardActionArea>
-                </Card>
+                    </Card>
+                </Grid>
             </Grid>
         );
     }

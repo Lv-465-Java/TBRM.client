@@ -1,36 +1,19 @@
 import React, {Component} from "react";
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
 import axios from "../../utils/axios";
-import Table from "@material-ui/core/Table";
-import UserItem from "./userItem";
+import Grid from "@material-ui/core/Grid";
 import TableContainer from "@material-ui/core/TableContainer";
+import Paper from "@material-ui/core/Paper";
+import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
+import UserItem from "./userItem";
 
-
-class UsersHistoryList extends Component {
-    state = {
-        user: [],
-        selectedDate: undefined
-    };
-
-    getAllHistory = () => {
-        axios.get(`/all_history`).then(response => {
-            let allUsers = response.data;
-            this.setState({user: allUsers});
-        })
-    }
-
-    componentDidMount(){
-        this.getAllHistory();
-    }
+class UsersHistoryByDateList extends Component {
 
     render() {
+        console.log(this.props.users)
         return (
             <Grid>
                 <TableContainer component={Paper}>
@@ -48,8 +31,8 @@ class UsersHistoryList extends Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.user.map((item) =>
-                                (<UserItem key={item}
+                            {this.props.users.map((item, i) =>
+                                (<UserItem key={i}
                                            item={item}/>)
                             )}
                         </TableBody>
@@ -60,4 +43,4 @@ class UsersHistoryList extends Component {
     }
 }
 
-export default UsersHistoryList;
+export default UsersHistoryByDateList;
