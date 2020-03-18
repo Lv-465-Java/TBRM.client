@@ -23,7 +23,7 @@ class ResourceRecordCreate extends Component {
         resourceParameters: this.props.resourceTemplate.resourceParameters,
         parameters: undefined,
         open: false
-    }
+    };
 
     create = () => {
         axios.post(`/resource/${this.props.tableName}`, this.state).then(
@@ -33,7 +33,7 @@ class ResourceRecordCreate extends Component {
                     description: "",
                     parameters: {},
                     open: true
-                })
+                });
                 this.props.getRecordsData();
 
             }).catch(error => {
@@ -47,38 +47,45 @@ class ResourceRecordCreate extends Component {
             len++;
         }
         return len;
-    }
+    };
 
     isCreateNotValid = () => {
         return (this.state.name === undefined
             || this.state.parameters === undefined
             || ((this.getParametersSize(this.state.parameters) < this.state.resourceParameters.length)))
-    }
+    };
+
     onChangeName = (event) => {
         let name = event.target.value;
         if (name.trim().length === 0) {
             name = undefined;
         }
         this.setState({name});
-    }
+    };
 
     handleOpen = () => {
         this.setState({open: true})
-    }
+    };
 
     handleClose = () => {
         this.setState({open: false});
         this.props.handleClose();
-    }
+    };
 
     onChangeDescription = (event) => {
         let description = event.target.value;
         this.setState({description});
-    }
+    };
 
-    setData = (columnName, value) => {
-        this.setState({parameters: {...this.state.parameters, [columnName]: value}})
-    }
+    setData = (columnName, value, id) => {
+        this.setState({
+            parameters: {
+                ...this.state.parameters,
+                [columnName]: value,
+                [columnName.substring(0, columnName.length - 5)]: id
+            }
+        })
+    };
 
     render() {
         return (
@@ -137,8 +144,7 @@ class ResourceRecordCreate extends Component {
                                                        label={element.name}
                                                        columnName={element.columnName.concat('_coordinate')}
                                                        setData={this.setData}/>)
-                            }
-                            else if (element.parameterType === 'COORDINATES_STRING') {
+                            } else if (element.parameterType === 'COORDINATES_STRING') {
                                 e = (<CoordinateString key={element.name}
                                                        label={element.name}
                                                        columnName={element.columnName.concat('_coordinate')}

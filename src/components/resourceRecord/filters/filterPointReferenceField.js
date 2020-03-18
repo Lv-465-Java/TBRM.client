@@ -25,12 +25,12 @@ class FilterPointReferenceField extends Component {
     render() {
         return (
             <>
-                <div className={"filterCells"}>
-                    <ResourceRecordDropdown className={"filterDropdown"}
-                                            relatedResourceTableName={this.props.relatedResourceTableName}
-                                            onChangePointReference={this.onChangeValue}
-                                            columnName={this.props.columnName}
-                                            label={this.props.name}/>
+                <div className={"filterDropdown"}>
+                    <ResourceRecordDropdown
+                        relatedResourceTableName={this.props.relatedResourceTableName}
+                        onChangePointReference={this.onChangeValue}
+                        columnName={this.props.columnName}
+                        label={this.props.name}/>
                 </div>
             </>
         );
