@@ -10,7 +10,6 @@ import { Box } from '@material-ui/core';
 
 class FilterView extends Component {
     state = {
-        type: "",
         filters: {},
     };
 

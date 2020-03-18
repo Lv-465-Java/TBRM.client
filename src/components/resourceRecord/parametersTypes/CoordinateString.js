@@ -29,7 +29,7 @@ class CoordinateString extends Component {
     onChangeLat = (event) => {
         let {list} = this.state;
         let {id, value} = event.target;
-        list[id].lat = parseFloat(value);
+        list[id].lat = value;
         this.setState(list, () => {
             this.props.setData(this.props.columnName, this.buildCoordinates())
         });
@@ -37,7 +37,7 @@ class CoordinateString extends Component {
     onChangeLng = (event) => {
         let {list} = this.state;
         let {id, value} = event.target;
-        list[id].lng = parseFloat(value);
+        list[id].lng = value;
         this.setState(list, () => {
             this.props.setData(this.props.columnName, this.buildCoordinates())
         });
