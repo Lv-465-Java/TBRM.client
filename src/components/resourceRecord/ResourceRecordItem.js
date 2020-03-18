@@ -81,6 +81,8 @@ class resourceRecordItem extends Component {
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>
+                <PhotoUpload getRecordsData={this.props.getRecordsData}
+                                 tableName={this.props.tableName} id={this.props.item["id"]}/>
             </div>
             );
         }else{
@@ -146,8 +148,6 @@ class resourceRecordItem extends Component {
                     }
 
                     {userLinks}
-                    <PhotoUpload getRecordsData={this.props.getRecordsData}
-                                 tableName={this.props.tableName} id={this.props.item["id"]}/>
 
                 </TableRow>
 
