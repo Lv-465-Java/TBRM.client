@@ -18,6 +18,16 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import TableContainer from "@material-ui/core/TableContainer";
+import Paper from "@material-ui/core/Paper";
+import Table from "@material-ui/core/Table";
+import TableHead from "@material-ui/core/TableHead";
+import TableBody from "@material-ui/core/TableBody";
+import UserHistoryItem from "../adminPage/userHistoryItem";
+import DialogActions from "@material-ui/core/DialogActions";
 
 
 const linkStyle = {
@@ -48,7 +58,24 @@ class UserItem extends Component {
         password: this.props.item.password,
         enabled: this.props.item.enabled,
         imageUrl: this.props.item.image_url,
-        role: this.props.item.role
+        role: this.props.item.role,
+        userHistory: [],
+        open: false
+    }
+
+
+    handleClickOpen = () => {
+        this.setState({open: true}, ()=>this.getHistoryData());
+    }
+
+    handleClose = () => {
+        this.setState({open: false});
+    }
+    getHistoryData = () => {
+        axios.get(`/user/${this.state.id}`).then(response => {
+            this.setState({userHistory: response.data});
+            console.log(this.state.userHistory)
+        })
     }
 
     handleOpenDialogDelete = () => {
@@ -61,7 +88,7 @@ class UserItem extends Component {
     delete = () => {
         axios.put(`/admin/user/${this.state.id}`).then(
             response => {
-
+                this.props.getAllAccounts();
             }).catch(error => {
             this.setState({
                 errorMessage: error.response.data.message,
@@ -74,6 +101,7 @@ class UserItem extends Component {
         });
 
     }
+
 
     handleChange = (event) => {
         this.setState({enabled: event.target.checked},()=>{
@@ -109,6 +137,7 @@ class UserItem extends Component {
                     name: this.state.roleName
                 }
             ).then(response => {
+                this.props.getAllAccounts()
                 console.log(this.state.userHistory)
             })
         })
@@ -121,13 +150,56 @@ class UserItem extends Component {
 
             <TableRow>
                 <StyledTableCell scope="row">
-                    <Link to={`/user/${this.state.id}`}><Avatar src={this.state.imageUrl}/></Link>
+                    <div onClick={this.handleClickOpen} style={{cursor: "pointer"}}>
+                        <Avatar src={this.state.imageUrl}/>
+                    </div>
                 </StyledTableCell>
+                <Dialog
+                    fullWidth={'true'}
+                    maxWidth={'xl'}
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    aria-labelledby="max-width-dialog-title">
+                    <DialogTitle id="max-width-dialog-title">{this.state.firstName} {this.state.lastName} </DialogTitle>
+                    <DialogContent>
+                        <TableContainer component={Paper}
+                                        style={{weight: 600}}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Date</TableCell>
+                                        <TableCell align="right">Avatar</TableCell>
+                                        <TableCell align="right"/>
+                                        <TableCell align="right">Name</TableCell>
+                                        <TableCell align="right">Last name</TableCell>
+                                        <TableCell align="right">Email</TableCell>
+                                        <TableCell align="right">Phone</TableCell>
+                                        <TableCell align="right">Role</TableCell>
+                                        <TableCell align="right"/>
+                                        <TableCell align="right"/>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {this.state.userHistory.map((item) =>
+                                        (<UserHistoryItem key={item}
+                                                          item={item}/>)
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="primary">
+                            Close
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
                 <StyledTableCell align="right">{this.state.email}</StyledTableCell>
                 <StyledTableCell align="right">{this.state.firstName}</StyledTableCell>
                 <StyledTableCell align="right">{this.state.lastName}</StyledTableCell>
                 <StyledTableCell align="right">{this.state.phone}</StyledTableCell>
-                <StyledTableCell align="right">{this.state.role.name}</StyledTableCell>
+                <StyledTableCell align="right">{this.props.item.role.name}</StyledTableCell>
                 <StyledTableCell align="right">
                         <Button
                              size="small"
@@ -159,7 +231,7 @@ class UserItem extends Component {
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={this.state.roleName}
+                            value={this.props.item.role.name}
                             onChange={this.setRole}
                         >
                             <MenuItem value={"ROLE_ADMIN"}>Admin</MenuItem>
