@@ -23,15 +23,17 @@ import { getUserRole, isUserLoggedIn } from './service/authService';
 import Forbidden from "./hoc/forbidden";
 import GuestPage from "./components/guest";
 import ResourceRecordView from "./components/resourceRecord/ResourceRecordView";
+import AddTenant from "./components/home/AddTenant";
 import TestMaps from "./components/resourceParameters/GoogleMap";
-import ResourceTemplateItem from "./components/resourceTemplate/resourceTemplateItem";
 import ResourceRecordItemView from "./components/resourceRecord/ResourceRecordItemView";
 import ResourceRecordCreate from "./components/resourceRecord/ResourceRecordCreate";
 import ResourceRecordUpdate from "./components/resourceRecord/ResourceRecordUpdate";
 import GroupChangeOwner from "./components/permissions/group/groupChangeOwner";
 import PermissionResourceTemplate from "./components/permissions/permissionResourceTemplate";
 
+import AdminPage from "./components/adminPage/adminPage";
 import FilterView from "./components/resourceRecord/filters/filterView";
+import TenantList from "./components/tenant/tenantList";
 
 const ProtectedRoute
     = ({ isAllowed, ...props }) =>
@@ -80,6 +82,7 @@ class Routers extends Component {
                     <Route path="/registration" component={RegistrationForm}/>
                     <Route path="/reset_password" component={ResetPassword} />
                     <ProtectedRoute path="/profile" component={ProfileForm} />
+                    <Route path="/admin-panel" component={AdminPage} />
                     <Route path="/forgot_password" exact component={ForgotPassword} />
                     <ManagerRoute path="/resource-template/create" component={ResourceTemplateCreate} />
                     <ManagerRoute path="/resource-template/update/:id" component={ResourceTemplateUpdate} />
@@ -97,6 +100,7 @@ class Routers extends Component {
                     <Route path="/oauth2/fullRegister" component={FullOAuthRegister} />
                     <GuestRoute path="/welcome" component={GuestPage} />
                     <Route path="/FilterView" component={FilterView} />
+                    <Route path="/super-admin" component={TenantList} />
                     <Route path="/" exact component={LoginForm} />
                 </Switch>
                 <Footer/>

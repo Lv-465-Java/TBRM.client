@@ -14,13 +14,13 @@ class FilterView extends Component {
     };
 
     setFilter = (name, filterStr) => {
-        let filters = {...this.state.filters};
+        let filters = { ...this.state.filters };
         if (filterStr !== "") {
             filters[name] = filterStr;
         } else {
             delete filters[name];
         }
-        this.setState({filters});
+        this.setState({ filters });
     };
 
     getData = () => {

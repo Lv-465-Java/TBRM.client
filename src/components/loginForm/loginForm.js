@@ -14,12 +14,19 @@ import googleLogo from "../../img/google-logo.png";
 import Alert from "@material-ui/lab/Alert";
 import { getUserRole, verifyUser } from '../../service/authService';
 
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
 
 const localStorageService = LocalSessionStorageService.getService();
 
 const style={
     marginTop:40
 }
+const formControl= {
+        marginTop: 15,
+        minWidth: 395,
+    }
 
 class LoginForm extends Component {
 
@@ -27,7 +34,8 @@ class LoginForm extends Component {
         email: undefined,
         password: undefined,
         userrole: '',
-        errorMessage: ''
+        errorMessage: '',
+        tenants: []
     }
 
     getRole() {
@@ -41,7 +49,6 @@ class LoginForm extends Component {
         })
     }
 
-    
 
     getData = () => {
         axios.post("/authentication", this.state).then(response => {
@@ -65,11 +72,41 @@ class LoginForm extends Component {
         })
     }
 
-    render() {
+    handleChange = name => event => {
+        this.setState({
+            ...this.state,
+            [name]: event.target.value,
+        });
+    };
 
+    getTenant = () => {
+        axios.get("/tenant").then(response => {
+            if (response !== undefined) {
+                let tenants = response.data.content;
+                this.setState({
+                    tenants: tenants,
+                });
+            }
+        }, error => {
+            this.setState({ errorMessage: error.response.data.message });
+        })
+    }
+
+    // componentDidMount() {
+    //     this.getTenant();
+    // }
+
+
+    render() {
+       let options = this.state.tenants.map((data) =>
+       <option
+    key={data.email}
+    value={data.firstName}>
+        {data.email}
+        </option>
+        );
         return (
             <Container component="main" maxWidth="xs" style={style}>
-                {this.logout && <Alert severity="success">You're safely logged out!</Alert>}
                 <CssBaseline/>
                 {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
                 <div>
@@ -97,6 +134,27 @@ class LoginForm extends Component {
                         id="password"
                         autoComplete="current-password"
                     />
+
+                    <Grid>
+                    <FormControl variant="outlined" style={formControl}>
+                        <InputLabel ref="" htmlFor="outlined-age-native-simple">
+                            Choose Tenant
+                        </InputLabel>
+                        <Select
+                            native
+                            value={this.state.tenant}
+                            onChange={this.handleChange('tenant')}
+                            labelWidth={110}
+                            inputProps={{
+                                name: 'tenant',
+                                id: 'outlined-age-native-simple',
+                            }}
+                        >
+                            <option>Select Tenant</option>
+                            {options}
+                        </Select>
+                    </FormControl>
+                    </Grid>
 
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary"/>}

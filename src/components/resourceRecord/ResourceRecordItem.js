@@ -12,6 +12,7 @@ import Dialog from "@material-ui/core/Dialog";
 import ResourceRecordUpdate from "./ResourceRecordUpdate";
 import ResourceRecordItemView from "./ResourceRecordItemView";
 import MyDialog from "../resourceTemplate/popUp";
+import PhotoUpload from "./parametersTypes/PhotoUpload";
 import { getUserRole } from "../../service/authService"
 
 class resourceRecordItem extends Component {
@@ -113,12 +114,18 @@ class resourceRecordItem extends Component {
                                             align="right">{this.state.data[element.columnName]}
                             </TableCell>)
                         }
-                        // else if (element.columnName === 'photos') {
-                        //     e = (<TableCell align="right"><Image
-                        //         src={this.state.data[element.columnName]}
-                        //     />
-                        //     </TableCell>)
-                        // }
+                        else if (element.columnName === 'photos') {
+                            e = (  <TableCell align="right">
+                                {this.state.data[element.columnName] && (
+                                    <img src={this.state.data[element.columnName]
+                                        .substring(0,this.state.data[element.columnName].indexOf(","))}
+                                           style={{
+                                               height:100
+                                           }}
+                                           alt={"image"}/>
+                                    )}
+                                </TableCell>)
+                        }
                         else if (element.columnName.endsWith('_coordinate')) {
                             e = (<TableCell align="right">
                                 <Tooltip title={this.state.data[element.columnName].map(key => (
@@ -139,6 +146,8 @@ class resourceRecordItem extends Component {
                     }
 
                     {userLinks}
+                    <PhotoUpload getRecordsData={this.props.getRecordsData}
+                                 tableName={this.props.tableName} id={this.props.item["id"]}/>
 
                 </TableRow>
 
@@ -165,7 +174,7 @@ class resourceRecordItem extends Component {
                         item={this.props.item}
                         resourceTemplate={this.props.resourceTemplate}
                         headers={this.props.headers}
-                        data={this.state.data}
+                        data={this.state.data} getRecordsData={this.props.getRecordsData}
                     />
                 </Dialog>
                 <MyDialog delete={this.delete}
