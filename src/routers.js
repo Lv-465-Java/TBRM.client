@@ -24,10 +24,6 @@ import Forbidden from "./hoc/forbidden";
 import GuestPage from "./components/guest";
 import ResourceRecordView from "./components/resourceRecord/ResourceRecordView";
 import TestMaps from "./components/resourceParameters/GoogleMap";
-import ResourceTemplateItem from "./components/resourceTemplate/resourceTemplateItem";
-import ResourceRecordItemView from "./components/resourceRecord/ResourceRecordItemView";
-import ResourceRecordCreate from "./components/resourceRecord/ResourceRecordCreate";
-import ResourceRecordUpdate from "./components/resourceRecord/ResourceRecordUpdate";
 import GroupChangeOwner from "./components/permissions/group/groupChangeOwner";
 import PermissionResourceTemplate from "./components/permissions/permissionResourceTemplate";
 

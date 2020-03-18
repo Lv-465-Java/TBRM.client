@@ -98,11 +98,18 @@ class ResourceTemplateList extends Component {
 
         let showTemplateListOrErrorMessage = (this.state.resourceTemplates.length !== 0) ?
             (
-                this.state.resourceTemplates.map((item) =>
-                    (<ResourceTemplateItem key={item.id}
-                                           item={item}/>)
-                )
-            ) : (<p className={"App"}>{this.state.message}</p>);
+                <div style={style}>
+                    {/*{showTemplateListOrErrorMessage}*/}
+                    {this.state.resourceTemplates.map((item) =>
+                        (<ResourceTemplateItem key={item.id}
+                                               item={item}/>)
+                    )}
+                </div>
+
+                // this.state.resourceTemplates.map((item) =>
+                //     (<ResourceTemplateItem key={item.id}
+                //                            item={item}/>)
+            ) : (<p className={"message"}>{this.state.message}</p>);
 
         let userLinks = (getUserRole() === "ROLE_MANAGER") ?
             (
@@ -123,13 +130,13 @@ class ResourceTemplateList extends Component {
                         <SearchView label="Search"
                                     resourceTemplate={this.state.resourceTemplate}
                                     setRecordsData={this.setRecordsData}/>
-                        <div style={style}>
+                        {/*<div style={style}>*/}
                             {showTemplateListOrErrorMessage}
                             {/*{this.state.resourceTemplates.map((item) =>*/}
                             {/*    (<ResourceTemplateItem key={item.id}*/}
                             {/*                           item={item}/>)*/}
                             {/*)}*/}
-                        </div>
+                        {/*</div>*/}
                     </Grid>
                     <Grid item xs/>
                     <Grid container
