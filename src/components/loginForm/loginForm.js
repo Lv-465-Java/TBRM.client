@@ -3,23 +3,25 @@ import TextField from "@material-ui/core/TextField";
 import axios from '../../utils/axios';
 import {Box, Button} from "@material-ui/core";
 import {GOOGLE_AUTH_URL} from "../../constants";
-import LocalSessionStorageService from "../../services/LocalStorageService";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import googleLogo from "../../img/google-logo.png";
 import Alert from "@material-ui/lab/Alert";
-import { getUserRole, verifyUser } from '../../service/authService';
+import {verifyUser } from '../../service/authService';
 
-
-const localStorageService = LocalSessionStorageService.getService();
 
 const style={
     marginTop:40
 }
+const styleButton={
+    marginTop:20
+}
+const formControl= {
+        marginTop: 15,
+        minWidth: 395,
+    }
 
 class LoginForm extends Component {
 
@@ -41,7 +43,6 @@ class LoginForm extends Component {
         })
     }
 
-    
 
     getData = () => {
         axios.post("/authentication", this.state).then(response => {
@@ -65,11 +66,19 @@ class LoginForm extends Component {
         })
     }
 
+    handleChange = name => event => {
+        this.setState({
+            ...this.state,
+            [name]: event.target.value,
+        });
+    };
+
+
+
     render() {
 
         return (
             <Container component="main" maxWidth="xs" style={style}>
-                {this.logout && <Alert severity="success">You're safely logged out!</Alert>}
                 <CssBaseline/>
                 {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
                 <div>
@@ -98,14 +107,10 @@ class LoginForm extends Component {
                         autoComplete="current-password"
                     />
 
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary"/>}
-                        label="Remember me"
-                    />
-
                     <Button
                         type="submit"
                         fullWidth
+                        style={styleButton}
                         variant="contained"
                         color="primary"
                         onClick={this.getData}

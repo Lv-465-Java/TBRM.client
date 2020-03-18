@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {TextField} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import Tooltip from "@material-ui/core/Tooltip";
 
 class PointStringField extends Component {
     state = {
@@ -31,23 +32,22 @@ class PointStringField extends Component {
 
     render() {
         return (
-            <>
-                <div className={"filterCells"}>
-                    {this.props.name}
-                    <TextField id={"clear"}
-                               type="text"
-                               value={this.state.value}
-                               style={{minWidth: "30px"}}
-                               onChange={this.onChange}
-                               helperText={this.state.errorMessage}
-                               error={!!this.state.errorMessage}/>
+            <div className={"filterCells"}>
+                {this.props.name}
+                <TextField type="text"
+                           value={this.state.value}
+                           style={{minWidth: "30px", marginLeft: "10px"}}
+                           onChange={this.onChange}
+                           helperText={this.state.errorMessage}
+                           error={!!this.state.errorMessage}/>
+                <Tooltip title="Clear">
                     <IconButton aria-label="delete"
                                 color="primary"
                                 onClick={this.reset}>
                         <HighlightOffIcon/>
                     </IconButton>
-                </div>
-            </>
+                </Tooltip>
+            </div>
         );
     }
 }

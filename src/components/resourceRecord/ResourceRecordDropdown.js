@@ -5,7 +5,6 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 
 class ResourceRecordDropdown extends Component {
 
-
     state = {
         records: [],
         relatedResourceTableName: this.props.relatedResourceTableName,
@@ -27,6 +26,7 @@ class ResourceRecordDropdown extends Component {
             this.props.onChangePointReference(this.props.columnName.concat("_ref_name"), value.name, value.id);
         }
     };
+
     onInputChange = (event, value, reason) => {
         if (reason === "clear") {
             this.props.onChangePointReference(this.props.columnName.concat("_ref_name"), "");

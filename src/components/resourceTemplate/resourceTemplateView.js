@@ -4,9 +4,6 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -29,18 +26,17 @@ const style = {
     maxWidth: 800,
     minWidth: 500,
     marginTop: 40,
-
-}
+};
 
 const gridStyle = {
     marginTop: 40
-}
+};
 
 const cardStyle = {
     maxWidth: 100,
-    minWidth: 1000,
+    minWidth: 800,
     marginLeft: 100
-}
+};
 
 const useStyles = makeStyles(theme => ({
     button: {
@@ -92,7 +88,7 @@ class ResourceTemplateView extends Component {
                     isPublished: data.isPublished,
                 })
             }).catch(error => {
-            })
+        })
     };
 
     getParameters = (pageNumber) => {
@@ -121,7 +117,6 @@ class ResourceTemplateView extends Component {
                 this.setState({isPublished: true});
             }).catch(error => {
             this.setState({errorMessage: error.response.data.message});
-            console.dir(error.response.data);
         })
     };
 
@@ -133,7 +128,6 @@ class ResourceTemplateView extends Component {
                 this.setState({isPublished: false});
             }).catch(error => {
             this.setState({errorMessage: error.response.data.message});
-            console.log(error.response.data.message);
         })
     };
 
@@ -146,7 +140,6 @@ class ResourceTemplateView extends Component {
                 errorMessage: error.response.data.message,
                 open: false
             });
-            console.log(error.response.data.message);
         })
     };
 
@@ -255,6 +248,60 @@ class ResourceTemplateView extends Component {
                             </Typography>
                         </CardContent>
                     </Card>
+
+                    <Card style={style}>
+                    <h3>Resource Parameters</h3>
+                        <CardContent>
+                            <Typography variant="body2" color="textSecondary" component="h2">
+                                {/*{this.isPublished()}*/}
+                                {this.state.errorMessageParameter &&
+                                <Alert severity="error">{this.state.errorMessageParameter}</Alert>}
+                            </Typography>
+                            <Button variant="contained"
+                                    color="primary"
+                                    startIcon={<EditIcon/>}
+                                    onClick={this.handleOpenCreate}>
+                                Create Parameter
+                            </Button>
+                        </CardContent>
+                        <CardContent>
+                            <ResourceParametersList resourceParameters={this.state.resourceParameters}
+                                                    resTempId={this.state.resTempId}
+                                                    getData={() => this.getParameters(this.state.activePage)}/>
+                        </CardContent>
+                    </Card>
+                    <Grid container
+                          style={paginationStyle}
+                          justify="center">
+                        <CustomPagination
+                            activepage={this.state.activePage}
+                            totalPages={this.state.totalPages}
+                            itemsCountPerPage={this.state.itemsCountPerPage}
+                            totalItemsCount={this.state.totalItemsCount}
+                            onChange={this.handlePageChange}
+                        />
+                    </Grid>
+
+                <Dialog fullWidth={true}
+                        onClose={this.handleCloseCreate}
+                        aria-labelledby="simple-dialog-title"
+                        open={this.state.openCreate}>
+                    <DialogTitle id="simple-dialog-title">Create new Resource Parameter</DialogTitle>
+
+                    <CreateParameter errorMessage={this.state.errorMessageParameter}
+                                     handleClose={this.handleCloseCreate}
+                                     getData={() => this.getParameters(this.state.activePage)}
+                                     resTempId={this.state.resTempId}
+                    />
+
+                </Dialog>
+                <MyDialog
+                    delete={this.delete}
+                    open={this.state.open}
+                    handleClickOpen={this.handleClickOpen}
+                    handleClose={this.handleClose}
+                    title="Delete resource template"
+                    msg="Are you sure you want to delete this resource template?"/>
                 </Grid>
                 <Grid item xs={3}>
                     <Grid container
@@ -295,7 +342,7 @@ class ResourceTemplateView extends Component {
                                         color="secondary"
                                         startIcon={<DeleteIcon />}
                                         style={useStyles.button}
-                                        onClick={this.delete}
+                                        onClick={this.handleClickOpen}
                                     >
                                         Delete
                                 </Button>
@@ -305,62 +352,6 @@ class ResourceTemplateView extends Component {
                         </Hidden>
                     </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                    <Card style={cardStyle}>
-                    <h3>Resource Parameters</h3>
-                        <CardContent>
-                            <Typography variant="body2" color="textSecondary" component="h2">
-                                {/*{this.isPublished()}*/}
-                                {this.state.errorMessageParameter &&
-                                <Alert severity="error">{this.state.errorMessageParameter}</Alert>}
-                            </Typography>
-                            <Button variant="contained"
-                                    color="primary"
-                                    startIcon={<EditIcon/>}
-                                    onClick={this.handleOpenCreate}>
-                                Create Parameter
-                            </Button>
-                            {/*<CreateParameter getData={() => this.getParameters(this.state.activePage)}*/}
-                            {/*                 resTempId={this.state.resTempId}/>*/}
-                        </CardContent>
-                        <CardContent>
-                            <ResourceParametersList resourceParameters={this.state.resourceParameters}
-                                                    resTempId={this.state.resTempId}
-                                                    getData={() => this.getParameters(this.state.activePage)}/>
-                        </CardContent>
-                    </Card>
-                    <Grid container
-                          style={paginationStyle}
-                          justify="center">
-                        <CustomPagination
-                            activepage={this.state.activePage}
-                            totalPages={this.state.totalPages}
-                            itemsCountPerPage={this.state.itemsCountPerPage}
-                            totalItemsCount={this.state.totalItemsCount}
-                            onChange={this.handlePageChange}
-                        />
-                    </Grid>
-                </Grid>
-                <Dialog fullWidth={true}
-                        onClose={this.handleCloseCreate}
-                        aria-labelledby="simple-dialog-title"
-                        open={this.state.openCreate}>
-                    <DialogTitle id="simple-dialog-title">Create new Resource Parameter</DialogTitle>
-
-                    <CreateParameter errorMessage={this.state.errorMessageParameter}
-                        handleClose={this.handleCloseCreate}
-                        getData={() => this.getParameters(this.state.activePage)}
-                        resTempId={this.state.resTempId}
-                    />
-
-                </Dialog>
-                <MyDialog
-                    delete={this.delete}
-                    open={this.state.open}
-                    handleClickOpen={this.handleClickOpen}
-                    handleClose={this.handleClose}
-                    title="Delete resource template"
-                    msg="Are you sure you want to delete this resource template?"/>
             </Grid>
         );
     }
