@@ -84,6 +84,7 @@ class Routers extends Component {
                     <Route path="/registration" component={RegistrationForm}/>
                     <Route path="/reset_password" component={ResetPassword} />
                     <ProtectedRoute path="/profile" component={ProfileForm} />
+                    <AdminRoute path="/admin-panel" component={UserList}/>
                     <Route path="/forgot_password" exact component={ForgotPassword} />
                     <ManagerRoute path="/resource-template/create" component={ResourceTemplateCreate} />
                     <ManagerRoute path="/resource-template/update/:id" component={ResourceTemplateUpdate} />

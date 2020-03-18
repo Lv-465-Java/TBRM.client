@@ -14,26 +14,10 @@ import googleLogo from "../../img/google-logo.png";
 import Alert from "@material-ui/lab/Alert";
 import { getUserRole, verifyUser } from '../../service/authService';
 
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import DeleteIcon from "@material-ui/icons/Delete";
-import MyDialog from "../resourceTemplate/popUp";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogActions from "@material-ui/core/DialogActions";
-
-const localStorageService = LocalSessionStorageService.getService();
 
 const style={
     marginTop:40
 }
-const formControl= {
-        marginTop: 15,
-        minWidth: 395,
-    }
 
 class LoginForm extends Component {
 
@@ -87,31 +71,12 @@ class LoginForm extends Component {
         })
     }
 
-    onChangeTenant=(event)=>{
-        this.setState({
-            tenantid:event.target.value,
-            tenantName: event.target.value
-        })
-    }
-    // onChangeTenantName=(event)=>{
-    //     this.setState({
-    //         tenantName:event.target.value
-    //     })
-    // }
-
     handleClickOpen = () => {
         this.setState({open: true});
     };
 
     handleClose = () => {
         this.setState({open: false});
-    };
-
-    handleTenantChange = name => event => {
-        this.setState({
-            ...this.state,
-            tenantName: event.target.value
-        });
     };
 
     handleChange = name => event => {
@@ -121,34 +86,10 @@ class LoginForm extends Component {
         });
     };
 
-    getTenant = () => {
-        axios.get("/user").then(response => {
-            if (response !== undefined) {
-                let tenants = response.data.content;
-                this.setState({
-                    tenants: tenants,
-                });
-            }
-        }, error => {
-            this.setState({ errorMessage: error.response.data.message });
-        })
-    }
-
-    componentDidMount() {
-        this.getTenant();
-    }
 
 
     render() {
-       let options = this.state.tenants.map((data) =>
-       <option
-    key={data.email}
-    value={data.email}
-       onChange={this.onChangeTenant}
-             >
-        {data.firstName}
-        </option>
-        );
+
         return (
             <Container component="main" maxWidth="xs" style={style}>
                 <CssBaseline/>
@@ -178,27 +119,6 @@ class LoginForm extends Component {
                         id="password"
                         autoComplete="current-password"
                     />
-
-                    <Grid>
-                    <FormControl variant="outlined" style={formControl}>
-                        <InputLabel ref="" htmlFor="outlined-age-native-simple">
-                            Choose Tenant
-                        </InputLabel>
-                        <Select
-                            native
-                            value={this.state.tenantid}
-                            onChange={this.handleChange('tenantid')}
-                            labelWidth={110}
-                            inputProps={{
-                                name: 'tenantid',
-                                id: 'outlined-age-native-simple',
-                            }}
-                        >
-                            <option>Select Tenant</option>
-                            {options}
-                        </Select>
-                    </FormControl>
-                    </Grid>
 
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary"/>}
@@ -236,63 +156,9 @@ class LoginForm extends Component {
                             color="default"
                             endIcon={<img src={googleLogo} alt="" width={30} height={30}/>}
                             onClick={this.handleClickOpen}>
-                            Log in with Google
+                            <Link href={GOOGLE_AUTH_URL}>Log in with Google</Link>
+
                         </Button>
-
-                            <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
-                                <DialogTitle id="form-dialog-title" align="center">Choose tenant</DialogTitle>
-                                <DialogContent>
-                                    <Box mx={1}>
-                                        <Box mt={3}
-                                             display="flex"
-                                             flexDirection="column">
-                                            {this.state.errorMessage &&
-                                            <Alert severity="error">{this.state.errorMessage}</Alert>}
-                                            {this.state.successMessage &&
-                                            <Alert severity="success">{this.state.successMessage}</Alert>}
-
-                                            <Container component="main" maxWidth="xs">
-                                                <CssBaseline/>
-                                                {this.state.errorMessage && <Alert severity="error">{this.state.errorMessage}</Alert>}
-                                                <div>
-                                                    <FormControl variant="outlined" style={formControl}>
-                                                        <InputLabel ref="" htmlFor="outlined-age-native-simple">
-                                                            Choose Tenant
-                                                        </InputLabel>
-                                                        <Select
-                                                            native
-                                                            value={this.state.tenantName}
-                                                            onChange={this.handleTenantChange('tenantName')}
-                                                            labelWidth={110}
-                                                            inputProps={{
-                                                                name: 'tenantName',
-                                                                id: 'outlined-age-native-simple',
-                                                            }}
-                                                        >
-                                                            <option>Select Tenant</option>
-                                                            {options}
-                                                        </Select>
-                                                    </FormControl>
-
-                                                    <Button
-                                                        type="submit"
-                                                        fullWidth
-                                                        variant="contained"
-                                                        color="primary"
-                                                    ><Link href={GOOGLE_AUTH_URL+`?tenantid=${this.state.tenantid}`}>Next</Link>
-                                                    </Button>
-                                                </div>
-                                            </Container>
-
-                                        </Box>
-                                    </Box>
-                                </DialogContent>
-                                <DialogActions>
-                                    <Button onClick={this.handleClose} color="primary">
-                                        Cancel
-                                    </Button>
-                                </DialogActions>
-                            </Dialog>
                     </Grid>
                 </div>
             </Container>
