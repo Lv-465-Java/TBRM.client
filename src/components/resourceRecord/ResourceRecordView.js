@@ -7,11 +7,9 @@ import Grid from "@material-ui/core/Grid";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import ResourceRecordCreate from "./ResourceRecordCreate";
-import Image from "material-ui-image";
 import CustomPagination from "../pagination/customPagination";
 import {getUserRole} from "../../service/authService";
 import FilterView from "./filters/filterView";
-
 
 const itemsNumber = 5;
 
@@ -83,35 +81,33 @@ class ResourceRecordView extends Component {
 
     handlePageChange = (event, pageNumber) => {
         this.setState({activePage: pageNumber}, () => this.getRecordsData());
+    };
+
+    verifyUser = () => {
+        return getUserRole() === "ROLE_REGISTER";
     }
 
     componentDidMount() {
-        //this.getRecordsData();
         this.getResourceTemplateData();
         this.getRecordsData(this.state.activePage);
     }
 
     render() {
-        // function relatedResourceTableName() {
-        //     this.state.resourceTemplate.resourceParameters.map(key => {
-        //         if (key.parameterType === "POINT_REFERENCE") {
-        //             return key['relatedResourceTemplateTableName'];
-        //         }
-        //     })
-        // }
         return (
             <div>
                 <div>
                     <h1>{this.state.resourceTemplate.name}</h1>
+                    <h3>{this.state.resourceTemplate.description}</h3>
                 </div>
-                <Button style={{marginBottom: 40}}
+                <Hidden mdUp={!this.verifyUser()}>
+                    <Button style={{ marginBottom: 40 }}
                         variant="contained"
                         color="primary"
                         startIcon={<CheckCircleIcon/>}
                         onClick={this.handleOpen}>
-                    Add record
-                </Button>
-
+                        Add record
+                    </Button>
+                </Hidden>
                 <Grid container spacing={3}>
                     <Grid item xs={1}/>
                     <Grid item xs={10}>
@@ -151,7 +147,6 @@ class ResourceRecordView extends Component {
                     <ResourceRecordCreate handleClose={this.handleClose}
                                           tableName={this.state.tableName}
                                           resourceTemplate={this.state.resourceTemplate}
-                        // relatedResourceTableName={relatedResourceTableName}
                                           getRecordsData={() => this.getRecordsData(this.state.activePage)}
                     />
 

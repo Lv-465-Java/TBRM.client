@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import axios from '../../utils/axios';
 import ResourceTemplateItem from './resourceTemplateItem';
-import {Box, Button, Container, Grid} from '@material-ui/core';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import {Button, Grid} from '@material-ui/core';
 import {getUserRole} from '../../service/authService';
 import CustomPagination from "../pagination/customPagination";
+import SearchView from "./search/searchView";
 
 const style = {
-
     display: "flex",
     flexWrap: "wrap",
 };
@@ -35,6 +34,7 @@ class ResourceTemplateList extends Component {
         totalPages: 0,
         itemsCountPerPage: 0,
         totalItemsCount: 0,
+        // message: ""
     };
 
     getData = (pageNumber) => {
@@ -47,7 +47,7 @@ class ResourceTemplateList extends Component {
                 resourceTemplates: resourceTemplates,
                 totalPages: totalPages,
                 itemsCountPerPage: itemsCountPerPage,
-                totalItemsCount: totalItemsCount
+                totalItemsCount: totalItemsCount,
             });
 
         })
@@ -63,9 +63,8 @@ class ResourceTemplateList extends Component {
                 resourceTemplates: resourceTemplates,
                 totalPages: totalPages,
                 itemsCountPerPage: itemsCountPerPage,
-                totalItemsCount: totalItemsCount
+                totalItemsCount: totalItemsCount,
             });
-            this.setState({resourceTemplates});
         })
     };
 
@@ -90,29 +89,46 @@ class ResourceTemplateList extends Component {
         this.props.history.push("/resource-template/create");
     };
 
+    setRecordsData = (resourceTemplates) => {
+        let message = resourceTemplates.length === 0 ? "There is no resource templates to display" : "";
+        this.setState({resourceTemplates, message})
+    };
+
     render() {
+
+        let showTemplateListOrErrorMessage = (this.state.resourceTemplates.length !== 0) ?
+            (
+                this.state.resourceTemplates.map((item) =>
+                    (<ResourceTemplateItem key={item.id}
+                                           item={item}/>)
+                )
+            ) : (<p className={"App"}>{this.state.message}</p>);
 
         let userLinks = (getUserRole() === "ROLE_MANAGER") ?
             (
                 <Button
                     variant="contained"
                     style={buttonStyle}
-                    onClick={this.goToCreateResource}>Create Resource</Button>
+                    onClick={this.goToCreateResource}>Create template</Button>
             ) : (
                 <div></div>
-            )
+            );
 
         return (
             <div>
                 {userLinks}
-                <Grid container spacing={3} style={gridStyle}>
+                <Grid container spacing={1} style={gridStyle}>
                     <Grid item xs/>
                     <Grid item xs={10}>
+                        <SearchView label="Search"
+                                    resourceTemplate={this.state.resourceTemplate}
+                                    setRecordsData={this.setRecordsData}/>
                         <div style={style}>
-                            {this.state.resourceTemplates.map((item) =>
-                                (<ResourceTemplateItem key={item.id}
-                                                       item={item}/>)
-                            )}
+                            {showTemplateListOrErrorMessage}
+                            {/*{this.state.resourceTemplates.map((item) =>*/}
+                            {/*    (<ResourceTemplateItem key={item.id}*/}
+                            {/*                           item={item}/>)*/}
+                            {/*)}*/}
                         </div>
                     </Grid>
                     <Grid item xs/>
