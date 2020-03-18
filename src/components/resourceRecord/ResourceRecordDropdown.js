@@ -18,8 +18,8 @@ class ResourceRecordDropdown extends Component {
     };
 
     getRecordsData = () => {
-        axios.get(`/resource-template/resource/${this.state.relatedResourceTableName}`).then(response => {
-            this.setState({records: response.data})
+        axios.get(`/resource/${this.state.relatedResourceTableName}`).then(response => {
+            this.setState({records: response.data['content']})
         })
     };
 
@@ -39,7 +39,6 @@ class ResourceRecordDropdown extends Component {
     };
 
     render() {
-
         return (
             <div>
                 <Autocomplete

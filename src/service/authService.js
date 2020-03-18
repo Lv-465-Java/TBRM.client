@@ -2,7 +2,7 @@ import Alert from "@material-ui/lab/Alert";
 
 export const logout = () => {
     sessionStorage.removeItem('authorization');
-    localStorage.removeItem('refreshToken');
+    sessionStorage.removeItem('refreshToken');
     sessionStorage.removeItem('userrole');
 }
 
@@ -17,7 +17,7 @@ export const getUserRole = () => {
 export const verifyUser = () => {   
     if(getUserRole() === "ROLE_ADMIN"){
         window.location.href = "/admin-panel";
-    } else if(getUserRole() === "ROLE_MANAGER" || getUserRole() === "ROLE_REGISTER"){
+    } else if(getUserRole() === "ROLE_MANAGER" || getUserRole() === "ROLE_REGISTER" || getUserRole() === "ROLE_USER"){
         window.location.href = "/resource-template";
     } else if(getUserRole() === "ROLE_GUEST"){
         window.location.href = "/welcome";

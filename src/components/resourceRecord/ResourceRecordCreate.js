@@ -10,11 +10,10 @@ import PointString from "./parametersTypes/PointString";
 import PointDouble from "./parametersTypes/PointDouble";
 import RangeInteger from "./parametersTypes/RangeInteger";
 import PointReference from "./parametersTypes/PointReference";
-
-const formControlStyles = {
-    marginBottom: 20
-}
-
+import CoordinateString from "./parametersTypes/CoordinateString";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
+import PhotoUpload from "./parametersTypes/PhotoUpload";
 
 class ResourceRecordCreate extends Component {
 
@@ -22,31 +21,39 @@ class ResourceRecordCreate extends Component {
         name: undefined,
         description: undefined,
         resourceParameters: this.props.resourceTemplate.resourceParameters,
-        parameters: {}
+        parameters: undefined,
+        open: false
     }
 
     create = () => {
-        // let data = {
-        //     "name": this.props.name,
-        //     "parameterType": `${this.state.parameter.toUpperCase()}_${this.state.parameterType.toUpperCase()}`
-        // }
-        // if (this.state.parameterType === "reference") {
-        //     data["relatedResourceTemplateId"] = this.state.relatedResourceTemplateId
-        // }
-        axios.post(`/resource-template/resource/${this.props.tableName}`, this.state).then(
+        axios.post(`/resource/${this.props.tableName}`, this.state).then(
             response => {
                 this.setState({
                     name: "",
                     description: "",
                     parameters: {},
-                    // data: {}
+                    open: true
                 })
-                this.props.getRecordsData()
+                this.props.getRecordsData();
+
             }).catch(error => {
             console.dir(error.response.data);
         })
     };
 
+    getParametersSize = (parameters) => {
+        let len = 0;
+        for (const count in parameters) {
+            len++;
+        }
+        return len;
+    }
+
+    isCreateNotValid = () => {
+        return (this.state.name === undefined
+            || this.state.parameters === undefined
+            || ((this.getParametersSize(this.state.parameters) < this.state.resourceParameters.length)))
+    }
     onChangeName = (event) => {
         let name = event.target.value;
         if (name.trim().length === 0) {
@@ -55,59 +62,40 @@ class ResourceRecordCreate extends Component {
         this.setState({name});
     }
 
+    handleOpen = () => {
+        this.setState({open: true})
+    }
+
+    handleClose = () => {
+        this.setState({open: false});
+        this.props.handleClose();
+    }
+
     onChangeDescription = (event) => {
         let description = event.target.value;
         this.setState({description});
-
-        // this.props.setData(this.props.columnName, event.target.value)
     }
 
     setData = (columnName, value) => {
         this.setState({parameters: {...this.state.parameters, [columnName]: value}})
     }
 
-    // relatedResourceTableName() {
-    //     this.state.resourceParameters.map(key => {
-    //         if (key.parameterType === "POINT_REFERENCE") {
-    //             return  key['relatedResourceTemplateTableName'];
-    //         }
-    //     })
-    // }
-
-
     render() {
-
-        // console.log(this.state.resourceParameters.relatedResourceTemplateName);
-        // let elements = this.state.resourceParameters.map(element =>
-        //
-        //     (<div>
-        //         <FormControl>
-        //
-        //
-        //             {(element.parameterType === 'POINT_INT')}?
-        //             <TextField key={element.name}
-        //                        type="text"
-        //                        label={element.name}
-        //                        setData={this.setData}/>:
-        //             <div/>
-        //
-        //         </FormControl>
-        //     </div>)
-        // )
         return (
             <div>
                 <DialogContent dividers>
                     <div>
                         <FormControl>
                             <TextField required type="text" label="name" onChange={this.onChangeName}/>
-                            {/*// helperText={this.state.errorMessage} error={!!this.state.errorMessage}/>*/}
-
                         </FormControl>
                     </div>
                     <div>
                         <FormControl>
                             <TextField type="text" label="description" onChange={this.onChangeDescription}/>
                         </FormControl>
+                    </div>
+                    <div>
+                        <PhotoUpload/>
                     </div>
                     {
                         // elements
@@ -128,7 +116,7 @@ class ResourceRecordCreate extends Component {
                                                   label={element.name}
                                                   columnName={element.columnName}
                                                   setData={this.setData}/>)
-                            } else if (element.parameterType === 'RANGE_INTEGER') {
+                            } else if (element.parameterType === 'RANGE_INT') {
                                 e = (<RangeInteger key={element.name}
                                                    label={element.name}
                                                    columnName={element.columnName}
@@ -144,31 +132,35 @@ class ResourceRecordCreate extends Component {
                                                      columnName={element.columnName}
                                                      relatedResourceTableName={element['relatedResourceTemplateTableName']}
                                                      setData={this.setData}/>)
+                            } else if (element.parameterType === 'COORDINATES_STRING') {
+                                e = (<CoordinateString key={element.name}
+                                                       label={element.name}
+                                                       columnName={element.columnName.concat('_coordinate')}
+                                                       setData={this.setData}/>)
+                            }
+                            else if (element.parameterType === 'COORDINATES_STRING') {
+                                e = (<CoordinateString key={element.name}
+                                                       label={element.name}
+                                                       columnName={element.columnName.concat('_coordinate')}
+                                                       setData={this.setData}/>)
                             }
                             return e;
                         })
                     }
-                    {/*//     (<FormControl>*/}
-                    {/*//*/}
-                    {/*//             {*/}
-                    {/*//                 if(element.parameterType === 'POINT_INT'){*/}
-                    {/*//                 <TextField key={element.name}*/}
-                    {/*//                 type="text"*/}
-                    {/*//                 label={element.name}*/}
-                    {/*//                 setData={this.setData}/>}*/}
-                    {/*//             }*/}
-                    {/*//         </FormControl>)*/}
-                    {/*//*/}
-                    {/*// )}*/}
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={this.create} color="primary">
+                    <Button autoFocus disabled={this.isCreateNotValid()} onClick={this.create} color="primary">
                         Create
                     </Button>
                     <Button autoFocus onClick={this.props.handleClose} color="primary">
                         Close
                     </Button>
                 </DialogActions>
+                <Snackbar open={this.state.open} autoHideDuration={1500} onClose={this.handleClose}>
+                    <Alert onClose={this.handleClose} severity="success">
+                        Resource successfully added
+                    </Alert>
+                </Snackbar>
             </div>
         );
     }

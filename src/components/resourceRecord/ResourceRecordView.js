@@ -1,6 +1,5 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import axios from "../../utils/axios";
-// import axios from "../../utils/axios";
 import ResourceRecordList from "./ResourceRecordList";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import Button from "@material-ui/core/Button";
@@ -8,13 +7,12 @@ import Grid from "@material-ui/core/Grid";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import ResourceRecordCreate from "./ResourceRecordCreate";
+import Image from "material-ui-image";
 import CustomPagination from "../pagination/customPagination";
-import {getUserRole} from "../../service/authService";
+import { getUserRole } from "../../service/authService";
 import FilterView from "./filters/filterView";
+import { Hidden } from '@material-ui/core';
 
-// const gridStyles = {
-//     marginLeft: 300
-// }
 
 const itemsNumber = 5;
 
@@ -36,7 +34,7 @@ class ResourceRecordView extends Component {
     };
 
     getRecordsData = (pageNumber) => {
-        axios.get(`/resource-template/resource/${this.state.tableName}?page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
+        axios.get(`/resource/${this.state.tableName}?page=${pageNumber}&pageSize=${itemsNumber}`).then(response => {
             let records = response.data.content;
             let totalPages = response.data.totalPages;
             let itemsCountPerPage = response.data.numberOfElements;
@@ -50,24 +48,28 @@ class ResourceRecordView extends Component {
         })
     };
     setRecordsData = (records) => {
-        this.setState({records})
+        this.setState({ records })
     };
     getResourceTemplateData = () => {
         axios.get(`/resource-template/table/${this.state.tableName}`).then(response => {
-            this.setState({resourceTemplate: response.data})
+            this.setState({ resourceTemplate: response.data })
         })
     };
     handleClose = () => {
-        this.setState({openDialog: false})
+        this.setState({ openDialog: false })
     };
     handleOpen = () => {
-        this.setState({openDialog: true})
+        this.setState({ openDialog: true })
     };
 
     handlePageChange = (event, pageNumber) => {
-        this.setState({activePage: pageNumber});
+        this.setState({ activePage: pageNumber });
         this.getRecordsData(pageNumber);
     };
+
+    verifyUser = () => {
+        return getUserRole() === "ROLE_REGISTER";
+    }
 
     componentDidMount() {
         //this.getRecordsData();
@@ -88,33 +90,35 @@ class ResourceRecordView extends Component {
                 <div>
                     <h1>{this.state.resourceTemplate.name}</h1>
                 </div>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<CheckCircleIcon/>}
-                    onClick={this.handleOpen}>
-                    Add record
-                </Button>
-
+                <Hidden mdUp={!this.verifyUser()}>
+                    <Button style={{ marginBottom: 40 }}
+                        variant="contained"
+                        color="primary"
+                        startIcon={<CheckCircleIcon />}
+                        onClick={this.handleOpen}>
+                        Add record
+                    </Button>
+                </Hidden>
                 <Grid container spacing={3}>
-                    <Grid item xs={1}></Grid>
+                    <Grid item xs={1} />
                     <Grid item xs={10}>
                         <FilterView label="Filter"
-                                    resourceTemplate={this.state.resourceTemplate}
-                                    setRecordsData={this.setRecordsData}/>
-                        {this.state.resourceTemplate &&
-                        <ResourceRecordList
-                            tableName={this.state.tableName}
-                            records={this.state.records}
                             resourceTemplate={this.state.resourceTemplate}
-                            getRecordsData={this.getRecordsData}
-                        />}
+                            setRecordsData={this.setRecordsData} />
+                        {this.state.resourceTemplate &&
+                            <ResourceRecordList
+                                tableName={this.state.tableName}
+                                records={this.state.records}
+                                resourceTemplate={this.state.resourceTemplate}
+                                getRecordsData={() => this.getRecordsData(this.state.activePage)}
+                            />}
                     </Grid>
-                    <Grid item xs={3}/>
+                    <Grid item xs={3} />
+                    <Grid item xs={3} />
                 </Grid>
                 <Grid container
-                      style={paginationStyle}
-                      justify="center">
+                    style={paginationStyle}
+                    justify="center">
                     <CustomPagination
                         activepage={this.state.activePage}
                         totalPages={this.state.totalPages}
@@ -123,13 +127,17 @@ class ResourceRecordView extends Component {
                         onChange={this.handlePageChange}
                     />
                 </Grid>
-                <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.state.openDialog}>
+                <Dialog fullWidth={true}
+                    onClose={this.handleClose}
+                    aria-labelledby="simple-dialog-title"
+                    open={this.state.openDialog}>
                     <DialogTitle id="simple-dialog-title">Create new {this.state.resourceTemplate.name}</DialogTitle>
 
                     <ResourceRecordCreate handleClose={this.handleClose}
-                                          tableName={this.state.tableName}
-                                          resourceTemplate={this.state.resourceTemplate}
-                                          getRecordsData={this.getRecordsData}
+                        tableName={this.state.tableName}
+                        resourceTemplate={this.state.resourceTemplate}
+                        // relatedResourceTableName={relatedResourceTableName}
+                        getRecordsData={() => this.getRecordsData(this.state.activePage)}
                     />
 
                 </Dialog>

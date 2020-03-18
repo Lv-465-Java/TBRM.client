@@ -16,14 +16,9 @@ class ResourceParametersList extends Component {
                     <Table aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                {/*<TableCell>Id</TableCell>*/}
-                                {/*<TableCell align="right">ColumnName</TableCell>*/}
                                 <TableCell align="right">Name</TableCell>
                                 <TableCell align="right">ParameterType</TableCell>
-                                {/*<TableCell align="right">Pattern</TableCell>*/}
                                 <TableCell align="right">Related Template</TableCell>
-                                {/*<TableCell align="right">1</TableCell>*/}
-                                {/*<TableCell align="right">2</TableCell>*/}
                             </TableRow>
                         </TableHead>
                         <TableBody>
