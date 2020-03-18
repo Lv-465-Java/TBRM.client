@@ -6,6 +6,7 @@ import FilterPointReferenceField from "./filterPointReferenceField";
 import FilterRangeNumberField from "./filterRangeNumberField";
 import IconButton from "@material-ui/core/IconButton";
 import axios from "../../../utils/axios";
+import Box from "@material-ui/core/Box";
 
 class FilterView extends Component {
     state = {
@@ -19,7 +20,9 @@ class FilterView extends Component {
         } else {
             delete filters[name];
         }
-        this.setState({filters});
+        this.setState({filters}, ()=>{
+            this.props.setFilters(`filter=${Object.values(this.state.filters).join(',')}`)
+        });
     };
 
     getData = () => {

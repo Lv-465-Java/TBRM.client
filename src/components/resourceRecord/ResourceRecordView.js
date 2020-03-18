@@ -10,6 +10,7 @@ import ResourceRecordCreate from "./ResourceRecordCreate";
 import CustomPagination from "../pagination/customPagination";
 import {getUserRole} from "../../service/authService";
 import FilterView from "./filters/filterView";
+import Hidden from "@material-ui/core/Hidden";
 
 const itemsNumber = 5;
 
@@ -85,7 +86,7 @@ class ResourceRecordView extends Component {
 
     verifyUser = () => {
         return getUserRole() === "ROLE_REGISTER";
-    }
+    };
 
     componentDidMount() {
         this.getResourceTemplateData();
