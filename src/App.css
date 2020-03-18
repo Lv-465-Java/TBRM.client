@@ -49,11 +49,6 @@ label.MuiFormControlLabel-root {
     flex-direction: column;
 }
 
-.referenceDropdown {
-    margin-top: 30px;
-    width: 300px;
-}
-
 .App-logo {
     height: 40vmin;
     pointer-events: none;
