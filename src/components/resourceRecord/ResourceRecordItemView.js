@@ -25,7 +25,8 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 
 
 const dialogContentStyle = {
-    display: "flex"
+    display: "flex",
+    'margin-top': '15px'
 }
 
 class ResourceRecordItemView extends Component {
@@ -118,7 +119,7 @@ class ResourceRecordItemView extends Component {
 
                                     </ListItem>
                                 );
-                            } else {
+                            } else if(!element.columnName.endsWith('photos')) {
                                 e = (<ListItem container>
                                         <ListItemText key={index} align="center" primary={element.name}
                                                       secondary={this.state.data[element.columnName]}/>
