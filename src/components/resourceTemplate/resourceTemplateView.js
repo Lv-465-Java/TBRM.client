@@ -63,6 +63,8 @@ class ResourceTemplateView extends Component {
         description: "",
         isPublished: "",
         userId: "",
+        userFirstName: "",
+        userLastName: "",
         open: false,
         openCreate: false,
         resourceParameters: [],
@@ -81,10 +83,14 @@ class ResourceTemplateView extends Component {
         axios.get(`/resource-template/${this.state.resTempId}`).then(
             response => {
                 let data = response.data;
+                console.log("I am hee    ");
+                console.log(response.data);
                 this.setState({
                     name: data.name,
                     tableName: data.tableName,
                     description: data.description,
+                    userFirstName: data.userFirstName,
+                    userLastName: data.userLastName,
                     isPublished: data.isPublished,
                 })
             }).catch(error => {
@@ -238,6 +244,10 @@ class ResourceTemplateView extends Component {
                                 <Typography variant="body2" color="textSecondary" component="p">
                                     {this.state.description}
                                 </Typography>
+                                <Typography variant="body2" color="textSecondary" component="p">
+                                    {this.state.userFirstName}
+                                    {this.state.userLastName}
+                                </Typography>
                             </CardContent>
                         </CardActionArea>
                         <CardContent>
@@ -250,7 +260,7 @@ class ResourceTemplateView extends Component {
                     </Card>
 
                     <Card style={style}>
-                    <h3>Resource Parameters</h3>
+                        <h3>Resource Parameters</h3>
                         <CardContent>
                             <Typography variant="body2" color="textSecondary" component="h2">
                                 {/*{this.isPublished()}*/}
@@ -282,26 +292,26 @@ class ResourceTemplateView extends Component {
                         />
                     </Grid>
 
-                <Dialog fullWidth={true}
-                        onClose={this.handleCloseCreate}
-                        aria-labelledby="simple-dialog-title"
-                        open={this.state.openCreate}>
-                    <DialogTitle id="simple-dialog-title">Create new Resource Parameter</DialogTitle>
+                    <Dialog fullWidth={true}
+                            onClose={this.handleCloseCreate}
+                            aria-labelledby="simple-dialog-title"
+                            open={this.state.openCreate}>
+                        <DialogTitle id="simple-dialog-title">Create new Resource Parameter</DialogTitle>
 
-                    <CreateParameter errorMessage={this.state.errorMessageParameter}
-                                     handleClose={this.handleCloseCreate}
-                                     getData={() => this.getParameters(this.state.activePage)}
-                                     resTempId={this.state.resTempId}
-                    />
+                        <CreateParameter errorMessage={this.state.errorMessageParameter}
+                                         handleClose={this.handleCloseCreate}
+                                         getData={() => this.getParameters(this.state.activePage)}
+                                         resTempId={this.state.resTempId}
+                        />
 
-                </Dialog>
-                <MyDialog
-                    delete={this.delete}
-                    open={this.state.open}
-                    handleClickOpen={this.handleClickOpen}
-                    handleClose={this.handleClose}
-                    title="Delete resource template"
-                    msg="Are you sure you want to delete this resource template?"/>
+                    </Dialog>
+                    <MyDialog
+                        delete={this.delete}
+                        open={this.state.open}
+                        handleClickOpen={this.handleClickOpen}
+                        handleClose={this.handleClose}
+                        title="Delete resource template"
+                        msg="Are you sure you want to delete this resource template?"/>
                 </Grid>
                 <Grid item xs={3}>
                     <Grid container
@@ -310,46 +320,46 @@ class ResourceTemplateView extends Component {
                           alignItems="center"
                           style={gridStyle}
                     ><Hidden mdUp={this.showLinks()}>
-                            <Box mx="auto">
-                                <Box>
-                                    <Link to={`/resource/${this.state.tableName}`}>
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                        >View SubResources</Button>
-                                    </Link>
-                                </Box>
-                                <Box mt={5}>
-                                    <Link to={`/resource-template/permission/${this.state.resTempId}`}>
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                        >Permissions</Button>
-                                    </Link>
-                                </Box>
-                                <Box mt={5}>
-                                    <Link to={`/resource-template/update/${this.state.resTempId}`}>
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            startIcon={<EditIcon />}
-                                        >Update</Button>
-                                    </Link>
-                                </Box>
-                                <Box mt={5}>
+                        <Box mx="auto">
+                            <Box>
+                                <Link to={`/resource/${this.state.tableName}`}>
                                     <Button
                                         variant="contained"
-                                        color="secondary"
-                                        startIcon={<DeleteIcon />}
-                                        style={useStyles.button}
-                                        onClick={this.handleClickOpen}
-                                    >
-                                        Delete
-                                </Button>
-                                </Box>
-                                {publishButton}
+                                        color="primary"
+                                    >View SubResources</Button>
+                                </Link>
                             </Box>
-                        </Hidden>
+                            <Box mt={5}>
+                                <Link to={`/resource-template/permission/${this.state.resTempId}`}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                    >Permissions</Button>
+                                </Link>
+                            </Box>
+                            <Box mt={5}>
+                                <Link to={`/resource-template/update/${this.state.resTempId}`}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        startIcon={<EditIcon/>}
+                                    >Update</Button>
+                                </Link>
+                            </Box>
+                            <Box mt={5}>
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    startIcon={<DeleteIcon/>}
+                                    style={useStyles.button}
+                                    onClick={this.handleClickOpen}
+                                >
+                                    Delete
+                                </Button>
+                            </Box>
+                            {publishButton}
+                        </Box>
+                    </Hidden>
                     </Grid>
                 </Grid>
             </Grid>
